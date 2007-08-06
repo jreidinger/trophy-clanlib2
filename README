@@ -1,0 +1,76 @@
+
+                     TROPHY
+                     
+          http://trophy.sourceforge.net
+
+       Programming, Graphics and Sounds by 
+       
+                 Andrew Mustun
+                 
+               andrew@mustun.com
+               
+                    08/2000
+               
+               
+TROPHY is a car racing game with some special features
+like shooting and dropping bombs.
+
+Requirements
+------------
+
+TROPHY requires ClanLib 0.8 to run.
+
+You can get ClanLib from www.clanlib.org
+
+Hardware:
+You need a lot of video memory to run TROPHY. However,
+it should run anyway but the quality might suffer if
+your hardware isn't good enough.
+
+
+Installation
+------------
+
+To install TROPHY simply extract it to any directory you
+prefer.
+
+
+Use
+---
+
+You can run TROPHY by changeing to its directory and then 
+typing ./trophy on your console. 
+
+There are some options for TROPHY which might be of interest:
+
+-f or --fullscreen   runs TROPHY in full screen mode
+--fast               for slow computers and impatient users
+--640x480            
+--800x600
+--1024x768           run with given resolution
+--nosound            well, no sound
+--help				 show all available options
+
+e.g.
+./trophy -f --800x600 --nosound
+
+will run TROPHY in full screen mode with a resolution
+of 800x600 and without sound.
+
+The control keys are:
+
+Arrow keys for steering, gas and break
+E   Gas
+D   Break
+A   Turbo
+X   Shoot
+C   Drop bombs
+ESC Finishes current race immediately
+
+
+Thanks
+------
+Many thanks to all the people who provided something
+useful to TROPHY. Especially I like to thank the ClanLib
+team for their effort to provide a cool game library for
+Linux.

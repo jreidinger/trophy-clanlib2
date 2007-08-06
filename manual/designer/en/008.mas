@@ -1,0 +1,44 @@
+<!--
+[variables]
+{
+  $page_title = "Collision Definition"
+  $page_title_english = "Collision Definition"
+  $file_prev = "007.html"
+  $file_next = "009.html"
+  $real_page_number = "8"
+  $page_number = "8"
+}
+-->
+
+<_header2>
+$page_title
+</_header2>
+
+<_pg>
+The layers 'low_level_collision' and 'high_level_collision'
+are used to define the collisions which depend on the current
+car level.
+</_pg>
+
+<_pg>
+For example if your track has a bridge which goes over another
+part of the road, the player who drives below the bridge must
+collide with different walls then the player who drives on the
+bridge.
+</_pg>
+
+<_pg>
+<_image src="img/coll_low.gif" 
+        description="Example for the layer 'low_level_collision'.">
+</_pg>
+
+<_pg>
+<_image src="img/coll_high.gif" 
+        description="Example for the layer 'high_level_collision'.">
+</_pg>
+
+<_pg>
+For the 'low_level_collision' layer choose the color #000800
+and for the 'high_level_collision' #000400. For both layers, 
+please select the mode "Addition" in the "Layers & Channels" Dialog.
+</_pg>

@@ -1,0 +1,40 @@
+<!--
+[variables]
+{
+  $page_title = "Integrating Your Track"
+  $page_title_english = "Integrating Your Track"
+  $file_prev = "010.html"
+  $file_next = "012.html"
+  $real_page_number = "11"
+  $page_number = "11"
+}
+-->
+
+<_header1>
+$page_title
+</_header1>
+
+<_pg>
+To use your track in $pn, you must tell $pn about it. 
+You can do this by simply adding the name of the track 
+in the file 'resources.scr', section tracks. Separate 
+your track from the others with a '~' character. E.g.
+if your track is called "Mars", the beginning of the 
+file will afterwards look like this:
+</_pg>
+
+<_code>
+section resources {<br>
+<br>
+&nbsp;&nbsp;// Tracks:<br>
+&nbsp;&nbsp;//<br>
+&nbsp;&nbsp;section tracks {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;directories = "Zurich~Moon~Loops~Mars" (type=string);<br>
+&nbsp;&nbsp;}<br>
+<br>
+...<br>
+</_code>
+
+<_pg>
+
+</_pg>

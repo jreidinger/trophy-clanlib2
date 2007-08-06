@@ -1,0 +1,62 @@
+<!--
+[variables]
+{
+  $page_title_ = "First Chapter"
+  $page_title = "Introduction"
+  $page_title_english = "Introduction"
+  $file_prev = "001.html"
+  $file_next = "003.html"
+  $real_page_number = "2"
+  $page_number = "2"
+}
+-->
+
+<_header1>
+$page_title
+</_header1>
+
+<_header2>
+Who Should Read This Manual?
+</_header2>
+
+<_pg>
+This manual is intended for track designers of $pn.
+If you like to draw and integrate a new track into $pn,
+this manual should give you very detailed step-by-step
+instructions to do so.
+</_pg>
+
+<_header2>
+Requirements
+</_header2>
+
+<_pg>
+This manual assumes that you use Gimp to create your track.
+Gimp is a free image manipulation program which runs under
+Linux (recommended), Windows and other operating systems. 
+For more information about Gimp, please take a look at it's 
+official homepage at 
+<a href="http://www.gimp.org">www.gimp.org</a>.
+</_pg>
+
+<_pg>
+To design tracks for $pn, you need a quite powerful system
+or a lot of patience ;-) $pn tracks are bitmaps with a size of
+usually about 1200x1200. As you'll see later in this manual
+there are a number of layers needed to work on tracks. Your
+computer must be able to handle this - if not, you might want
+to extend your RAM or the swap partition.
+</_pg>
+
+<_header2>
+What Will Happen To My Track?
+</_header2>
+
+<_pg>
+If you design a track for $pn and you want to make it
+available for others, I recommend to do this under the
+GPL. Please understand, that I can't include every track 
+in the official $pn package. Otherwise it would become 
+to big for downloading. I'll create a gallery of additional 
+tracks instead where users can download more tracks.
+</_pg>

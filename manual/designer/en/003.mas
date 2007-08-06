@@ -1,0 +1,60 @@
+<!--
+[variables]
+{
+  $page_title = "Preparation"
+  $page_title_english = "Preparation"
+  $file_prev = "002.html"
+  $file_next = "004.html"
+  $real_page_number = "3"
+  $page_number = "3"
+}
+-->
+
+<_header1>
+$page_title
+</_header1>
+
+<_pg>
+Before you get started with Gimp, I recommend you to draft 
+your track down on paper including the starting/ finish line,
+bridges and tunnels. 
+</_pg>
+
+<_pg>
+Further you might want to think about the size of your track.
+$pn tracks can basically have any size. Depending on your 
+Computer hardware, the picture won't move smoothly if your 
+track is too large. The default tracks which come with $pn
+have sizes of 1600x1000, 1800x1100 and 1800x1200. If the 
+scrolling of the standard tracks isn't fast enough on your 
+Computer, you might be interested in doing smaller tracks.
+I usually don't recommend to make the tracks larger, as most
+users won't have an adequate hardware configuration for
+larger tracks.
+</_pg>
+
+<_header2>
+Creating A New Image
+</_header2>
+
+<_pg>
+- Launch Gimp and create a new RGB image with the size of your new 
+track.
+</_pg>
+
+<_header2>
+Preparing The Layers
+</_header2>
+
+<_pg>
+- Right-click into the graphic and choose "Layers" -> "Layers &Channels...".
+</_pg>
+
+<_pg>
+- Create the same layer structure like shown in the figure below:
+</_pg>
+
+<_pg>
+<_image src="img/gimp_layers.gif" 
+        description="Layer structure for a typical $pn track.">
+</_pg>

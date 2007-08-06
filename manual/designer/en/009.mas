@@ -1,0 +1,43 @@
+<!--
+[variables]
+{
+  $page_title = "Level Definition"
+  $page_title_english = "Level Definition"
+  $file_prev = "008.html"
+  $file_next = "010.html"
+  $real_page_number = "9"
+  $page_number = "9"
+}
+-->
+
+<_header2>
+$page_title
+</_header2>
+
+<_pg>
+The last layer of your map is called 'lift'. On this layer you 
+can define the levels of your track. $pn knows two different 
+levels: the top level for cars which are on bridges and the 
+bottom level for all other cars. Note that a car stays on the 
+same level if it leaves a zone where the level was defined and 
+enters a zone where no level is defined. Further it's important,
+that a player is on the bottom layer <b>before</b> it drives under 
+a bridge respectively a player has to be on the top layer before
+it drive on a bridge.
+</_pg>
+
+<_pg>
+Top level zones are drawn in color #000100 for bottom level 
+and #000200 for top levels.
+</_pg>
+
+<_pg>
+<_image src="img/level_def.gif" 
+        description="Example for the layer 'lift'.">
+</_pg>
+
+<_pg>
+You should avoid coloring regions which contain road parts
+on the top and such on the bottom level. Be generously with
+the distance to the trickily parts (as shown in the figure).
+</_pg>

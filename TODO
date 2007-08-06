@@ -1,0 +1,12 @@
+Features
+ - Shoot with Rockets
+ - Configure keys
+ - Implement sound volume
+ - Store to buy new features
+ - Oil
+ - Jump points (?)
+ - Translation (using gettext)
+
+Build system
+ - build doc using doxygen
+ - gettext internationalization support

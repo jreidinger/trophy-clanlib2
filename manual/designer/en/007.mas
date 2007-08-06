@@ -1,0 +1,43 @@
+<!--
+[variables]
+{
+  $page_title = "Track Path Definition"
+  $page_title_english = "Track Path Definition"
+  $file_prev = "006.html"
+  $file_next = "008.html"
+  $real_page_number = "7"
+  $page_number = "7"
+}
+-->
+
+<_header2>
+$page_title
+</_header2>
+
+<_pg>
+Activate the layer "fields".
+</_pg>
+
+<_pg>
+Now you need to separate the track into 32 approximately
+equally sized fields. The first field a player has to 
+pass must have the color #000001, the second #000002, the
+third #000003 and so on. The last field has the color 
+#00001f. Note: you won't see the difference of the colors 
+of the fields with your eyes. But you can always measure
+it using the color picker of Gimp.
+</_pg>
+
+<_pg>
+<_image src="img/fields_def.gif" 
+        description="Example layer 'fields'. In the 
+        background you can see the 'fmap' layer for
+        better visualization.">
+</_pg>
+
+<_pg>
+Choose the mode of this layer in the "Layers & Channels" 
+dialog to be "Addition". You'll get the feeling that the
+layer disappeared, but it gets just visually combined
+with the layer behind it (which is "vmap").
+</_pg>

@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <TITLE>Trophy - Creating The Function Map</TITLE>
+  <META name="GENERATOR" content="ManStyle">
+  <META name="AUTHOR" content="Andrew Mustun">
+  <LINK rel=stylesheet type="text/css" href="styles.css">
+</HEAD>
+<BODY text="#000000"
+      link="#12568c" vlink="#023a64" alink="#000000" 
+      bgcolor="#ffffff" background="img/tile.jpeg">
+
+<TABLE width=615 border=0 cellpadding=0 cellspacing=0>
+  <TR>
+    <TD width=30>
+      <IMG src="img/space.gif" width=30 height=1 border=0>
+    </TD>
+    <TD width=105>
+      <IMG src="img/space.gif" width=105 height=1 border=0>
+    </TD>
+    <TD width=20>
+      <IMG src="img/space.gif" width=20 height=1 border=0>
+    </TD>
+    <TD width=460>
+      <IMG src="img/space.gif" width=460 height=1 border=0><BR>
+      <P class="pageNumber">&nbsp;5&nbsp;</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top></TD>
+    <TD></TD>
+    <TD align=center>
+      <TABLE width=460 border=0 cellpadding=0 cellspacing=0>
+        <TR>
+          <TD width=460 align=center valign=top class="navigator">
+            <P class="navigator"><IMG src="img/000000.gif" height=2 width=460><BR>
+            <IMG src="img/toolbar_left.png" border=0><A href="001.html" alt="Contents"><IMG src="img/toolbar_cont.png" border=0></A><A href="index.html" alt="First Page"><IMG src="img/toolbar_first.png" border=0></A><A href="004.html" alt="Previous Page"><IMG src="img/toolbar_prev.png" border=0></A><A href="index.html" alt="Home"><IMG src="img/toolbar_home.png" border=0></A><A href="006.html" alt="Next Page"><IMG src="img/toolbar_next.png" border=0></A><A href="012.html" alt="Last Page"><IMG src="img/toolbar_last.png" border=0></A><IMG src="img/toolbar_right.png" border=0>
+            <BR><IMG src="img/000000.gif" height=2 width=460></P>
+          </TD>
+        </TR>
+        <TR>
+          <TD align=center valign=top>
+            <P class="pageHeader">Designer Manual for - <B>&laquo;Trophy&raquo;</B><BR><IMG src="img/000000.gif" height=1 width=460></P>
+          </TD>
+        </TR>
+        <TR>
+          <TD align=center valign=top>
+            &nbsp;
+          </TD>
+        </TR>
+      </TABLE>
+    </TD>
+  </TR>
+
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="header1">4&nbsp;&nbsp; <A name="4"></A>Creating The Function Map<BR><IMG src="img/12568c.gif" height=2 width=460></P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">The function map is needed for several reasons:</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">- Defining the maximum speed on the different areas</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">- Defining the direction and order of the track</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">- Defining the position of bridges and tunnels</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">- Defining collision areas</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">To store all this information in one image, Trophy uses bitwise information of the colors. Therefore it is very important, that you use exact colors for all following operations. Do not use any blending or smooth effects. If you make selections to fill them, make sure that you sharpen the selections before (Select -> Sharpen). All contours in the function map should look like shown at the left in the figure below and not like shown at the right. </P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">      <TABLE cellpadding=0 cellspacing=0 border=0 width=100%>
+        <TR>
+          <TD align=center>
+<IMG src="img/smooth.gif" border=0>          </TD>
+        </TR>
+        <TR>
+          <TD align=center>
+            <P class="pg"><STRONG>Fig. 3: </STRONG>Function maps should look like the left image (sharp) and not like the right (smooth).</P>
+          </TD>
+        </TR>
+      </TABLE>
+</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="header2">4.1&nbsp; <A name="4_1"></A>Colors And Their Meaning</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Each pixel in a function map needs four bytes (24bit) of memory: Three Bytes for the Red, Green and Blue information and one Byte for the Alpha channel (which is currently not used by function maps). You don't need to know how exactly the encoding works as this manual gives you all the details of how to create maps step by step. But for completeness, here's the key for the Bits:</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">      <TABLE cellpadding=0 cellspacing=0 border=0 width=100%>
+        <TR>
+          <TD align=center>
+<IMG src="img/bits.gif" border=0>          </TD>
+        </TR>
+        <TR>
+          <TD align=center>
+            <P class="pg"><STRONG>Fig. 4: </STRONG>Color Bits encoded.</P>
+          </TD>
+        </TR>
+      </TABLE>
+</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">So if the color of an area in the function map is #00f101 (what means Red: 00h = 0d = 00000000b, Green: f1h = 241d = 11110001b, Blue: 01h = 1d = 00000001b) the speed on this field is not limited, a car which enters the area moves to the lower level and the area is on the first field of the track. </P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Don't give up if you don't understand all this - it's just additional information and not needed to create cool tracks for Trophy.</P>
+    </TD>
+  </TR>
+
+
+  <TR>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD valign=top>
+       <P class="navigatorSmall"><IMG src="img/12568c.gif" height=1 width=460><BR>
+       [&nbsp;
+       <A href="001.html">Contents</A>&nbsp;&nbsp;|&nbsp;
+       <A href="index.html">First Page</A>&nbsp;&nbsp;|&nbsp;
+       <A href="004.html">Previous Page</A>&nbsp;&nbsp;|&nbsp;
+       <A href="index.html">Home</A>&nbsp;
+       &nbsp;|&nbsp;<A href="006.html">Next Page</A>&nbsp;&nbsp;|&nbsp;
+       <A href="012.html">Last Page</A>&nbsp;
+       ]<BR>
+       [&nbsp; <A href="001.html">1</A>&nbsp;|&nbsp;<A href="002.html">2</A>&nbsp;|&nbsp;<A href="003.html">3</A>&nbsp;|&nbsp;<A href="004.html">4</A>&nbsp;|&nbsp;<A href="005.html">5</A>&nbsp;|&nbsp;<A href="006.html">6</A>&nbsp;|&nbsp;<A href="007.html">7</A>&nbsp;|&nbsp;<A href="008.html">8</A>&nbsp;|&nbsp;<A href="009.html">9</A>&nbsp;|&nbsp;<A href="010.html">10</A>&nbsp;|&nbsp;<A href="011.html">11</A>&nbsp;|&nbsp;<A href="012.html">12</A> &nbsp;]
+       <BR>
+       <B>Copyright &copy; by</B> Andrew Mustun 2000. All rights reserved.<BR>
+       This Manual was created with <A HREF="http://manstyle.sourceforge.net">ManStyle</A>.
+       </P>
+    </TD>
+  </TR>
+
+</TABLE>
+
+<P>
+  <BR><BR>
+</P>
+
+</BODY>
+</HTML>

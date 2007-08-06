@@ -1,0 +1,50 @@
+<!--
+[variables]
+{
+  $page_title = "Speed Definition"
+  $page_title_english = "Speed Definition"
+  $file_prev = "005.html"
+  $file_next = "007.html"
+  $real_page_number = "6"
+  $page_number = "6"
+}
+-->
+
+<_header2>
+$page_title
+</_header2>
+
+<_pg>
+I assume that you have already finished drawing the visual
+map of your track on layer vmap. Activate now the layer
+"fmap".
+</_pg>
+
+<_pg>
+Set the active color to R 0 G 240 B 0 (#00f000) and fill all
+parts where cars can drive with full speed with this color.
+Make sure that you use tools which create exact contours 
+and not smooth fades.
+
+</_pg>
+
+<_pg>
+Set the active color to R 0 G 0 B 0 (#000000) and fill all
+parts where cars cannot drive at all.
+</_pg>
+
+<_pg>
+You might also want to define areas where cars can drive but
+not with full speed. You can color those areas with the colors
+between #000000 and #00f000. E.g. #008000 means that cars can 
+drive there with 50% of their maximum speed. You can use this 
+for parts beside the road to prevent drivers from taking a 
+shortcut. See also chapter "Track Path Definition" for learning
+how to define the track path players must take to fulfill a
+lap.
+</_pg>
+
+<_pg>
+<_image src="img/speed_def.gif" 
+        description="Example layer 'fmap'">
+</_pg>

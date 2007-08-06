@@ -1,0 +1,36 @@
+/** This manual was created with ManStyle Version 2.2.4 */
+
+[variables]
+{
+$opt_use_img_borders       = "yes"
+$opt_use_img_margins       = "no"
+$opt_language              = "English"
+$document_version          = "1.0.0"
+$document_release          = "Aug 2000"
+$manual_description        = "Designer Manual for"
+$pn                        = "Trophy"
+$project_name              = "Trophy"
+$project_version           = "1.0.0"
+$author                    = "Andrew Mustun"
+$creation_date             = "20000812"
+$product_homepage          = "<A href=http://trophy.sourceforge.net>http://trophy.sourceforge.net</A>"
+$copyright_information     = "<B>Copyright &copy; by</B> Andrew Mustun 2000. All rights reserved."
+$contents_depth            = "2"
+$output_directory          = "/home/andrew/data/APS/Games/Trophy/manual/designer/en/html/"
+$theme                     = "/home/andrew/data/RibbonSoft/projects/old/ManStyle2/src/manstyle/themes/trophy/"
+
+}
+
+<_process file="index" subject="home">
+<_process file="001" subject="contents">
+<_process file="002" subject="page">
+<_process file="003" subject="page">
+<_process file="004" subject="page">
+<_process file="005" subject="page">
+<_process file="006" subject="page">
+<_process file="007" subject="page">
+<_process file="008" subject="page">
+<_process file="009" subject="page">
+<_process file="010" subject="page">
+<_process file="011" subject="page">
+<_process file="012" subject="page">
