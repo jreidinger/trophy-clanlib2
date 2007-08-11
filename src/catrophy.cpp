@@ -152,7 +152,7 @@ CATrophy::main( int argc, char** argv )
         // Init sound:
         //
         CL_SetupSound setup_sound;
-        CL_SoundOutput sound_output(44100);
+        sound_output = new CL_SoundOutput(44100);
 
         reconfigure();
 
@@ -655,6 +655,7 @@ CATrophy::reconfigure()
     static bool firstCall = true;
     static bool lastFullScreen = fullScreen;
 
+    sound_output->set_global_volume(volume/(float)10);
     if(firstCall)
     {
         try 

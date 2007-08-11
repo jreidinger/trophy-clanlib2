@@ -220,6 +220,9 @@ public:
     //! Input context
     CL_InputContext *input_context;
 
+    //! Sound output
+    CL_SoundOutput *sound_output;
+
 private:
     //! Current time in milliseconds since race start
 
