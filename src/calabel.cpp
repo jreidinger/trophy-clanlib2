@@ -5,7 +5,7 @@
     \param align Alignment (Left, Right, Center)
     \param font Font
 */
-CALabel::CALabel( char* text, Alignment alignment, CL_Font* font )
+CALabel::CALabel( std::string text, Alignment alignment, CL_Font* font )
         : CAWidget( alignment ) {
     this->text = text;
     this->font = font;

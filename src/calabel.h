@@ -8,7 +8,7 @@
 */
 class CALabel : public CAWidget  {
 public:
-    CALabel( char* text, Alignment alignment, CL_Font* font );
+    CALabel( std::string text, Alignment alignment, CL_Font* font );
     ~CALabel();
 
     virtual void display( bool active=true );
