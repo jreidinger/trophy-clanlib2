@@ -6,7 +6,7 @@
 
 /** Constructor.
 */
-CANetClient::CANetClient( CAPlayer* player ) {
+CANetClient::CANetClient( Player* player ) {
     //netGame = 0;
     //this->player = player;
 }
@@ -81,7 +81,7 @@ CANetClient::keepUp() {
           CL_NetMessage msg = netGame->receive( 0 );
           //std::cout << "Server said: " << msg.data.c_str() << std::endl;
         
-          CAStringList slist( msg.data.c_str() );
+          StringList slist( msg.data.c_str() );
         
           // Server tells us id:
           //

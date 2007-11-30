@@ -21,13 +21,9 @@ CAMenu::CAMenu( const char* title )
     calcMenuDimensions();
 }
 
-
-
 /** Destructor.
 */
 CAMenu::~CAMenu() {}
-
-
 
 /** Adds a simple menu label to the menu.
 */
@@ -37,8 +33,6 @@ CAMenu::addMenuLabel( const char* label ) {
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
 }
-
-
 
 /** Adds a menu input to the menu.
     Menu inputs let the user input any value (string).
@@ -52,8 +46,6 @@ CAMenu::addMenuInput( const char* label, char* result, int maxLength ) {
     calcMenuDimensions();
 }
 
-
-
 /** Adds a menu input to the menu.
     Menu inputs let the user input any value (int).
     \param label The menu item label.
@@ -65,8 +57,6 @@ CAMenu::addMenuInput( const char* label, int* result, int maxLength ) {
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
 }
-
-
 
 /** Adds a menu select to the menu.
     Menu selects let the user choose a value from a given list (string).
@@ -82,8 +72,6 @@ CAMenu::addMenuSelect( const char* label, const char* valueList, int* result ) {
     calcMenuDimensions();
 }
 
-
-
 /** Adds a menu select to the menu.
     Menu selects let the user choose a value from a given list (string).
     \param label The menu item label.
@@ -97,8 +85,6 @@ CAMenu::addMenuSelect( const char* label, const char* valueList, bool* result ) 
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
 }
-
-
 
 /** Runs the menu.
 */
@@ -140,8 +126,6 @@ CAMenu::run() {
     CL_Keyboard::sig_key_up().disconnect(slot);
     return (cancel ? -1 : cursor);
 }
-
-
 
 /** Builds the menu screen.
 */
@@ -185,8 +169,6 @@ CAMenu::calcMenuDimensions() {
     top = (CA_APP->height - height)/2 + 30;
     bottom = CA_APP->height - top;
 }
-
-
 
 /** Called on key release.
 */
@@ -241,8 +223,5 @@ CAMenu::on_key_pressed (const CL_InputEvent &key)
     //
     item[cursor]->handleKey( key );
 }
-
-
-
 
 // EOF

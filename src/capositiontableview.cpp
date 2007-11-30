@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "calabel.h"
-#include "caplayer.h"
+#include "player.h"
 #include "capositiontableview.h"
 #include "catrophy.h"
 

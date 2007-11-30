@@ -4,7 +4,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "cadialog.h"
-#include "castringlist.h"
+#include "utils/stringlist.h"
 
 /** Credits screen.
     @author Andrew Mustun
@@ -23,7 +23,7 @@ private:
 
     float scrollPos;
     //! The scrolling text
-    CAStringList text;
+    StringList text;
 };
 
 #endif

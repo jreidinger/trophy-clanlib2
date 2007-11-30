@@ -1,4 +1,4 @@
-#include "caplayer.h"
+#include "player.h"
 #include "capositiontable.h"
 #include "catrophy.h"
 
@@ -49,7 +49,7 @@ CAPositionTable::resetRace() {
     The first player who calls this function is the lap winner.
 */
 void
-CAPositionTable::playerFinishedRace( CAPlayer* player ) {
+CAPositionTable::playerFinishedRace( Player* player ) {
     if( raceRankIndex<CA_MAXPLAYERS ) {
         raceRankList[raceRankIndex] = player;
         player->setRaceRank( raceRankIndex+1 );
@@ -69,7 +69,7 @@ CAPositionTable::playerFinishedRace( CAPlayer* player ) {
     The first player who calls this function is the lap looser.
 */
 void
-CAPositionTable::playerDied( CAPlayer* player ) {
+CAPositionTable::playerDied( Player* player ) {
     if( raceRankIndexBottom>=0 ) {
         raceRankList[raceRankIndexBottom] = player;
         player->setRaceRank( raceRankIndexBottom+1 );

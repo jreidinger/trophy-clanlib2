@@ -2,7 +2,7 @@
 #define CAMENUSELECT_H
 
 #include "camenulabel.h"
-#include "castringlist.h"
+#include "utils/stringlist.h"
 
 
 /** A menu item for selecting a value out of a given value list (strings).
@@ -34,7 +34,7 @@ public:
 private:
     //! List of values to select.
 
-    CAStringList* valueList;
+    StringList* valueList;
     //! Index of currently selected item.
     int           selectedItem;
 

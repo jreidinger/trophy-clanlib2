@@ -14,14 +14,14 @@
 #include <math.h>
 //#include <unistd.h>
 
-#include "cacartype.h"
+#include "cartype.h"
 #include "cacredits.h"
 #include "caimagemanipulation.h"
 #include "cainfodialog.h"
 #include "capositiontable.h"
 #include "cagoody.h"
 #include "catrophy.h"
-#include "caplayer.h"
+#include "player.h"
 #include "caplayersettingsdialog.h"
 #include "capanel.h"
 #include "capositiontableview.h"
@@ -372,12 +372,12 @@ CATrophy::initPlayers()
 
     int ct=0;
     for(int pl=0; pl<CA_MAXPLAYERS; ++pl) {
-        player[pl] = new CAPlayer( pl, "", 0,
-                                   ((pl==0) ? CAPlayer::Keyboard : CAPlayer::Computer) );
+        player[pl] = new Player( pl, "", 0,
+                                   ((pl==0) ? Player::Keyboard : Player::Computer) );
         if( pl!=0 ) {
             int sat = CAMath::getRandomNumber( -90, 20 );
             int val = CAMath::getRandomNumber( -60, 0 );
-            player[pl]->setColor( CAColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
+            player[pl]->setColor( HSVColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
         }
         ++ct;
         if( ct>=CA_NUMCARTYPES ) ct=0;
@@ -968,7 +968,7 @@ CATrophy::startNewGame()
     if( playerSettingsDialog.run()==1 ) 
     {
         player[0]->setName( playerSettingsDialog.getPlayerName() );
-        player[0]->setColor( CAColor( playerSettingsDialog.getPlayerHue(),0,0 ) );
+        player[0]->setColor( HSVColor( playerSettingsDialog.getPlayerHue(),0,0 ) );
 
         // Choose difficulty:
         //
@@ -1027,9 +1027,9 @@ CATrophy::addNetPlayer() {
 
     for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
         if( player[pl] &&
-                player[pl]->getControlMode()==CAPlayer::Computer ) {
+                player[pl]->getControlMode()==Player::Computer ) {
             ret = pl;
-            player[pl]->setControlMode( CAPlayer::Network );
+            player[pl]->setControlMode( Player::Network );
             break;
         }
     }

@@ -10,7 +10,6 @@
 #define MAX(A,B) (A>=B ? A : B)
 #define MIN(A,B) (A<=B ? A : B)
 
-
 // Version dependent settings:
 
 #define CA_MAXTRACKS      64      // Max number of tracks
@@ -47,23 +46,22 @@
 
 #define CA_PRIZE        3000      // Money for first player
 
-
-
 /** Mathematical methods for generic use.
     @author Andrew Mustun
 */
-class CAMath {
-public:
-    static bool   compFloat( float f1, float f2, float tol=0.001 );
-    static float  corrAngle( float ang );
-    static float  getAngle( float x1, float y1, float x2, float y2 );
-    static float  getDistance( float x1, float y1, float x2, float y2 );
-    static float  getAngleDiff( float a1, float a2 );
-    static bool   getIntersection( int ax1, int ay1, int ax2, int ay2,
-                                   int bx1, int by1, int bx2, int by2,
-                                   int* ix, int* iy );
-    static int    getRandomNumber( int min, int max );
-    static void   timeToString( char* string, int time );
+class CAMath 
+{
+    public:
+        static bool   compFloat( float f1, float f2, float tol=0.001 );
+        static float  corrAngle( float ang );
+        static float  getAngle( float x1, float y1, float x2, float y2 );
+        static float  getDistance( float x1, float y1, float x2, float y2 );
+        static float  getAngleDiff( float a1, float a2 );
+        static bool   getIntersection( int ax1, int ay1, int ax2, int ay2,
+                int bx1, int by1, int bx2, int by2,
+                int* ix, int* iy );
+        static int    getRandomNumber( int min, int max );
+        static void   timeToString( char* string, int time );
 };
 
 #endif

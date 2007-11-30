@@ -17,7 +17,7 @@ CAMenuSelect::CAMenuSelect( CAMenu* menu,
                             const char* valueList,
                             int* result )
         : CAMenuLabel( menu, pos, label ) {
-    this->valueList = new CAStringList( valueList );
+    this->valueList = new StringList( valueList );
     selectedItem = (*result);
     intResult = result;
     boolResult = 0;
@@ -38,7 +38,7 @@ CAMenuSelect::CAMenuSelect( CAMenu* menu,
                             const char* valueList,
                             bool* result )
         : CAMenuLabel( menu, pos, label ) {
-    this->valueList = new CAStringList( valueList );
+    this->valueList = new StringList( valueList );
     selectedItem = (int)(*result);
     boolResult = result;
     intResult = 0;

@@ -7,7 +7,7 @@
 /** Constructor.
     \param player Pointer to the appropriate player.
 */
-CAPlayerView::CAPlayerView( CAPlayer* player ) {
+CAPlayerView::CAPlayerView( Player* player ) {
     this->player = player;
     button = 0;
     renderButton();

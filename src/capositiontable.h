@@ -1,7 +1,7 @@
 #ifndef CAPOSITIONTABLE_H
 #define CAPOSITIONTABLE_H
 
-#include "caplayer.h"
+#include "player.h"
 
 #define CA_POSITIONTABLE CAPositionTable::getPositionTable()
 
@@ -14,8 +14,8 @@ public:
     ~CAPositionTable();
 
     void resetRace();
-    void playerFinishedRace( CAPlayer* player );
-    void playerDied( CAPlayer* player );
+    void playerFinishedRace( Player* player );
+    void playerDied( Player* player );
 
 private:
     CAPositionTable();
@@ -29,7 +29,7 @@ private:
         successfully finished the current race.
         raceRankList[0] is the first.
     */
-    CAPlayer* raceRankList[CA_MAXPLAYERS];
+    Player* raceRankList[CA_MAXPLAYERS];
     //! Index of next rank.
     int raceRankIndex;
     //! Index of next rank from bottom

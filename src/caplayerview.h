@@ -1,15 +1,15 @@
 #ifndef CAPLAYERVIEW_H
 #define CAPLAYERVIEW_H
 
-#include "caplayer.h"
-#include "cacolor.h"
+#include "player.h"
+#include "utils/hsvcolor.h"
 
 /** A player view in the panel.
     @author Andrew Mustun
 */
 class CAPlayerView {
 public:
-    CAPlayerView( CAPlayer* player );
+    CAPlayerView( Player* player );
     ~CAPlayerView();
 
     void display( int defaultPos );
@@ -18,13 +18,13 @@ public:
 private:
     //! Pointer to player.
 
-    CAPlayer* player;
+    Player* player;
     //! The button in players color. Created and destroyed by this class.
     CL_Surface* button;
     /** Current color of this button. Needed for detecting if we must
         re-render the button.
     */
-    CAColor currentColor;
+    HSVColor currentColor;
 };
 
 #endif

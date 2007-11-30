@@ -3,7 +3,7 @@
 
 #include <ClanLib/core.h>
 #include "cadialog.h"
-#include "castringlist.h"
+#include "utils/stringlist.h"
 
 /** A simple info dialog. Shows a title and a text.
     @author Andrew Mustun
@@ -24,7 +24,7 @@ public:
 
 private:
     //! Text list which contains the dialog text - one item is one line.
-    CAStringList textList;
+    StringList textList;
     //! Pointer to icon. Created and destroyed in this class.
     CL_Surface* icon;
     //! Type (Info, Warning).

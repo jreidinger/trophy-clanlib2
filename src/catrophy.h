@@ -10,7 +10,7 @@
 #endif
 
 #include <ClanLib/application.h>
-#include "cacartype.h"
+#include "cartype.h"
 #include "cadustclowd.h"
 #include "cafogbomb.h"
 #include "cagoody.h"
@@ -23,10 +23,10 @@
 #include "caresources.h"
 #include "catrack.h"
 #include "cascreen.h"
-#include "castringlist.h"
+#include "utils/stringlist.h"
 
 class CATrophy;
-class CAPlayer;
+class Player;
 class CAPanel;
 
 #define CA_APP theApp()            // Macro for getting a pointer to the application (CATrophy*)
@@ -155,9 +155,9 @@ public:
     float framesPerSec;
 
     //! Array of Players. Created and destroed by this class.
-    CAPlayer* player[CA_MAXPLAYERS];
+    Player* player[CA_MAXPLAYERS];
     //! Array of car types.
-    CACarType carType[CA_NUMCARTYPES];
+    CarType carType[CA_NUMCARTYPES];
     //! Array of goodyTypes.
     CAGoodyType goodyType[CA_NUMGOODYTYPES];
     //! The goody instances. CA_NUMGOODIES of each type.
@@ -170,9 +170,9 @@ public:
     //! Current track data
     CATrack track;
     //! Track directory names list
-    CAStringList trackList;
+    StringList trackList;
     //! List of three race prices
-    //CAStringList priceList;
+    //StringList priceList;
     //! Offset of the background map in x.
     int offsetX;
     //! Offset of the background map in y.

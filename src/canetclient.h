@@ -3,14 +3,14 @@
 
 #include <ClanLib/core.h>
 #include <ClanLib/network.h>
-#include "caplayer.h"
+#include "player.h"
 
 /** Net client for multiplayer games.
     @author Andrew Mustun
 */
 class CANetClient {
 public:
-    CANetClient( CAPlayer* player );
+    CANetClient( Player* player );
     ~CANetClient();
 
     bool joinGame();
@@ -20,7 +20,7 @@ protected:
     //! Pointer to joined net game or NULL.
     //CL_NetGame* netGame;
     //! Pointer to playing player.
-    //CAPlayer* player;
+    //Player* player;
 }
 ;
 
