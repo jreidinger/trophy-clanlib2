@@ -4,7 +4,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
-#include "camath.h"
+#include "utils/trophymath.h"
 #include "camenuitem.h"
 #include "cascreen.h"
 

@@ -375,8 +375,8 @@ CATrophy::initPlayers()
         player[pl] = new Player( pl, "", 0,
                                    ((pl==0) ? Player::Keyboard : Player::Computer) );
         if( pl!=0 ) {
-            int sat = CAMath::getRandomNumber( -90, 20 );
-            int val = CAMath::getRandomNumber( -60, 0 );
+            int sat = TrophyMath::getRandomNumber( -90, 20 );
+            int val = TrophyMath::getRandomNumber( -60, 0 );
             player[pl]->setColor( HSVColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
         }
         ++ct;
@@ -596,7 +596,7 @@ CATrophy::initTrack( std::string trackName )
         bool done;
         do {
             done = true;
-            rn = CAMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
+            rn = TrophyMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
             for( int pl2=0; pl2<pl; ++pl2 ) {
                 if( player[pl2]->getRouteNumber()==rn ) done=false;
             }
@@ -1142,7 +1142,7 @@ CATrophy::run()
             // Uptime time:
             //
             time = CL_System::get_time()-gameStartTime;
-            CAMath::timeToString( timeString, time );
+            TrophyMath::timeToString( timeString, time );
         }
 
         // Find out new ranks:
@@ -1266,10 +1266,10 @@ CATrophy::placeGoody() {
     int x[4];    // 4 edge-points of new goody
     int y[2];
 
-    int sx = CAMath::getRandomNumber( 8, track.visualMap->get_width()-8 );
-    int sy = CAMath::getRandomNumber( 8, track.visualMap->get_height()-8 );
-    int gt = CAMath::getRandomNumber( 0, CA_NUMGOODYTYPES-1 );
-    int level = CAMath::getRandomNumber( 0, 1 );
+    int sx = TrophyMath::getRandomNumber( 8, track.visualMap->get_width()-8 );
+    int sy = TrophyMath::getRandomNumber( 8, track.visualMap->get_height()-8 );
+    int gt = TrophyMath::getRandomNumber( 0, CA_NUMGOODYTYPES-1 );
+    int level = TrophyMath::getRandomNumber( 0, 1 );
     bool validPlace = true;
     int referenceLevel = 0;
 
@@ -1595,7 +1595,7 @@ CATrophy::displayFogBombs( bool up, bool bomb ) {
                     fogBomb[c].exploded=true;
                     CA_RES->effectFogBomb->play( 2 );
                     for( int pl=0; pl<CA_MAXPLAYERS; ++pl) {
-                        int dist = (int)CAMath::getDistance( fogBomb[c].x, fogBomb[c].y, player[pl]->getX(), player[pl]->getY() );
+                        int dist = (int)TrophyMath::getDistance( fogBomb[c].x, fogBomb[c].y, player[pl]->getX(), player[pl]->getY() );
                         if( player[pl]->isUp()==up && dist<90 ) {
                             player[pl]->hit( 30.0-(dist/3.0) );
                         }

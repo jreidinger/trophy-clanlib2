@@ -1,7 +1,7 @@
 #include "cadialog.h"
 #include "catrophy.h"
 #include "caresources.h"
-#include "camath.h"
+#include "utils/trophymath.h"
 
 
 /** Constructor.

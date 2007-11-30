@@ -53,7 +53,7 @@ am_trophy_OBJECTS = cagoody.$(OBJEXT) cainfodialog.$(OBJEXT) \
 	caloadingscreen.$(OBJEXT) caplayersettingsdialog.$(OBJEXT) \
 	cadialog.$(OBJEXT) caimageselector.$(OBJEXT) \
 	camenuselect.$(OBJEXT) casignupscreen.$(OBJEXT) \
-	cawidget.$(OBJEXT) camath.$(OBJEXT) caplayerview.$(OBJEXT) \
+	cawidget.$(OBJEXT) trophymath.$(OBJEXT) caplayerview.$(OBJEXT) \
 	caimageview.$(OBJEXT) canetclient.$(OBJEXT) \
 	caslotselectiondialog.$(OBJEXT) camenu.$(OBJEXT) \
 	capositiontable.$(OBJEXT)
@@ -165,12 +165,12 @@ trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositio
 		 cagoody.h cainfodialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h \
 		 cagoodytype.h calabel.cpp camenuinput.h capanel.cpp capositiontableview.h utils/stringlist.cpp \
 		 cartype.h caimagehueselector.cpp calabel.h camenuitem.cpp capanel.h caresources.cpp utils/stringlist.h \
-		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h catrack.h \
+		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h \
 		 cacredits.cpp caimagemanipulation.cpp calineedit.h camenulabel.cpp player.h cascreen.cpp catrophy.cpp \
 		 cacredits.h caimagemanipulation.h caloadingscreen.cpp camenulabel.h caplayersettingsdialog.cpp cascreen.h \
 		 catrophy.h cadialog.cpp caimageselector.cpp caloadingscreen.h camenuselect.cpp caplayersettingsdialog.h \
-		 casignupscreen.cpp cawidget.cpp cadialog.h caimageselector.h camath.cpp camenuselect.h caplayerview.cpp \
-		 casignupscreen.h cawidget.h cadustclowd.h caimageview.cpp camath.h canetclient.cpp caplayerview.h \
+		 casignupscreen.cpp cawidget.cpp cadialog.h caimageselector.h utils/trophymath.cpp camenuselect.h caplayerview.cpp \
+		 casignupscreen.h cawidget.h cadustclowd.h caimageview.cpp utils/trophymath.h canetclient.cpp caplayerview.h \
 		 caslotselectiondialog.cpp cafogbomb.h caimageview.h camenu.cpp canetclient.h capositiontable.cpp \
 		 caslotselectiondialog.h
 
@@ -255,7 +255,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calabel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/calineedit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caloadingscreen.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenu.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenuinput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenuitem.Po@am__quote@
@@ -277,6 +276,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cawidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/player.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stringlist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trophymath.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -305,6 +305,20 @@ stringlist.obj: utils/stringlist.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils/stringlist.cpp' object='stringlist.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o stringlist.obj `if test -f 'utils/stringlist.cpp'; then $(CYGPATH_W) 'utils/stringlist.cpp'; else $(CYGPATH_W) '$(srcdir)/utils/stringlist.cpp'; fi`
+
+trophymath.o: utils/trophymath.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT trophymath.o -MD -MP -MF $(DEPDIR)/trophymath.Tpo -c -o trophymath.o `test -f 'utils/trophymath.cpp' || echo '$(srcdir)/'`utils/trophymath.cpp
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/trophymath.Tpo $(DEPDIR)/trophymath.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils/trophymath.cpp' object='trophymath.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o trophymath.o `test -f 'utils/trophymath.cpp' || echo '$(srcdir)/'`utils/trophymath.cpp
+
+trophymath.obj: utils/trophymath.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT trophymath.obj -MD -MP -MF $(DEPDIR)/trophymath.Tpo -c -o trophymath.obj `if test -f 'utils/trophymath.cpp'; then $(CYGPATH_W) 'utils/trophymath.cpp'; else $(CYGPATH_W) '$(srcdir)/utils/trophymath.cpp'; fi`
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/trophymath.Tpo $(DEPDIR)/trophymath.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='utils/trophymath.cpp' object='trophymath.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o trophymath.obj `if test -f 'utils/trophymath.cpp'; then $(CYGPATH_W) 'utils/trophymath.cpp'; else $(CYGPATH_W) '$(srcdir)/utils/trophymath.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

@@ -49,7 +49,7 @@ CAPositionTableView::buildScreen() {
         if(race) {
             rank = CA_APP->player[pl]->getRaceRank();
             points = CA_APP->player[pl]->getRacePoints();
-            CAMath::timeToString( timeStr, CA_APP->player[pl]->getRaceTime() );
+            TrophyMath::timeToString( timeStr, CA_APP->player[pl]->getRaceTime() );
         } else {
             rank = CA_APP->player[pl]->getTotalRank();
             points = CA_APP->player[pl]->getTotalPoints();

@@ -7,7 +7,7 @@
 #include "cartype.h"
 #include "caimagemanipulation.h"
 #include "catrophy.h"
-#include "camath.h"
+#include "utils/trophymath.h"
 #include "capositiontable.h"
 
 /** Constructor.
@@ -313,7 +313,7 @@ Player::autoPilot()
     if( routePoint >= CA_APP->track.routePoints ) 
     {
         routePoint=0;
-        routeNumber = CAMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
+        routeNumber = TrophyMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
     }
 
     // Next coordinate to locate
@@ -323,9 +323,9 @@ Player::autoPilot()
 
     // Angle to next route point:
     //
-    float b = CAMath::getAngle( x,y, nx,ny );
-    float diff = CAMath::getAngleDiff( direction, b );
-    float dist = CAMath::getDistance( x,y, nx,ny );
+    float b = TrophyMath::getAngle( x,y, nx,ny );
+    float diff = TrophyMath::getAngleDiff( direction, b );
+    float dist = TrophyMath::getDistance( x,y, nx,ny );
 
     bool retard = false;
 
@@ -402,9 +402,9 @@ Player::autoPilot()
             shootMode = false;
             for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
                 if( pl!=id ) {
-                    distance = (int)CAMath::getDistance( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angle = (int)CAMath::getAngle( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angleDiff = (int)CAMath::getAngleDiff( angle, newDirection );
+                    distance = (int)TrophyMath::getDistance( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
+                    angle = (int)TrophyMath::getAngle( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
+                    angleDiff = (int)TrophyMath::getAngleDiff( angle, newDirection );
                     if( distance<CA_SHOOTINGRANGE && (angleDiff < 10.0 || angleDiff > 350.0) ) {
                         shoot();
                         break;
@@ -422,9 +422,9 @@ Player::autoPilot()
             int angleDiff;
             for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
                 if( pl!=id ) {
-                    distance = (int)CAMath::getDistance( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angle = (int)CAMath::getAngle( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angleDiff = (int)CAMath::getAngleDiff( angle, newDirection );
+                    distance = (int)TrophyMath::getDistance( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
+                    angle = (int)TrophyMath::getAngle( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
+                    angleDiff = (int)TrophyMath::getAngleDiff( angle, newDirection );
                     if( distance>200 && distance<202 && angleDiff < 185.0 && angleDiff > 175.0 ) {
                         CA_APP->dropFogBomb( (int)x,(int)y,up );
                         fogBombs--;
@@ -452,7 +452,7 @@ Player::advance()
 
     // Slide towards direction:
     //
-    if( !CAMath::compFloat(direction, newDirection) ) {
+    if( !TrophyMath::compFloat(direction, newDirection) ) {
         float dirStep = (carType->steeringPower / CA_APP->framesPerSec) * carType->slidingFactor;
 
         if( (newDirection>direction && newDirection-direction<=180.0) ||
@@ -540,14 +540,14 @@ Player::advance()
         // Unload turbo:
         //
         if( turboActive && turbo>0.0 ) {
-            setTurbo( turbo - CAMath::getDistance( x,y, nx,ny ) );
+            setTurbo( turbo - TrophyMath::getDistance( x,y, nx,ny ) );
             if( turbo<=0.0 ) deactivateTurbo();
         }
 
         // Auto Reload turbo
         //
         else {
-            setTurbo( turbo + CAMath::getDistance( x,y, nx,ny ) * (carType->maxTurbo/5000.0) );
+            setTurbo( turbo + TrophyMath::getDistance( x,y, nx,ny ) * (carType->maxTurbo/5000.0) );
         }
 
         // Move now:
@@ -584,7 +584,7 @@ Player::checkCollisions() {
                         int nj = j+1;
                         if( nj==4 ) nj=0;
 
-                        if( CAMath::getIntersection( edge[i][0], edge[i][1], edge[ni][0], edge[ni][1],
+                        if( TrophyMath::getIntersection( edge[i][0], edge[i][1], edge[ni][0], edge[ni][1],
                                                      pl->edge[j][0], pl->edge[j][1], pl->edge[nj][0], pl->edge[nj][1],
                                                      &ix, &iy) ) {
                             inters = true;
@@ -600,7 +600,7 @@ Player::checkCollisions() {
                         if( CA_APP->sound ) CA_RES->effectCrash->play();
                     }
 
-                    float ang = CAMath::getAngle (x, y, pl->getX(), pl->getY());
+                    float ang = TrophyMath::getAngle (x, y, pl->getX(), pl->getY());
                     if( pl->checkEdgeState() ) {      // Don't check players into borders
                         pl->move( pl->getX()+cos(ang/ARAD)*4,
                                   pl->getY()+sin(ang/ARAD)*4 );
@@ -628,7 +628,7 @@ Player::checkCollisions() {
 
             if( go->isActive() ) {
                 if( go->isUp()==isUp() &&
-                        CAMath::getDistance( x,y, go->getX(),go->getY() ) < 28.0 ) {
+                        TrophyMath::getDistance( x,y, go->getX(),go->getY() ) < 28.0 ) {
 
                     if( go->getType()->name == "Turbo" ) {
                         setTurbo( turbo+1000 );
@@ -703,16 +703,16 @@ Player::checkFunctionMap()
                 {
                     default:
                     case 0:
-                        if( speed>0 ) setDirection( CAMath::corrAngle(newDirection-cangle) );
+                        if( speed>0 ) setDirection( TrophyMath::corrAngle(newDirection-cangle) );
                         break;
                     case 1:
-                        if( speed>0 ) setDirection( CAMath::corrAngle(newDirection+cangle) );
+                        if( speed>0 ) setDirection( TrophyMath::corrAngle(newDirection+cangle) );
                         break;
                     case 2:
-                        if( speed<0 ) setDirection( CAMath::corrAngle(newDirection-cangle) );
+                        if( speed<0 ) setDirection( TrophyMath::corrAngle(newDirection-cangle) );
                         break;
                     case 3:
-                        if( speed<0 ) setDirection( CAMath::corrAngle(newDirection+cangle) );
+                        if( speed<0 ) setDirection( TrophyMath::corrAngle(newDirection+cangle) );
                         break;
                 }
                 direction = newDirection;
@@ -859,14 +859,14 @@ Player::shoot() {
             if( pl!=id && isUp()==CA_APP->player[pl]->isUp() ) {
                 for( en=0; en<4; ++en ) {
                     en2 = ((en==3) ? 0 : (en+1));
-                    inters = CAMath::getIntersection( rayX1, rayY1, rayX2, rayY2,
+                    inters = TrophyMath::getIntersection( rayX1, rayY1, rayX2, rayY2,
                                                       CA_APP->player[pl]->edge[en][0],
                                                       CA_APP->player[pl]->edge[en][1],
                                                       CA_APP->player[pl]->edge[en2][0],
                                                       CA_APP->player[pl]->edge[en2][1],
                                                       &ix, &iy );
                     if( inters ) {
-                        dist = (int)CAMath::getDistance( rayX1, rayY1, ix,iy );
+                        dist = (int)TrophyMath::getDistance( rayX1, rayY1, ix,iy );
                         if( dist<minDist ) {
                             minDist = dist;
                             hitPl = pl;
@@ -921,7 +921,7 @@ Player::display( int offsetX, int offsetY )
     //
     for( int c=0; c<hitPointCounter; ++c ) 
     {
-        CA_RES->misc_hitpoint->set_frame(CAMath::getRandomNumber( 0,4 ));
+        CA_RES->misc_hitpoint->set_frame(TrophyMath::getRandomNumber( 0,4 ));
         CA_RES->misc_hitpoint->draw ( hitPoint[c][0]+offsetX - CA_RES->misc_hitpoint->get_width()/2,
                                            hitPoint[c][1]+offsetY - CA_RES->misc_hitpoint->get_height()/2);
     }

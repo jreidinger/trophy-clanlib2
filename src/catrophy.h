@@ -16,12 +16,12 @@
 #include "cagoody.h"
 #include "cagoodytype.h"
 #include "caloadingscreen.h"
-#include "camath.h"
+#include "utils/trophymath.h"
 #include "camenu.h"
 // #include "canetclient.h"
 // #include "canetserver.h"
 #include "caresources.h"
-#include "catrack.h"
+#include "track.h"
 #include "cascreen.h"
 #include "utils/stringlist.h"
 
@@ -168,7 +168,7 @@ public:
 
     // Track:
     //! Current track data
-    CATrack track;
+    Track track;
     //! Track directory names list
     StringList trackList;
     //! List of three race prices

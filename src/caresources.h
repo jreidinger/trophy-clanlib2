@@ -6,7 +6,7 @@
 #include <ClanLib/sound.h>
 
 #include "casoundeffect.h"
-#include "camath.h"
+#include "utils/trophymath.h"
 
 #define CA_RES CAResources::getResources()
 

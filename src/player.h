@@ -6,7 +6,7 @@
 #include <ClanLib/display.h>
 
 #include "utils/hsvcolor.h"
-#include "camath.h"
+#include "utils/trophymath.h"
 
 struct CarType;
 
