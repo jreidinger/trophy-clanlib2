@@ -1,5 +1,5 @@
-#ifndef CAMATH_H
-#define CAMATH_H
+#ifndef TROPHYMATH_H
+#define TROPHYMATH_H
 
 #include <math.h>
 #include <stdlib.h>
@@ -49,7 +49,7 @@
 /** Mathematical methods for generic use.
     @author Andrew Mustun
 */
-class CAMath 
+class TrophyMath 
 {
     public:
         static bool   compFloat( float f1, float f2, float tol=0.001 );

@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "camath.h"
+#include "trophymath.h"
 
 /** Compares two float values.
     \return true if the two values differ less than the tolerance value.
 */
 bool
-CAMath::compFloat( float f1, float f2, float tol ) 
+TrophyMath::compFloat( float f1, float f2, float tol ) 
 {
     float delta = f2-f1;
     return( delta>-tol && delta<tol );
@@ -17,7 +17,7 @@ CAMath::compFloat( float f1, float f2, float tol )
     \return The corrected angle
 */
 float
-CAMath::corrAngle( float ang ) 
+TrophyMath::corrAngle( float ang ) 
 {
     float ret=ang;
     while(ret<   0.0) ret+=360.0;
@@ -28,7 +28,7 @@ CAMath::corrAngle( float ang )
 /** Returns the angle (in degrees) from one point to an other.
 */
 float
-CAMath::getAngle( float x1, float y1, float x2, float y2 ) 
+TrophyMath::getAngle( float x1, float y1, float x2, float y2 ) 
 {
     float xdist, ydist, angle;
 
@@ -61,7 +61,7 @@ CAMath::getAngle( float x1, float y1, float x2, float y2 )
 /** Returns the distance from one point to an other.
 */
 float
-CAMath::getDistance( float x1, float y1, float x2, float y2 ) 
+TrophyMath::getDistance( float x1, float y1, float x2, float y2 ) 
 {
     float xd2 = (x2-x1)*(x2-x1);
     float yd2 = (y2-y1)*(y2-y1);
@@ -75,7 +75,7 @@ CAMath::getDistance( float x1, float y1, float x2, float y2 )
    All angles in degrees.
 */
 float
-CAMath::getAngleDiff( float a1, float a2 ) 
+TrophyMath::getAngleDiff( float a1, float a2 ) 
 {
     float ret;
 
@@ -89,7 +89,7 @@ CAMath::getAngleDiff( float a1, float a2 )
 /** Calculates the intersection point of two lines.
 */
 bool
-CAMath::getIntersection( int ax1, int ay1, int ax2, int ay2,
+TrophyMath::getIntersection( int ax1, int ay1, int ax2, int ay2,
                          int bx1, int by1, int bx2, int by2,
                          int* ix, int* iy ) 
 {
@@ -141,7 +141,7 @@ CAMath::getIntersection( int ax1, int ay1, int ax2, int ay2,
 /** Gets a random number from 'min' to 'max'
 */
 int
-CAMath::getRandomNumber( int min, int max ) 
+TrophyMath::getRandomNumber( int min, int max ) 
 {
     static int counter=0;
     if( counter==1000 || counter==0 ) 
@@ -157,7 +157,7 @@ CAMath::getRandomNumber( int min, int max )
     'string' must have at least place for 9 characters.
 */
 void
-CAMath::timeToString( char* string, int time ) 
+TrophyMath::timeToString( char* string, int time ) 
 {
     float min = (int)floor( (float)((time)/60000.0) );
     float sec = (float)((time)%60000)/1000.0;
