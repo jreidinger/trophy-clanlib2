@@ -1,12 +1,13 @@
-#ifndef CATRACK_H
-#define CATRACK_H
+#ifndef TRACK_H
+#define TRACK_H
 
 #include <ClanLib/core.h>
 
 /** Structure for the current track.
     @author Andrew Mustun
 */
-struct CATrack {
+struct Track 
+{
     //! Track number
     int number;
     //! Track directory name (e.g. "Loops")
