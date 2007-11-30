@@ -1,5 +1,5 @@
-#ifndef CACARTYPE_H
-#define CACARTYPE_H
+#ifndef CARTYPE_H
+#define CARTYPE_H
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
@@ -7,22 +7,27 @@
 /** Structure for car types.
     @author Andrew Mustun
 */
-struct CACarType {
+struct CarType 
+{
     /** Constructor.
     */
-    CACarType() {
+    CarType() 
+    {
         surface = 0;
         surface3d = 0;
     }
 
     /** Destructor.
     */
-    ~CACarType() {
-        if( surface ) {
+    ~CarType() 
+    {
+        if( surface ) 
+        {
             delete surface;
             surface = 0;
         }
-        if( surface3d ) {
+        if( surface3d ) 
+        {
             delete surface3d;
             surface3d = 0;
         }
