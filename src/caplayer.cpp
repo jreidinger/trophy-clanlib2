@@ -1,10 +1,10 @@
-#include "caplayer.h"
+#include "player.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-#include "cacartype.h"
+#include "cartype.h"
 #include "caimagemanipulation.h"
 #include "catrophy.h"
 #include "camath.h"
@@ -17,7 +17,7 @@
     \param moving Is this sprite controlled by the player (Keyboard),
                   the computer (Computer) or a net player (Network)
 */
-CAPlayer::CAPlayer( int id, std::string name,
+Player::Player( int id, std::string name,
                     int carNumber,
                     ControlMode controlMode ) {
     for( int i=0; i<CA_FPR; ++i ) {
@@ -42,7 +42,7 @@ CAPlayer::CAPlayer( int id, std::string name,
 
 /** Destructor.
 */
-CAPlayer::~CAPlayer() {
+Player::~Player() {
     for( int i=0; i<CA_FPR; ++i ) {
         if( sprite[i] ) {
             delete sprite[i];
@@ -54,7 +54,7 @@ CAPlayer::~CAPlayer() {
 /** Resets this player.
 */
 void
-CAPlayer::reset() {
+Player::reset() {
     money         = 1000;                 // Initial money for each player
     totalPoints   = 0;
     totalRank     = 0;
@@ -65,7 +65,7 @@ CAPlayer::reset() {
 /** Reset things before a new race starts.
 */
 void
-CAPlayer::resetForRace() {
+Player::resetForRace() {
     active = true;
 
     setFrame( 0 );
@@ -110,7 +110,7 @@ CAPlayer::resetForRace() {
     \param render Render new sprites?
 */
 void
-CAPlayer::setColor( CAColor col, bool render ) {
+Player::setColor( HSVColor col, bool render ) {
     if( color!=col || sprite[0]==0 ) {
         color = col;
         if( render ) renderSprites( color );
@@ -122,7 +122,7 @@ CAPlayer::setColor( CAColor col, bool render ) {
     \param render Render new sprites?
 */
 void
-CAPlayer::setCarNumber( int carNumber, bool render ) {
+Player::setCarNumber( int carNumber, bool render ) {
     if( carNumber<CA_NUMCARTYPES ) carType = &(CA_APP->carType[carNumber]);
     else                           carType = &(CA_APP->carType[0]);
 
@@ -136,7 +136,7 @@ CAPlayer::setCarNumber( int carNumber, bool render ) {
     \param routeNumber The initial route number for this player
 */
 void
-CAPlayer::initPlayer( int routeNumber ) {
+Player::initPlayer( int routeNumber ) {
     //reset();
     this->routeNumber = routeNumber;
     move( CA_APP->track.rp[routeNumber][0][0], CA_APP->track.rp[routeNumber][0][1] );
@@ -147,7 +147,7 @@ CAPlayer::initPlayer( int routeNumber ) {
     rotated and the color adjusted to 'color'.
 */
 void
-CAPlayer::renderSprites( CAColor col ) 
+Player::renderSprites( HSVColor col ) 
 {
     /*
        CL_Surface* tmpSf = CAImageManipulation::changeHSV( carType->surface,
@@ -176,7 +176,7 @@ CAPlayer::renderSprites( CAColor col )
 /** Changes the direction and the frame of this sprite.
 */
 void
-CAPlayer::setDirection( float dir ) 
+Player::setDirection( float dir ) 
 {
     newDirection=dir;
     if( newDirection >= 360.0 ) newDirection-=360.0;
@@ -189,7 +189,7 @@ CAPlayer::setDirection( float dir )
 /** Changes the speed of this sprite.
 */
 void
-CAPlayer::setSpeed( float sp ) 
+Player::setSpeed( float sp ) 
 {
     speed = sp;
 
@@ -200,7 +200,7 @@ CAPlayer::setSpeed( float sp )
 /** Changes the turbo load of this sprite.
 */
 void
-CAPlayer::setTurbo( float tb ) {
+Player::setTurbo( float tb ) {
     turbo = tb;
 
     if( turbo > carType->maxTurbo ) turbo = carType->maxTurbo;
@@ -211,7 +211,7 @@ CAPlayer::setTurbo( float tb ) {
     Computer players rather call 'autoPilot()'.
 */
 void
-CAPlayer::keyControl() {
+Player::keyControl() {
     // We're death and can't drive anymore:
     //
     if( death || finished ) {
@@ -306,7 +306,7 @@ CAPlayer::keyControl() {
 /** Calculates route of computer players.
 */
 void
-CAPlayer::autoPilot() 
+Player::autoPilot() 
 {
     // Choose new route by shuffle:
     //
@@ -440,7 +440,7 @@ CAPlayer::autoPilot()
     The Sprite moves according to speed and direction.
 */
 void
-CAPlayer::advance() 
+Player::advance() 
 {
     // Play engine sound (Volume of engine sound depends on speed):
     //
@@ -563,11 +563,11 @@ CAPlayer::advance()
 /** Checks collisions of this sprite with others.
 */
 void
-CAPlayer::checkCollisions() {
+Player::checkCollisions() {
     // Other players:
     //
     for( int c=0; c<CA_MAXPLAYERS; ++c ) {
-        CAPlayer* pl = CA_APP->player[c];
+        Player* pl = CA_APP->player[c];
         if( pl!=this ) {
             if( x+32 > pl->getX()-32 && x-32 < pl->getX()+32 &&
                     y+32 > pl->getY()-32 && y-32 < pl->getY()+32 &&
@@ -656,7 +656,7 @@ CAPlayer::checkCollisions() {
 /** Checks underlying function map.
 */
 void
-CAPlayer::checkFunctionMap() 
+Player::checkFunctionMap() 
 {
     // lapParts is a bit pattern of fulfilled lap parts (15 parts total)
     //   0 0 0 0  0 0 0 0   0 0 0 0  0 0 1 1 = Lap part 1 and 2 fulfilled
@@ -805,7 +805,7 @@ CAPlayer::checkFunctionMap()
 /** Calculate edges of the sprite
 */
 void
-CAPlayer::calcEdges() {
+Player::calcEdges() {
     float dx, dy;
 
     dx = cos( (newDirection + carType->angle) / ARAD ) * carType->radius;
@@ -830,7 +830,7 @@ CAPlayer::calcEdges() {
 /** Shooting
 */
 void
-CAPlayer::shoot() {
+Player::shoot() {
     // Count down bullets:
     //
     if( bullets>0 ) {
@@ -889,7 +889,7 @@ CAPlayer::shoot() {
     \param amount How hard was the hit?
 */
 void
-CAPlayer::hit( float amount ) {
+Player::hit( float amount ) {
     if( !death && !finished ) {
         life -= amount/100.0*(100.0-armor);
         if( life<0.1 ) {
@@ -901,7 +901,7 @@ CAPlayer::hit( float amount ) {
 /** Player was killed.
 */
 void
-CAPlayer::kill() {
+Player::kill() {
     if( !death ) {
         life=0.0;
         death=true;
@@ -912,7 +912,7 @@ CAPlayer::kill() {
 /** Displays the player on it's current position.
 */
 void
-CAPlayer::display( int offsetX, int offsetY ) 
+Player::display( int offsetX, int offsetY ) 
 {
     sprite[frame]->draw ( (int)(x+offsetX - sprite[ frame ]->get_width()/2),
                                  (int)(y+offsetY - sprite[ frame ]->get_height()/2) );
@@ -951,7 +951,7 @@ CAPlayer::display( int offsetX, int offsetY )
 /** Reimplemented for moving the shadow with the sprite.
 */
 void
-CAPlayer::move( float x, float y ) {
+Player::move( float x, float y ) {
     ox = this->x;
     oy = this->y;
     this->x = x;
@@ -961,7 +961,7 @@ CAPlayer::move( float x, float y ) {
 /** Activates turbo mode.
 */
 void
-CAPlayer::activateTurbo() {
+Player::activateTurbo() {
     if( turbo>0 ) {
         cMaxSpeed = carType->maxSpeed * CA_TURBOFACTOR;
         turboActive = true;
@@ -971,7 +971,7 @@ CAPlayer::activateTurbo() {
 /** Deactivates turbo mode.
 */
 void
-CAPlayer::deactivateTurbo() {
+Player::deactivateTurbo() {
     cMaxSpeed = carType->maxSpeed;
     turboActive =false;
 }
@@ -980,7 +980,7 @@ CAPlayer::deactivateTurbo() {
     e.g. 3.5 means the player has finished 3.5 laps
 */
 float
-CAPlayer::getPosition() {
+Player::getPosition() {
     float ret = lapNumber;
     int fraction=0;
     int leftOut=0;
@@ -1003,14 +1003,14 @@ CAPlayer::getPosition() {
 /** Resets all hit points. This happens once for every screen.
 */
 void
-CAPlayer::resetHitPoints() {
+Player::resetHitPoints() {
     hitPointCounter = 0;
 }
 
 /** Adds a hit point for the next screen.
 */
 void
-CAPlayer::addHitPoint( int x, int y ) {
+Player::addHitPoint( int x, int y ) {
     if( hitPointCounter<CA_MAXHITPOINTS ) {
         hitPoint[hitPointCounter][0] = x;
         hitPoint[hitPointCounter][1] = y;
