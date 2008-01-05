@@ -248,7 +248,7 @@ CAImageManipulation::changeHSV( CL_Surface* surface,
 
     // Change hue:
     //
-    int r, g, b, a;
+    int r, g, b, a(0);
     int h, s, v;
 
     for(int i=0; i<size; i+=bpp ) 

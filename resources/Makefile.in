@@ -53,10 +53,11 @@ am__installdirs = "$(DESTDIR)$(Downtowndir)" \
 	"$(DESTDIR)$(Zurichdir)" "$(DESTDIR)$(carsdir)" \
 	"$(DESTDIR)$(flash2dir)" "$(DESTDIR)$(fontsdir)" \
 	"$(DESTDIR)$(goodydir)" "$(DESTDIR)$(guidir)" \
-	"$(DESTDIR)$(jeepdir)" "$(DESTDIR)$(menudir)" \
-	"$(DESTDIR)$(miscdir)" "$(DESTDIR)$(paneldir)" \
-	"$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(soundsdir)" \
-	"$(DESTDIR)$(vwdir)" "$(DESTDIR)$(z3dir)"
+	"$(DESTDIR)$(icondir)" "$(DESTDIR)$(jeepdir)" \
+	"$(DESTDIR)$(menudir)" "$(DESTDIR)$(miscdir)" \
+	"$(DESTDIR)$(paneldir)" "$(DESTDIR)$(pkgdatadir)" \
+	"$(DESTDIR)$(soundsdir)" "$(DESTDIR)$(vwdir)" \
+	"$(DESTDIR)$(z3dir)"
 DowntownDATA_INSTALL = $(INSTALL_DATA)
 IndustrialDATA_INSTALL = $(INSTALL_DATA)
 LoopsDATA_INSTALL = $(INSTALL_DATA)
@@ -70,6 +71,7 @@ flash2DATA_INSTALL = $(INSTALL_DATA)
 fontsDATA_INSTALL = $(INSTALL_DATA)
 goodyDATA_INSTALL = $(INSTALL_DATA)
 guiDATA_INSTALL = $(INSTALL_DATA)
+iconDATA_INSTALL = $(INSTALL_DATA)
 jeepDATA_INSTALL = $(INSTALL_DATA)
 menuDATA_INSTALL = $(INSTALL_DATA)
 miscDATA_INSTALL = $(INSTALL_DATA)
@@ -81,9 +83,9 @@ z3DATA_INSTALL = $(INSTALL_DATA)
 DATA = $(Downtown_DATA) $(Industrial_DATA) $(Loops_DATA) $(Moon_DATA) \
 	$(Rally_DATA) $(Snake_DATA) $(Zigzag_DATA) $(Zurich_DATA) \
 	$(cars_DATA) $(flash2_DATA) $(fonts_DATA) $(goody_DATA) \
-	$(gui_DATA) $(jeep_DATA) $(menu_DATA) $(misc_DATA) \
-	$(panel_DATA) $(pkgdata_DATA) $(sounds_DATA) $(vw_DATA) \
-	$(z3_DATA)
+	$(gui_DATA) $(icon_DATA) $(jeep_DATA) $(menu_DATA) \
+	$(misc_DATA) $(panel_DATA) $(pkgdata_DATA) $(sounds_DATA) \
+	$(vw_DATA) $(z3_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -171,6 +173,8 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 pkgdata_DATA = resources.xml
+icondir = $(datadir)/icons
+icon_DATA = icon.png
 flash2dir = $(pkgdatadir)/cars/flash2
 flash2_DATA = cars/flash2/surface.tga cars/flash2/surface3d.tga 
 jeepdir = $(pkgdatadir)/cars/jeep
@@ -226,7 +230,7 @@ Zurichdir = $(pkgdatadir)/tracks/Zurich
 Zurich_DATA = tracks/Zurich/vmap.tga tracks/Zurich/config.tck tracks/Zurich/fmap.tga tracks/Zurich/thumb.tga 
 Industrialdir = $(pkgdatadir)/tracks/Industrial
 Industrial_DATA = tracks/Industrial/vmap.tga tracks/Industrial/bridge.tga tracks/Industrial/fmap.tga tracks/Industrial/thumb.tga tracks/Industrial/config.tck
-EXTRA_DIST = $(pkgdata_DATA) $(flash2_DATA) $(jeep_DATA) $(vw_DATA) $(z3_DATA) $(cars_DATA) $(fonts_DATA) $(goody_DATA) $(gui_DATA) $(menu_DATA) $(misc_DATA) $(panel_DATA) $(sounds_DATA) $(Downtown_DATA) $(Loops_DATA) $(Moon_DATA) $(Rally_DATA) $(Snake_DATA) $(Zigzag_DATA) $(Zurich_DATA) $(Industrial_DATA)
+EXTRA_DIST = $(pkgdata_DATA) $(icon_DATA) $(flash2_DATA) $(jeep_DATA) $(vw_DATA) $(z3_DATA) $(cars_DATA) $(fonts_DATA) $(goody_DATA) $(gui_DATA) $(menu_DATA) $(misc_DATA) $(panel_DATA) $(sounds_DATA) $(Downtown_DATA) $(Loops_DATA) $(Moon_DATA) $(Rally_DATA) $(Snake_DATA) $(Zigzag_DATA) $(Zurich_DATA) $(Industrial_DATA) 
 all: all-am
 
 .SUFFIXES:
@@ -480,6 +484,23 @@ uninstall-guiDATA:
 	  echo " rm -f '$(DESTDIR)$(guidir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(guidir)/$$f"; \
 	done
+install-iconDATA: $(icon_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(icondir)" || $(MKDIR_P) "$(DESTDIR)$(icondir)"
+	@list='$(icon_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(iconDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icondir)/$$f'"; \
+	  $(iconDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icondir)/$$f"; \
+	done
+
+uninstall-iconDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(icon_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(icondir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(icondir)/$$f"; \
+	done
 install-jeepDATA: $(jeep_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(jeepdir)" || $(MKDIR_P) "$(DESTDIR)$(jeepdir)"
@@ -653,7 +674,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(Downtowndir)" "$(DESTDIR)$(Industrialdir)" "$(DESTDIR)$(Loopsdir)" "$(DESTDIR)$(Moondir)" "$(DESTDIR)$(Rallydir)" "$(DESTDIR)$(Snakedir)" "$(DESTDIR)$(Zigzagdir)" "$(DESTDIR)$(Zurichdir)" "$(DESTDIR)$(carsdir)" "$(DESTDIR)$(flash2dir)" "$(DESTDIR)$(fontsdir)" "$(DESTDIR)$(goodydir)" "$(DESTDIR)$(guidir)" "$(DESTDIR)$(jeepdir)" "$(DESTDIR)$(menudir)" "$(DESTDIR)$(miscdir)" "$(DESTDIR)$(paneldir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(soundsdir)" "$(DESTDIR)$(vwdir)" "$(DESTDIR)$(z3dir)"; do \
+	for dir in "$(DESTDIR)$(Downtowndir)" "$(DESTDIR)$(Industrialdir)" "$(DESTDIR)$(Loopsdir)" "$(DESTDIR)$(Moondir)" "$(DESTDIR)$(Rallydir)" "$(DESTDIR)$(Snakedir)" "$(DESTDIR)$(Zigzagdir)" "$(DESTDIR)$(Zurichdir)" "$(DESTDIR)$(carsdir)" "$(DESTDIR)$(flash2dir)" "$(DESTDIR)$(fontsdir)" "$(DESTDIR)$(goodydir)" "$(DESTDIR)$(guidir)" "$(DESTDIR)$(icondir)" "$(DESTDIR)$(jeepdir)" "$(DESTDIR)$(menudir)" "$(DESTDIR)$(miscdir)" "$(DESTDIR)$(paneldir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(soundsdir)" "$(DESTDIR)$(vwdir)" "$(DESTDIR)$(z3dir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -702,10 +723,10 @@ install-data-am: install-DowntownDATA install-IndustrialDATA \
 	install-LoopsDATA install-MoonDATA install-RallyDATA \
 	install-SnakeDATA install-ZigzagDATA install-ZurichDATA \
 	install-carsDATA install-flash2DATA install-fontsDATA \
-	install-goodyDATA install-guiDATA install-jeepDATA \
-	install-menuDATA install-miscDATA install-panelDATA \
-	install-pkgdataDATA install-soundsDATA install-vwDATA \
-	install-z3DATA
+	install-goodyDATA install-guiDATA install-iconDATA \
+	install-jeepDATA install-menuDATA install-miscDATA \
+	install-panelDATA install-pkgdataDATA install-soundsDATA \
+	install-vwDATA install-z3DATA
 
 install-dvi: install-dvi-am
 
@@ -743,10 +764,10 @@ uninstall-am: uninstall-DowntownDATA uninstall-IndustrialDATA \
 	uninstall-LoopsDATA uninstall-MoonDATA uninstall-RallyDATA \
 	uninstall-SnakeDATA uninstall-ZigzagDATA uninstall-ZurichDATA \
 	uninstall-carsDATA uninstall-flash2DATA uninstall-fontsDATA \
-	uninstall-goodyDATA uninstall-guiDATA uninstall-jeepDATA \
-	uninstall-menuDATA uninstall-miscDATA uninstall-panelDATA \
-	uninstall-pkgdataDATA uninstall-soundsDATA uninstall-vwDATA \
-	uninstall-z3DATA
+	uninstall-goodyDATA uninstall-guiDATA uninstall-iconDATA \
+	uninstall-jeepDATA uninstall-menuDATA uninstall-miscDATA \
+	uninstall-panelDATA uninstall-pkgdataDATA uninstall-soundsDATA \
+	uninstall-vwDATA uninstall-z3DATA
 
 .MAKE: install-am install-strip
 
@@ -758,22 +779,22 @@ uninstall-am: uninstall-DowntownDATA uninstall-IndustrialDATA \
 	install-am install-carsDATA install-data install-data-am \
 	install-dvi install-dvi-am install-exec install-exec-am \
 	install-flash2DATA install-fontsDATA install-goodyDATA \
-	install-guiDATA install-html install-html-am install-info \
-	install-info-am install-jeepDATA install-man install-menuDATA \
-	install-miscDATA install-panelDATA install-pdf install-pdf-am \
-	install-pkgdataDATA install-ps install-ps-am \
-	install-soundsDATA install-strip install-vwDATA install-z3DATA \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-DowntownDATA \
-	uninstall-IndustrialDATA uninstall-LoopsDATA \
-	uninstall-MoonDATA uninstall-RallyDATA uninstall-SnakeDATA \
-	uninstall-ZigzagDATA uninstall-ZurichDATA uninstall-am \
-	uninstall-carsDATA uninstall-flash2DATA uninstall-fontsDATA \
-	uninstall-goodyDATA uninstall-guiDATA uninstall-jeepDATA \
-	uninstall-menuDATA uninstall-miscDATA uninstall-panelDATA \
-	uninstall-pkgdataDATA uninstall-soundsDATA uninstall-vwDATA \
-	uninstall-z3DATA
+	install-guiDATA install-html install-html-am install-iconDATA \
+	install-info install-info-am install-jeepDATA install-man \
+	install-menuDATA install-miscDATA install-panelDATA \
+	install-pdf install-pdf-am install-pkgdataDATA install-ps \
+	install-ps-am install-soundsDATA install-strip install-vwDATA \
+	install-z3DATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall \
+	uninstall-DowntownDATA uninstall-IndustrialDATA \
+	uninstall-LoopsDATA uninstall-MoonDATA uninstall-RallyDATA \
+	uninstall-SnakeDATA uninstall-ZigzagDATA uninstall-ZurichDATA \
+	uninstall-am uninstall-carsDATA uninstall-flash2DATA \
+	uninstall-fontsDATA uninstall-goodyDATA uninstall-guiDATA \
+	uninstall-iconDATA uninstall-jeepDATA uninstall-menuDATA \
+	uninstall-miscDATA uninstall-panelDATA uninstall-pkgdataDATA \
+	uninstall-soundsDATA uninstall-vwDATA uninstall-z3DATA
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
