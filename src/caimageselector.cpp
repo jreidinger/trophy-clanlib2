@@ -53,8 +53,8 @@ CAImageSelector::setImageSize( int w, int h ) {
     \param autoResize Automatic fit size of the widget to image size
 */
 void
-CAImageSelector::addImage( const char* upperText,
-                           const char* lowerText,
+CAImageSelector::addImage( const std::string upperText,
+                           const std::string lowerText,
                            CL_Surface* image,
                            bool autoResize ) {
     this->image[numImages].upperText = upperText;

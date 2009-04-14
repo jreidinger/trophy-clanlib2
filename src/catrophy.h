@@ -49,7 +49,7 @@ public:
 
     // Configuration methods:
     //
-    virtual const char *get_title();
+    virtual const std::string get_title();
 
     void initCarTypes();
     void deinitCarTypes();
@@ -98,7 +98,7 @@ public:
         return time;
     }
     //! Race time as string.
-    char* getTimeString() {
+    std::string getTimeString() {
         return timeString;
     }
     void dropFogBomb( int x, int y, bool up );

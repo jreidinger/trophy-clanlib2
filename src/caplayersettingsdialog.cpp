@@ -93,7 +93,7 @@ CAPlayerSettingsDialog::on_key_released (const CL_InputEvent &key)
 
 /** Returns the player's name the user has entered.
 */
-const char*
+const std::string
 CAPlayerSettingsDialog::getPlayerName() {
     return nameInput->getText();
 }

@@ -153,17 +153,17 @@ TrophyMath::getRandomNumber( int min, int max )
     return ( (int)/*rint */( (float)(max-min + 1) / RAND_MAX * rand() ) + min );
 }
 
-/** Converts a time in millisecs to a string in the format <minutes>:<seconds>.<hundredth>. (e.g. "5:02.23")
-    'string' must have at least place for 9 characters.
+/** Converts a time in millisecs to a str in the format <minutes>:<seconds>.<hundredth>. (e.g. "5:02.23")
+    'str' must have at least place for 9 characters.
 */
 void
-TrophyMath::timeToString( char* string, int time ) 
+TrophyMath::timeToString( char* str, int time ) 
 {
     float min = (int)floor( (float)((time)/60000.0) );
     float sec = (float)((time)%60000)/1000.0;
     float hun = ((sec-floor(sec))*100);
 
-    sprintf( string,
+    sprintf( str,
              "%02d:%02d.%02d",
              (int)min,
              (int)floor( sec ),

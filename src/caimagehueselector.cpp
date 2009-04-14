@@ -27,8 +27,8 @@ CAImageHueSelector::CAImageHueSelector( Direction direction )
     \param type Selector type (Image, Selector, HueSelector)
     \param direction Vertical selector? (Use Up/Down arrows to control)
 */
-CAImageHueSelector::CAImageHueSelector( const char* upperText,
-                                        const char* lowerText,
+CAImageHueSelector::CAImageHueSelector( const std::string upperText,
+                                        const std::string lowerText,
                                         CL_Surface* image,
                                         bool autoResize,
                                         Direction direction )

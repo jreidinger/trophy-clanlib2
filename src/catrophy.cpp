@@ -216,7 +216,7 @@ CATrophy::main( int argc, char** argv )
 /** Gets the application title.
     Needed by ClanLib.
 */
-const char*
+const std::string
 CATrophy::get_title() {
     return "Trophy " VERSION;
 }

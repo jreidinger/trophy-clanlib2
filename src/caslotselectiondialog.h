@@ -9,7 +9,7 @@
 */
 class CASlotSelectionDialog : public CADialog  {
 public:
-    CASlotSelectionDialog( const char* title );
+    CASlotSelectionDialog( const std::string title );
     ~CASlotSelectionDialog();
 
     virtual void buildScreen();

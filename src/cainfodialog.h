@@ -12,8 +12,8 @@ class CAInfoDialog : public CADialog  {
 public:
     enum InfoType { Info, Warning };
 
-    CAInfoDialog( const char* title,
-                  const char* text,
+    CAInfoDialog( const std::string title,
+                  const std::string text,
                   InfoType type=Info,
                   bool modal=false,
                   CAScreen* screen=0 );

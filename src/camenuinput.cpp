@@ -7,16 +7,17 @@
 /** Constructor which takes a string as result.
 */
 CAMenuInput::CAMenuInput( CAMenu* menu,
-                          int pos, const char* label,
-                          char* result, int maxLength )
+                          int pos, const std::string label,
+                          std::string result, int maxLength )
         : CAMenuLabel( menu, pos, label ) {
     this->maxLength = maxLength;
     resultStr = result;
+    resultInt = 0;
+    isInt = false;
     edit = new CALineEdit( resultStr,
                            maxLength, CAWidget::Right,
                            CA_RES->font_normal_22_gray );
 
-    resultInt = 0;
 }
 
 
@@ -24,18 +25,19 @@ CAMenuInput::CAMenuInput( CAMenu* menu,
 /** Constructor which takes an int as result.
 */
 CAMenuInput::CAMenuInput( CAMenu* menu,
-                          int pos, const char* label,
+                          int pos, const std::string label,
                           int* result, int maxLength )
         : CAMenuLabel( menu, pos, label ) {
     this->maxLength = maxLength;
     resultInt = result;
+    resultStr = "";
+    isInt = false;
 
     char intStr[16];
     sprintf( intStr, "%d", *resultInt );
     edit = new CALineEdit( intStr,
                            maxLength, CAWidget::Right,
                            CA_RES->font_normal_22_gray );
-    resultStr = 0;
 }
 
 
@@ -66,8 +68,8 @@ void
 CAMenuInput::handleKey (const CL_InputEvent &key) 
 {
     edit->handleKey( key );
-    if( resultStr ) strncpy( resultStr, edit->getText(), maxLength );
-    if( resultInt ) *resultInt = atoi( edit->getText() );
+    if( isInt ) *resultInt = atoi( edit->getText().c_str() );
+    else resultStr = edit->getText();
     menu->setChanged();
 }
 

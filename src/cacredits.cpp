@@ -77,7 +77,7 @@ CACredits::buildScreen()
     //CL_Display::fill_rect( left,top, right,bottom, 0.0,0.0,0.0, 0.2 );
     for( int l=0; l<text.count(); ++l ) 
     {
-        const char* item = text.getItem( l );
+        const std::string item = text.getItem( l );
         CA_RES->font_normal_14_white->set_alignment(origin_top_center, 0, 0);
         CA_RES->font_normal_14_white->draw ( (left+32+right-32)/2, (int)(top+32+26-scrollPos+l*26), item );
     }

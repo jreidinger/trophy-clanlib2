@@ -17,7 +17,7 @@ public:
     virtual void buildScreen();
     virtual void on_key_released (const CL_InputEvent &key);
 
-    const char* getPlayerName();
+    const std::string getPlayerName();
     int getPlayerHue();
 
 private:

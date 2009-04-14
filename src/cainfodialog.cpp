@@ -12,8 +12,8 @@
     \param screen pointer to screen shown in the background if this dialog is modal.
                   zero if this dialog is not modal (default).
 */
-CAInfoDialog::CAInfoDialog( const char* title,
-                            const char* text,
+CAInfoDialog::CAInfoDialog( const std::string title,
+                            const std::string text,
                             InfoType type,
                             bool modal,
                             CAScreen* screen )

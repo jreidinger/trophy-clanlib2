@@ -10,14 +10,14 @@
 */
 class CALineEdit : public CAWidget {
 public:
-    CALineEdit( const char* text,
+    CALineEdit( const std::string text,
                 unsigned int letters,
                 Alignment alignment,
                 CL_Font* font );
     ~CALineEdit();
 
-    const char* getText() {
-        return text.c_str();
+    const std::string getText() {
+        return text;
     }
 
     virtual void display( bool active=true );

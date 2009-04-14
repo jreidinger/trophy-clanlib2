@@ -13,15 +13,15 @@ class StringList
 {
     public:
         StringList( char separator='~' );
-        StringList( const char* list, char separator='~' );
+        StringList( const std::string list, char separator='~' );
         ~StringList();
 
         /** Sets the string list.
           \param list The new list in format "entry 1~entry2~entry3".
           */
-        void   setList( const char* list ) { this->list = list; }
+        void   setList( const std::string list ) { this->list = list; }
         int    count();
-        const char*  getItem( int which, int maxLen=SL_ITEMSIZE );
+        const std::string getItem( int which, int maxLen=SL_ITEMSIZE );
 
     private:
         //! The list as one string.

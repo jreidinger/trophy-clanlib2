@@ -13,8 +13,8 @@
 class CAImageHueSelector : public CAImageView  {
 public:
     CAImageHueSelector( Direction vertical=Horizontal );
-    CAImageHueSelector( const char* upperText,
-                        const char* lowerText,
+    CAImageHueSelector( const std::string upperText,
+                        const std::string lowerText,
                         CL_Surface* image,
                         bool autoResize=true,
                         Direction vertical=Horizontal );

@@ -13,8 +13,8 @@
 */
 CAMenuSelect::CAMenuSelect( CAMenu* menu,
                             int pos,
-                            const char* label,
-                            const char* valueList,
+                            const std::string label,
+                            const std::string valueList,
                             int* result )
         : CAMenuLabel( menu, pos, label ) {
     this->valueList = new StringList( valueList );
@@ -34,8 +34,8 @@ CAMenuSelect::CAMenuSelect( CAMenu* menu,
 */
 CAMenuSelect::CAMenuSelect( CAMenu* menu,
                             int pos,
-                            const char* label,
-                            const char* valueList,
+                            const std::string label,
+                            const std::string valueList,
                             bool* result )
         : CAMenuLabel( menu, pos, label ) {
     this->valueList = new StringList( valueList );

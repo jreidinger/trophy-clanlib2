@@ -19,8 +19,8 @@ public:
 
     void setImageSize( int w, int h );
 
-    void addImage( const char* upperText,
-                   const char* lowerText,
+    void addImage( const std::string upperText,
+                   const std::string lowerText,
                    CL_Surface* image,
                    bool autoResize=true );
 

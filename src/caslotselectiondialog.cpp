@@ -6,7 +6,7 @@
 /** Constructor.
     \param title Title of the dialog (Usually "Save..." or "Load...")
 */
-CASlotSelectionDialog::CASlotSelectionDialog( const char* title )
+CASlotSelectionDialog::CASlotSelectionDialog( const std::string title )
         : CADialog() {
     cursor = 0;
     this->title = title;

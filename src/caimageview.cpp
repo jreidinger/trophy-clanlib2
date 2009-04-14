@@ -21,8 +21,8 @@ CAImageView::CAImageView()
     \param autoresize Automatically resize the image preview 
                       to fit the image.
 */
-CAImageView::CAImageView( const char* upperText,
-                          const char* lowerText,
+CAImageView::CAImageView( const std::string upperText,
+                          const std::string lowerText,
                           CL_Surface* image,
                           bool autoResize )
         : CAWidget( CAWidget::Left ) {

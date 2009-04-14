@@ -10,7 +10,7 @@ StringList::StringList( char separator )
 
 /** Constructor.
 */
-StringList::StringList( const char* list, char separator ) 
+StringList::StringList( const std::string list, char separator ) 
 {
     this->list = list;
     this->separator = separator;
@@ -39,7 +39,7 @@ StringList::count()
 /** Returns item number 'which' of the list.
     \param maxLen Max length of the sting to return. Default: 128
 */
-const char*
+const std::string
 StringList::getItem( int which, int maxLen ) 
 {
     unsigned int i = 0;

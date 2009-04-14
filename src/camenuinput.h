@@ -9,8 +9,8 @@
 */
 class CAMenuInput : public CAMenuLabel  {
 public:
-    CAMenuInput( CAMenu* menu, int pos, const char* label, char* result, int maxLength );
-    CAMenuInput( CAMenu* menu, int pos, const char* label, int* result, int maxLength );
+    CAMenuInput( CAMenu* menu, int pos, const std::string label, std::string result, int maxLength );
+    CAMenuInput( CAMenu* menu, int pos, const std::string label, int* result, int maxLength );
     ~CAMenuInput();
 
     /** Returns rtti of this menu item.
@@ -28,11 +28,13 @@ private:
 
     CALineEdit* edit;
     //! The string typed by the user.
-    char* resultStr;
+    std::string resultStr;
     //! The int value typed by the user.
     int* resultInt;
     //! Max number of letters to input.
     int maxLength;
+    //! Whether the result should be a int or a string
+    bool isInt;
 };
 
 #endif

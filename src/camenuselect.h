@@ -11,8 +11,8 @@
 */
 class CAMenuSelect : public CAMenuLabel {
 public:
-    CAMenuSelect( CAMenu* menu, int pos, const char* label, const char* valueList, int* result );
-    CAMenuSelect( CAMenu* menu, int pos, const char* label, const char* valueList, bool* result );
+    CAMenuSelect( CAMenu* menu, int pos, const std::string label, const std::string valueList, int* result );
+    CAMenuSelect( CAMenu* menu, int pos, const std::string label, const std::string valueList, bool* result );
     ~CAMenuSelect();
 
     /** Returns rtti of this menu item.

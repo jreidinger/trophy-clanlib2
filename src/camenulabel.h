@@ -9,7 +9,7 @@
 
 class CAMenuLabel : public CAMenuItem  {
 public:
-    CAMenuLabel( CAMenu* menu, int pos, const char* label );
+    CAMenuLabel( CAMenu* menu, int pos, const std::string label );
     ~CAMenuLabel();
 
     /** Returns rtti of this menu item.

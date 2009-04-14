@@ -4,7 +4,7 @@
 
 /** Constructor.
 */
-CAMenuLabel::CAMenuLabel( CAMenu* menu, int pos, const char* label )
+CAMenuLabel::CAMenuLabel( CAMenu* menu, int pos, const std::string label )
         : CAMenuItem( menu, pos, label ) {
     font=0;
 }

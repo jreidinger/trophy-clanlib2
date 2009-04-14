@@ -13,17 +13,17 @@
 */
 class CAMenu : public CAScreen {
 public:
-    CAMenu( const char* title );
+    CAMenu( const std::string title );
     ~CAMenu();
 
     virtual int run();
     virtual void buildScreen();
 
-    void addMenuLabel( const char* label );
-    void addMenuInput( const char* label, char* result, int maxLength );
-    void addMenuInput( const char* label, int* result, int maxLength );
-    void addMenuSelect( const char* label, const char* valueList, int* result );
-    void addMenuSelect( const char* label, const char* valueList, bool* result );
+    void addMenuLabel( const std::string label );
+    void addMenuInput( const std::string label, std::string result, int maxLength );
+    void addMenuInput( const std::string label, int* result, int maxLength );
+    void addMenuSelect( const std::string label, const std::string valueList, int* result );
+    void addMenuSelect( const std::string label, const std::string valueList, bool* result );
 
     void calcMenuDimensions();
 

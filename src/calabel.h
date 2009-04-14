@@ -13,7 +13,7 @@ public:
 
     virtual void display( bool active=true );
     //! Sets a nwe text for this label.
-    void setText( const char* text ) {
+    void setText( const std::string text ) {
         this->text = text;
     }
 

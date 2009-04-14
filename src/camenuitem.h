@@ -16,7 +16,7 @@ class CAMenu;
 */
 class CAMenuItem {
 public:
-    CAMenuItem( CAMenu* menu, int pos, const char* label );
+    CAMenuItem( CAMenu* menu, int pos, const std::string label );
     virtual ~CAMenuItem();
 
     /** Returns rtti of this menu item.
@@ -29,7 +29,7 @@ public:
     virtual void display( bool highlight ) = 0;
     virtual void handleKey( const CL_InputEvent &key ) = 0;
     //! Sets a new label for this menu item.
-    void setLabel( const char* l ) {
+    void setLabel( const std::string l ) {
         label = l;
     }
 

@@ -3,7 +3,7 @@
 
 /** Constructor.
 */
-CAMenuItem::CAMenuItem( CAMenu* menu, int pos, const char* label ) {
+CAMenuItem::CAMenuItem( CAMenu* menu, int pos, const std::string label ) {
     this->label = label;
     this->menu = menu;
     this->pos = pos;

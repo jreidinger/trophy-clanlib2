@@ -8,7 +8,7 @@
 
 /** Constructor.
 */
-CAMenu::CAMenu( const char* title )
+CAMenu::CAMenu( const std::string title )
         : CAScreen() {
     this->title = title;
 
@@ -28,7 +28,7 @@ CAMenu::~CAMenu() {}
 /** Adds a simple menu label to the menu.
 */
 void
-CAMenu::addMenuLabel( const char* label ) {
+CAMenu::addMenuLabel( const std::string label ) {
     item[numItems] = new CAMenuLabel( this, numItems, label );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
@@ -40,7 +40,7 @@ CAMenu::addMenuLabel( const char* label ) {
     \param defaultValue Value shown at startup of the menu.
 */
 void
-CAMenu::addMenuInput( const char* label, char* result, int maxLength ) {
+CAMenu::addMenuInput( const std::string label, std::string result, int maxLength ) {
     item[numItems] = new CAMenuInput( this, numItems, label, result, maxLength );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
@@ -52,7 +52,7 @@ CAMenu::addMenuInput( const char* label, char* result, int maxLength ) {
     \param defaultValue Value shown at startup of the menu.
 */
 void
-CAMenu::addMenuInput( const char* label, int* result, int maxLength ) {
+CAMenu::addMenuInput( const std::string label, int* result, int maxLength ) {
     item[numItems] = new CAMenuInput( this, numItems, label, result, maxLength );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
@@ -66,7 +66,7 @@ CAMenu::addMenuInput( const char* label, int* result, int maxLength ) {
                   (0=first value selected)
 */
 void
-CAMenu::addMenuSelect( const char* label, const char* valueList, int* result ) {
+CAMenu::addMenuSelect( const std::string label, const std::string valueList, int* result ) {
     item[numItems] = new CAMenuSelect( this, numItems, label, valueList, result );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
@@ -80,7 +80,7 @@ CAMenu::addMenuSelect( const char* label, const char* valueList, int* result ) {
                   (false=first value selected)
 */
 void
-CAMenu::addMenuSelect( const char* label, const char* valueList, bool* result ) {
+CAMenu::addMenuSelect( const std::string label, const std::string valueList, bool* result ) {
     item[numItems] = new CAMenuSelect( this, numItems, label, valueList, result );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();

@@ -12,7 +12,7 @@
     \param alignment Alignment of text
     \param font Font to use for the text
 */
-CALineEdit::CALineEdit( const char* text,
+CALineEdit::CALineEdit( const std::string text,
                         unsigned int letters,
                         Alignment alignment,
                         CL_Font* font )
@@ -24,13 +24,11 @@ CALineEdit::CALineEdit( const char* text,
     this->font = font;
     cursor = this->text.length();
 
-    char *wString=new char[letters];
-    for( unsigned int i=0; i<letters-1; ++i ) wString[i] = 'W';
-    wString[letters] = '\0';
+    std::string wString;
+    for( unsigned int i=0; i<letters-1; ++i ) wString.push_back('W');
     resize( font->get_width( wString ), font->get_height() );
 
     if( CA_APP->debug ) std::cout << "CALineEdit() end" << std::endl;
-	delete[] wString;
 }
 
 
