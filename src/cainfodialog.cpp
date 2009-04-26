@@ -22,7 +22,12 @@ CAInfoDialog::CAInfoDialog( const std::string title,
 
     this->title = title;
     this->type = type;
-    textList.setList( text );
+    
+    std::istringstream iss ( text );
+    std::string temp;
+    while (std::getline(iss,temp, '~'))
+       textList.push_back(temp);
+       
 
     switch( type ) {
     case Info:
@@ -40,7 +45,7 @@ CAInfoDialog::CAInfoDialog( const std::string title,
         break;
     }
 
-    resize( 400, textList.count()*16 + 96 );
+    resize( 400, textList.size()*16 + 96 );
 
     if( CA_APP->debug ) std::cout << "CAInfoDialog() end" << std::endl;
 }
@@ -66,9 +71,9 @@ CAInfoDialog::buildScreen() {
     CA_RES->font_normal_14_white->set_alignment(origin_top_left, 0, 0);
     CA_RES->font_normal_14_white->draw (left+x, top+32, title);
 
-    for( int i=0; i<textList.count(); ++i ) {
+    for( unsigned int i=0; i<textList.size(); ++i ) {
         CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-        CA_RES->font_normal_11_white->draw (left+x, top+64+i*16, textList.getItem(i));
+        CA_RES->font_normal_11_white->draw (left+x, top+64+i*16, textList[i]);
     }
 
     if( icon ) {

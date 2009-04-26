@@ -4,7 +4,8 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "cadialog.h"
-#include "utils/stringlist.h"
+#include <vector>
+#include <string>
 
 /** Credits screen.
     @author Andrew Mustun
@@ -19,11 +20,10 @@ public:
 
 private:
     //! Position of scrolling text
-
-
     float scrollPos;
     //! The scrolling text
-    StringList text;
+    std::vector<std::string> text;
+    
 };
 
 #endif

@@ -15,7 +15,7 @@ CASignUpScreen::CASignUpScreen()
     top = CA_APP->headerHeight;
     bottom = top + 400;
 
-    numTracks = CA_APP->trackList.count();
+    numTracks = CA_APP->trackList.size();
 
     for( int i=0; i<3; ++i ) {
         image[i] = 0;
@@ -72,14 +72,14 @@ CASignUpScreen::setOffset( int o )
             //image[i] = CL_TargaProvider::create( trackPath + CA_APP->trackList.getItem(i+offset) + "/thumb.tga", NULL );
             try
             {
-                image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList.getItem(i+offset) + "/thumb.tga" ));
+                image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
             }
             catch(CL_Error err)
             {
                 trackPath = (std::string) "../resources/tracks/";
-                image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList.getItem(i+offset) + "/thumb.tga" ));
+                image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
             }
-            racePreview[i] = new CAImageView( CA_APP->trackList.getItem(i+offset), "", image[i], false );
+            racePreview[i] = new CAImageView( CA_APP->trackList[i+offset], "", image[i], false );
 
             racePreview[i]->setImageSize( 150, 92 );
             racePreview[i]->move( left + 50 + 195*i, top + 50 );

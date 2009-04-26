@@ -67,7 +67,7 @@ CAMenu::addMenuInput( const std::string label, int* result, int maxLength ) {
 */
 void
 CAMenu::addMenuSelect( const std::string label, const std::string valueList, int* result ) {
-    item[numItems] = new CAMenuSelect( this, numItems, label, valueList, result );
+    item[numItems] = new CAMenuSelect<int>( this, numItems, label, valueList, result );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
 }
@@ -81,7 +81,7 @@ CAMenu::addMenuSelect( const std::string label, const std::string valueList, int
 */
 void
 CAMenu::addMenuSelect( const std::string label, const std::string valueList, bool* result ) {
-    item[numItems] = new CAMenuSelect( this, numItems, label, valueList, result );
+    item[numItems] = new CAMenuSelect<bool>( this, numItems, label, valueList, result );
     if( numItems<CA_MAXMENUITEMS ) numItems++;
     calcMenuDimensions();
 }

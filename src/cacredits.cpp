@@ -13,40 +13,41 @@ CACredits::CACredits()
     title = "C R E D I T S";
 
     scrollPos = 0.0;
-    text.setList( "~"
-                  "- Graphics & Programming -~"
-                  "~"
-                  "Andrew Mustun~"
-                  "andrew@mustun.com~"
-                  "Colin Pitrat~"
-                  "colin.pitrat@gmail.com"
-                  "~"
-                  "~"
-                  "- Additional Tracks -~"
-                  "~"
-                  "Volker Schatz (Downtown)~"
-				  "Oliver Luethje (Zigzag, Snake, Rally)"
-                  "~"
-                  "~"
-                  "- Beta Testing / Feedback -~"
-                  "~"
-                  "Martin Mustun, Michael Mustun,~"
-                  "Chris Bruengger, Markus Krieter~"
-                  "Armijn Hemel, Guus Sliepen, Alfred de Wijn~"
-                  "Kenneth Gangstoe, Martin Starch Soerensen~"
-                  "~"
-                  "~"
-                  "- Graphics Library ClanLib -~"
-                  "~"
-                  "ClanSoft~"
-                  "http://www.clanlib.org~"
-                  "~"
-                  "---~"
-                  "~"
-                  "Many thanks to all these people and everyone~"
-                  "else who contributed something to Trophy!~"
-                  "~"
-                  "~" );
+
+    text.push_back("");
+    text.push_back("- Graphics & Programming -");
+    text.push_back("");
+    text.push_back("Andrew Mustun");
+    text.push_back("andrew@mustun.com");
+    text.push_back("Colin Pitrat");
+    text.push_back("colin.pitrat@gmail.com");
+    text.push_back("");
+    text.push_back("");
+    text.push_back("- Additional Tracks -");
+    text.push_back("");
+    text.push_back("Volker Schatz (Downtown)");
+    text.push_back("Oliver Luethje (Zigzag, Snake, Rally)");
+    text.push_back("");
+    text.push_back("");
+    text.push_back("- Beta Testing / Feedback -");
+    text.push_back("");
+    text.push_back("Martin Mustun, Michael Mustun,");
+    text.push_back("Chris Bruengger, Markus Krieter");
+    text.push_back("Armijn Hemel, Guus Sliepen, Alfred de Wijn");
+    text.push_back("Kenneth Gangstoe, Martin Starch Soerensen");
+    text.push_back("");
+    text.push_back("");
+    text.push_back("- Graphics Library ClanLib -");
+    text.push_back("");
+    text.push_back("ClanSoft");
+    text.push_back("http://www.clanlib.org");
+    text.push_back("");
+    text.push_back("---");
+    text.push_back("");
+    text.push_back("Many thanks to all these people and everyone");
+    text.push_back("else who contributed something to Trophy!");
+    text.push_back("");
+    text.push_back("");     
 }
 
 
@@ -64,7 +65,7 @@ CACredits::buildScreen()
 {
     CADialog::buildScreen();
 
-    int textHeight = 26 * text.count();
+    int textHeight = 26 * text.size();
 
     // Scrolling text:
     //
@@ -75,9 +76,9 @@ CACredits::buildScreen()
 
     CL_Display::set_cliprect( crArea );
     //CL_Display::fill_rect( left,top, right,bottom, 0.0,0.0,0.0, 0.2 );
-    for( int l=0; l<text.count(); ++l ) 
+    for( unsigned int l=0; l<text.size(); ++l ) 
     {
-        const std::string item = text.getItem( l );
+        const std::string item = text[l];
         CA_RES->font_normal_14_white->set_alignment(origin_top_center, 0, 0);
         CA_RES->font_normal_14_white->draw ( (left+32+right-32)/2, (int)(top+32+26-scrollPos+l*26), item );
     }

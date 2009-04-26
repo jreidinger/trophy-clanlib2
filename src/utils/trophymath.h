@@ -49,19 +49,18 @@
 /** Mathematical methods for generic use.
     @author Andrew Mustun
 */
-class TrophyMath 
+namespace TrophyMath 
 {
-    public:
-        static bool   compFloat( float f1, float f2, float tol=0.001 );
-        static float  corrAngle( float ang );
-        static float  getAngle( float x1, float y1, float x2, float y2 );
-        static float  getDistance( float x1, float y1, float x2, float y2 );
-        static float  getAngleDiff( float a1, float a2 );
-        static bool   getIntersection( int ax1, int ay1, int ax2, int ay2,
+        bool   compFloat( float f1, float f2, float tol=0.001 );
+        float  corrAngle( float ang );
+        float  getAngle( float x1, float y1, float x2, float y2 );
+        float  getDistance( float x1, float y1, float x2, float y2 );
+        float  getAngleDiff( float a1, float a2 );
+        bool   getIntersection( int ax1, int ay1, int ax2, int ay2,
                 int bx1, int by1, int bx2, int by2,
                 int* ix, int* iy );
-        static int    getRandomNumber( int min, int max );
-        static void   timeToString( char* string, int time );
+        int    getRandomNumber( int min, int max );
+        void   timeToString( char* string, int time );
 };
 
 #endif

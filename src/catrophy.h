@@ -23,7 +23,9 @@
 #include "caresources.h"
 #include "track.h"
 #include "cascreen.h"
-#include "utils/stringlist.h"
+#include <vector>
+#include <string>
+
 
 class CATrophy;
 class Player;
@@ -170,7 +172,7 @@ public:
     //! Current track data
     Track track;
     //! Track directory names list
-    StringList trackList;
+    std::vector<std::string> trackList;
     //! List of three race prices
     //StringList priceList;
     //! Offset of the background map in x.

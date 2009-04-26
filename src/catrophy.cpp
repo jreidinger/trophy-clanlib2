@@ -457,8 +457,10 @@ CATrophy::deinitPanel()
 void
 CATrophy::initTrackList() 
 {
-    trackList.setList( CL_String::load("tracks/directories", CA_RES->resources).c_str() );
-    //trackList.setList( "Downtown~Zigzag~Loops~Zurich~Moon~Snake~Rally" );
+    std::istringstream iss ( CL_String::load("tracks/directories", CA_RES->resources).c_str() );
+    std::string temp;
+    while (std::getline(iss,temp, '~'))
+       trackList.push_back(temp);
 }
 
 /** Initializes track with given name.
@@ -990,7 +992,7 @@ CATrophy::startNewGame()
                 delete signUpScreen;
                 if( trackNumber != -1 ) 
                 {
-                    track.file = trackList.getItem( trackNumber );
+                    track.file = trackList[trackNumber];
                     run();
                     goon = runPositionTable( true );
                 }
