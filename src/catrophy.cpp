@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #ifdef W32_BCC551
   /* dont include stl.h for Windoof, Borland C++ 5.5.1 */
@@ -13,9 +12,12 @@
 
 #include <math.h>
 //#include <unistd.h>
+#include <fstream>
+#include <sstream>
 
 #include "cartype.h"
 #include "cacredits.h"
+#include "caconfigurekey.h"
 #include "caimagemanipulation.h"
 #include "cainfodialog.h"
 #include "capositiontable.h"
@@ -466,7 +468,7 @@ CATrophy::initTrackList()
 /** Initializes track with given name.
 */
 void
-CATrophy::initTrack( std::string trackName ) 
+CATrophy::initTrack( const std::string& trackName ) 
 {
     loading.begin();
 
@@ -514,7 +516,6 @@ CATrophy::initTrack( std::string trackName )
 
     // Read config file for this track:
     //
-    FILE* fp;
     std::string configFilePath = trackPath + "config.tck";
     //  CL_String( "tracks/" ).append( trackName ).append( "/config.tck" );
 
@@ -522,51 +523,49 @@ CATrophy::initTrack( std::string trackName )
 
     track.routePoints = 0;
 
-    if( (fp = fopen( configFilePath.c_str(), "rt" )) != NULL ) 
+
+    std::ifstream tckFile (configFilePath.c_str());
+    if ( tckFile )
     {
-        char c_line[128];               // A line  (Author = "Andrew Mustun")
         std::string line;                 // The line converted to a string
         std::string name;                 // Name of the value (Author)
         std::string value;                // Value (Andrew Mustun)
-        int i, j;
         int xv=0, yv=0, zv=0;           // Coordinates for following objects
         int iv=0;                       // Index for followint object (route point)
-
-        while ( !feof( fp ) ) {
-
-            fgets( c_line, 127, fp );
-            line = c_line;
-
-            if( line[0]!='#' && line.length()!=0 ) {
-
-                i = std::string( line ).find_first_of( " =" );
+        while (std::getline(tckFile, line))
+        {
+            if (line.size()!=0)
+            if (line[0]!='#')
+            {
+                int i = std::string( line ).find_first_of( " =" );
                 name = line.substr( 0, i );
                 i = std::string( line ).find ('"', i) + 1;
-                j = std::string( line ).find ('"', i);
+                int j = std::string( line ).find ('"', i);
                 value = line.substr( i, j-i );
 
-
+                std::istringstream iss(value);
                 // General track info:
                 //
-                if( name=="Author" )    track.author = value;
-                else if( name=="Version")    track.version = value;
-                else if( name=="Name"   )    track.name = value;
+                if( name=="Author" )         iss >> track.author;
+                else if( name=="Version")    iss >> track.version;
+                else if( name=="Name"   )    iss >> track.name;
 
                 // Coordinates of next object / route point:
                 //
-                else if( name=="x" )         xv = atoi( value.c_str() );
-                else if( name=="y" )         yv = atoi( value.c_str() );
-                else if( name=="z" )         zv = atoi( value.c_str() );
-                else if( name=="i" )         iv = atoi( value.c_str() );
+                else if( name=="x" )         iss >> xv;
+                else if( name=="y" )         iss >> yv;
+                else if( name=="z" )         iss >> zv;
+                else if( name=="i" )         iss >> iv;
 
                 // Start angle:
                 //
-                else if( name=="startAngle" ) track.startAngle = atoi( value.c_str() );
+                else if( name=="startAngle" ) iss >> track.startAngle;
 
                 // Route points:
                 //
                 else if( name=="RP" ) {
-                    int pi = atoi( value.c_str() );
+                    int pi;
+                    iss >> pi;
                     if (pi<CA_MAXROUTEPOINTS && iv<CA_MAXPLAYERS) {
                         track.rp[iv][pi][0] = xv;
                         track.rp[iv][pi][1] = yv;
@@ -576,17 +575,15 @@ CATrophy::initTrack( std::string trackName )
 
                 // Objects:
                 //
-                else if( name=="Object" ) {
-                    if( value=="bridge" ) {
-                        std::string bridgePath = trackPath + value + ".tga";
-                        track.bridge = new CL_Surface(CL_TargaProvider(bridgePath));
-                        track.bridgePos[0] = xv;
-                        track.bridgePos[1] = yv;
-                    }
+                else if( name=="Object" && value=="bridge") {
+                    std::string bridgePath = trackPath + value + ".tga";
+                    track.bridge = new CL_Surface(CL_TargaProvider(bridgePath));
+                    track.bridgePos[0] = xv;
+                    track.bridgePos[1] = yv;
                 }
             }
         }
-        fclose( fp );
+        tckFile.close();
     }
 
     loading.setProgress( 40 );
@@ -845,14 +842,23 @@ CATrophy::runMenu()
             // Configure:
             //
         case 1:
+        {
             configMenu = new CAMenu( "Configure" );
             configMenu->addMenuSelect( "Fullscreen", "off~on", &CA_APP->fullScreen );
             configMenu->addMenuSelect( "Sound", "off~on", &CA_APP->sound );
             configMenu->addMenuSelect( "Sound volume", "0%~10%~20%~30%~40%~50%~60%~70%~80%~90%~100%", &CA_APP->volume );
+            configMenu->addMenuLabel( "Configure Keyboard" );
             configMenu->addMenuLabel( "Previous Menu" );
             configMenu->setConfigureMenu( true );
             configMenu->run();
+            if (configMenu->getSelection() == 3)
+            {
+                CAConfigureKey keyboard;
+                keyboard.run();
+                player[0]->setKeyMap(keyboard.getKeyMap());                
+            }
             delete configMenu;
+        }
             break;
 
 
@@ -1093,8 +1099,7 @@ CATrophy::run()
 
     // Loop until 'Q' pressed or race is over:
     //
-    while( CL_Keyboard::get_keycode(CL_KEY_Q) == false &&
-            CL_Keyboard::get_keycode(CL_KEY_ESCAPE) == false &&
+    while( CL_Keyboard::get_keycode(CL_KEY_ESCAPE) == false &&
             (!raceOver || CL_System::get_time()-raceOverTime<3000) ) 
     {
         measureFrameTime( true );

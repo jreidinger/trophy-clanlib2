@@ -8,6 +8,8 @@
 #include "utils/hsvcolor.h"
 #include "utils/trophymath.h"
 
+#include "caconfigurekey.h"
+
 struct CarType;
 
 /** Covers all data and methods for a single player.
@@ -175,6 +177,10 @@ public:
 
     void   addHitPoint( int x, int y );
     void   resetHitPoints();
+    void   setKeyMap(const std::map<ConfigureKey::DefineKey, int>& keyMap)
+    {
+       m_keyMap = keyMap;
+    }
 
 private:
     //! Player id
@@ -283,6 +289,9 @@ private:
     int    hitPoint[CA_MAXHITPOINTS][2];
     //! current index for the hitPoint array.
     int    hitPointCounter;
+
+    //! key control
+    std::map<ConfigureKey::DefineKey, int> m_keyMap;
 
 public:
     //! speed mode. Accelerate, Decelerate, Constant

@@ -12,7 +12,6 @@ CAMenu::CAMenu( const std::string title )
         : CAScreen() {
     this->title = title;
 
-    numItems = 0;
     cursor = 0;
     done = false;
     cancel = false;
@@ -28,9 +27,10 @@ CAMenu::~CAMenu() {}
 /** Adds a simple menu label to the menu.
 */
 void
-CAMenu::addMenuLabel( const std::string label ) {
-    item[numItems] = new CAMenuLabel( this, numItems, label );
-    if( numItems<CA_MAXMENUITEMS ) numItems++;
+CAMenu::addMenuLabel( const std::string& label )
+{
+    if( item.size()<CA_MAXMENUITEMS )
+        item.push_back( new CAMenuLabel( this, item.size(), label ));
     calcMenuDimensions();
 }
 
@@ -40,9 +40,10 @@ CAMenu::addMenuLabel( const std::string label ) {
     \param defaultValue Value shown at startup of the menu.
 */
 void
-CAMenu::addMenuInput( const std::string label, std::string result, int maxLength ) {
-    item[numItems] = new CAMenuInput( this, numItems, label, result, maxLength );
-    if( numItems<CA_MAXMENUITEMS ) numItems++;
+CAMenu::addMenuInput( const std::string& label, std::string result, int maxLength )
+{
+    if( item.size()<CA_MAXMENUITEMS )
+        item.push_back(new CAMenuInput( this, item.size(), label, result, maxLength ));
     calcMenuDimensions();
 }
 
@@ -52,9 +53,10 @@ CAMenu::addMenuInput( const std::string label, std::string result, int maxLength
     \param defaultValue Value shown at startup of the menu.
 */
 void
-CAMenu::addMenuInput( const std::string label, int* result, int maxLength ) {
-    item[numItems] = new CAMenuInput( this, numItems, label, result, maxLength );
-    if( numItems<CA_MAXMENUITEMS ) numItems++;
+CAMenu::addMenuInput( const std::string& label, int* result, int maxLength )
+{
+    if( item.size()<CA_MAXMENUITEMS )
+        item.push_back(new CAMenuInput( this, item.size(), label, result, maxLength ));
     calcMenuDimensions();
 }
 
@@ -65,31 +67,18 @@ CAMenu::addMenuInput( const std::string label, int* result, int maxLength ) {
     \param result Pointer to an int value which stores the selection result.
                   (0=first value selected)
 */
-void
-CAMenu::addMenuSelect( const std::string label, const std::string valueList, int* result ) {
-    item[numItems] = new CAMenuSelect<int>( this, numItems, label, valueList, result );
-    if( numItems<CA_MAXMENUITEMS ) numItems++;
+template<typename T>
+void CAMenu::addMenuSelect( const std::string& label, const std::string valueList, T* result )
+{
+    if( item.size()<CA_MAXMENUITEMS )
+        item.push_back(new CAMenuSelect<T>( this, item.size(), label, valueList, result ));
     calcMenuDimensions();
 }
 
-/** Adds a menu select to the menu.
-    Menu selects let the user choose a value from a given list (string).
-    \param label The menu item label.
-    \param valueList Possible values to choose from.
-    \param result Pointer to a bool value which stores the selection result.
-                  (false=first value selected)
-*/
-void
-CAMenu::addMenuSelect( const std::string label, const std::string valueList, bool* result ) {
-    item[numItems] = new CAMenuSelect<bool>( this, numItems, label, valueList, result );
-    if( numItems<CA_MAXMENUITEMS ) numItems++;
-    calcMenuDimensions();
-}
 
 /** Runs the menu.
 */
-int
-CAMenu::run() {
+int CAMenu::run() {
     //slot = CL_Input::sig_button_press.connect(this, &CAMenu::on_button_press);
     // TODO : Connect the right signal
     slot = CL_Keyboard::sig_key_up().connect(this, &CAMenu::on_key_pressed);
@@ -144,7 +133,7 @@ CAMenu::buildScreen() {
     CA_RES->font_normal_14_white->set_alignment(origin_top_center, 0, 0);
     CA_RES->font_normal_14_white->draw ((left + right)/2, top + CA_MENUSPACE/2 -10, title);
 
-    for( int n=0; n<numItems; ++n ) {
+    for( int n=0; n<int(item.size()); ++n ) {
         if( item[n]->rtti()!=CA_MI_VIRTUAL ) {
             item[n]->display( n==cursor );
         }
@@ -161,7 +150,7 @@ CAMenu::calcMenuDimensions() {
     itemHeight = CA_RES->font_normal_22_white->get_height() + 6;
     //headerHeight = CA_RES->menu_itemon->get_height();
     headerHeight = 22;
-    height = itemHeight * numItems + headerHeight;
+    height = itemHeight * item.size() + headerHeight;
     width = CA_MENUWIDTH;
 
     left = (CA_APP->width - width)/2;
@@ -199,7 +188,7 @@ CAMenu::on_key_pressed (const CL_InputEvent &key)
         //
     case CL_KEY_DOWN:
     case CL_KEY_D:
-        if( cursor<numItems-1 ) {
+        if( cursor<int(item.size()-1) ) {
             cursor++;
             if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
         }
@@ -223,5 +212,8 @@ CAMenu::on_key_pressed (const CL_InputEvent &key)
     //
     item[cursor]->handleKey( key );
 }
+
+template void CAMenu::addMenuSelect<int>( const std::string& label, const std::string valueList, int* result );
+template void CAMenu::addMenuSelect<bool>( const std::string& label, const std::string valueList, bool* result );
 
 // EOF

@@ -15,12 +15,22 @@ CACredits::CACredits()
     scrollPos = 0.0;
 
     text.push_back("");
-    text.push_back("- Graphics & Programming -");
+    text.push_back("- Graphics -");
     text.push_back("");
     text.push_back("Andrew Mustun");
     text.push_back("andrew@mustun.com");
     text.push_back("Colin Pitrat");
     text.push_back("colin.pitrat@gmail.com");
+    text.push_back("");
+    text.push_back("");
+    text.push_back("- Programming -");
+    text.push_back("");
+    text.push_back("Andrew Mustun");
+    text.push_back("andrew@mustun.com");
+    text.push_back("Colin Pitrat");
+    text.push_back("colin.pitrat@gmail.com");
+    text.push_back("Matthieu Lecesne");
+    text.push_back("matthieulecesne@yahoo.fr");
     text.push_back("");
     text.push_back("");
     text.push_back("- Additional Tracks -");

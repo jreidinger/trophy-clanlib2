@@ -1,6 +1,8 @@
 #ifndef CAMENU_H
 #define CAMENU_H
 
+#include <vector>
+
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
@@ -19,11 +21,11 @@ public:
     virtual int run();
     virtual void buildScreen();
 
-    void addMenuLabel( const std::string label );
-    void addMenuInput( const std::string label, std::string result, int maxLength );
-    void addMenuInput( const std::string label, int* result, int maxLength );
-    void addMenuSelect( const std::string label, const std::string valueList, int* result );
-    void addMenuSelect( const std::string label, const std::string valueList, bool* result );
+    void addMenuLabel( const std::string& label );
+    void addMenuInput( const std::string& label, std::string result, int maxLength );
+    void addMenuInput( const std::string& label, int* result, int maxLength );
+    template<typename T>
+    void addMenuSelect( const std::string& label, const std::string valueList, T* result );
 
     void calcMenuDimensions();
 
@@ -76,7 +78,7 @@ public:
     }
     //! Sets the cursor position (0 is the top entry).
     void setCursor( int pos ) {
-        if( cursor>=0 && cursor<numItems ) cursor = pos;
+        if( cursor>=0 && cursor<int(item.size()) ) cursor = pos;
     }
     //! Returns the current cursor position (o is the top position).
     int  getCursor() {
@@ -108,12 +110,11 @@ protected:
     //! Header height
     int headerHeight;
 
+    // TODO: should we delete CAMenuItem?
     //! The menu items
-    CAMenuItem* item[CA_MAXMENUITEMS];
+    std::vector<CAMenuItem*> item; 
     //! Menu Title
     std::string title;
-    //! Number of used menu items
-    int numItems;
 
     //! Cursor position (0...numLabels)
     int cursor;

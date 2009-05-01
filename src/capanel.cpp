@@ -11,9 +11,6 @@ CAPanel::CAPanel() {
     }
 }
 
-/** Destructor.
-*/
-CAPanel::~CAPanel() {}
 
 /** Displays the panel.
 */

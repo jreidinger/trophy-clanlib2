@@ -64,7 +64,7 @@ public:
     void initPanel();
     void deinitPanel();
     void initTrackList();
-    void initTrack( std::string trackName );
+    void initTrack( const std::string& trackName );
     void deinitTrack();
 
     void reconfigure();

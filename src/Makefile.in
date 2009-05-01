@@ -45,11 +45,12 @@ PROGRAMS = $(bin_PROGRAMS)
 am_trophy_OBJECTS = cagoody.$(OBJEXT) cainfodialog.$(OBJEXT) \
 	canetserver.$(OBJEXT) casoundeffect.$(OBJEXT) \
 	camenuinput.$(OBJEXT) capositiontableview.$(OBJEXT) \
-	calabel.$(OBJEXT) capanel.$(OBJEXT) \
+	calabel.$(OBJEXT) capanel.$(OBJEXT) caconfigurekey.$(OBJEXT) \
 	caimagehueselector.$(OBJEXT) camenuitem.$(OBJEXT) \
-	caresources.$(OBJEXT) calineedit.$(OBJEXT) player.$(OBJEXT) \
-	cacredits.$(OBJEXT) caimagemanipulation.$(OBJEXT) \
-	camenulabel.$(OBJEXT) cascreen.$(OBJEXT) catrophy.$(OBJEXT) \
+	camenuselect.$(OBJEXT) caresources.$(OBJEXT) \
+	calineedit.$(OBJEXT) player.$(OBJEXT) cacredits.$(OBJEXT) \
+	caimagemanipulation.$(OBJEXT) camenulabel.$(OBJEXT) \
+	cascreen.$(OBJEXT) catrophy.$(OBJEXT) \
 	caloadingscreen.$(OBJEXT) caplayersettingsdialog.$(OBJEXT) \
 	cadialog.$(OBJEXT) caimageselector.$(OBJEXT) \
 	casignupscreen.$(OBJEXT) cawidget.$(OBJEXT) \
@@ -163,8 +164,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositiontable.h casoundeffect.cpp \
 		 cagoody.h cainfodialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h \
-		 cagoodytype.h calabel.cpp camenuinput.h capanel.cpp capositiontableview.h \
-		 cartype.h caimagehueselector.cpp calabel.h camenuitem.cpp capanel.h caresources.cpp \
+		 cagoodytype.h calabel.cpp camenuinput.h capanel.cpp capositiontableview.h caconfigurekey.cpp\
+		 cartype.h caimagehueselector.cpp calabel.h camenuitem.cpp camenuselect.cpp capanel.h caresources.cpp caconfigurekey.h\
 		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h \
 		 cacredits.cpp caimagemanipulation.cpp calineedit.h camenulabel.cpp player.h cascreen.cpp catrophy.cpp \
 		 cacredits.h caimagemanipulation.h caloadingscreen.cpp camenulabel.h caplayersettingsdialog.cpp cascreen.h \
@@ -245,6 +246,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caconfigurekey.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cacredits.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cadialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cagoody.Po@am__quote@
@@ -260,6 +262,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenuinput.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenuitem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenulabel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camenuselect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/canetclient.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/canetserver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/capanel.Po@am__quote@

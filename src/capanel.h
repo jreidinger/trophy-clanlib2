@@ -11,7 +11,6 @@
 class CAPanel {
 public:
     CAPanel();
-    ~CAPanel();
 
     void display();
 

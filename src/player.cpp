@@ -37,6 +37,16 @@ Player::Player( int id, std::string name,
 
     ox=oy = 0.0;
 
+    // default key
+    using namespace ConfigureKey;
+    m_keyMap[ACCELERATE]= CL_KEY_UP;
+    m_keyMap[BRAKE] = CL_KEY_DOWN;
+    m_keyMap[LEFT] = CL_KEY_LEFT;
+    m_keyMap[RIGHT] = CL_KEY_RIGHT;
+    m_keyMap[SHOOT] = CL_KEY_X;
+    m_keyMap[BOMB] = CL_KEY_C;
+    m_keyMap[BOOST] = CL_KEY_A;
+    m_keyMap[HORN] = CL_KEY_SPACE;
     reset();
 }
 
@@ -214,6 +224,7 @@ void
 Player::keyControl() {
     // We're death and can't drive anymore:
     //
+    using namespace ConfigureKey;
     if( death || finished ) {
         speedMode = Constant;
     }
@@ -223,15 +234,15 @@ Player::keyControl() {
     else {
         // Accelerate (E/UP):
         //
-        if( CL_Keyboard::get_keycode(CL_KEY_E) ||
-                CL_Keyboard::get_keycode(CL_KEY_UP) ) {
+        if (CL_Keyboard::get_keycode(m_keyMap[ACCELERATE]))
+        {
             speedMode = Accelerate;
         }
 
         // Decelerate (D/DOWN):
         //
-        else if( CL_Keyboard::get_keycode(CL_KEY_D) ||
-                 CL_Keyboard::get_keycode(CL_KEY_DOWN) ) {
+        else if (CL_Keyboard::get_keycode(m_keyMap[BRAKE]))
+        {
             speedMode = Decelerate;
         }
 
@@ -245,15 +256,15 @@ Player::keyControl() {
     if( !death ) {
         // Steer left:
         //
-        if( CL_Keyboard::get_keycode(CL_KEY_LEFT) ||
-                CL_Keyboard::get_keycode(CL_KEY_N)) {
+        if (CL_Keyboard::get_keycode(m_keyMap[LEFT]))
+        {
             directionMode = Left;
         }
 
         // Steer right:
         //
-        else if( CL_Keyboard::get_keycode(CL_KEY_RIGHT) ||
-                 CL_Keyboard::get_keycode(CL_KEY_M)) {
+        else if (CL_Keyboard::get_keycode(m_keyMap[RIGHT]))
+        {
             directionMode = Right;
         }
 
@@ -266,13 +277,15 @@ Player::keyControl() {
 
     // Horn:
     //
-    if( CL_Keyboard::get_keycode(CL_KEY_SPACE) ) {
+    if (CL_Keyboard::get_keycode(m_keyMap[HORN]))
+    {
         CA_RES->effectHorn->play();
     }
 
     // Shoot:
     //
-    if( CL_Keyboard::get_keycode(CL_KEY_X) ) {
+    if (CL_Keyboard::get_keycode(m_keyMap[SHOOT]))
+    {
         if( !finished && !death && CA_APP->allowShooting && bullets>0 ) {
             CA_RES->effectShoot->play( 2 );
             shoot();
@@ -284,7 +297,8 @@ Player::keyControl() {
     // Drop fog bomb:
     //
     static bool blockKeyF = false;
-    if( CL_Keyboard::get_keycode(CL_KEY_C) ) {
+    if (CL_Keyboard::get_keycode(m_keyMap[BOMB]))
+    {
         if( !finished && !death && CA_APP->allowShooting && !blockKeyF && fogBombs!=0 ) {
             CA_APP->dropFogBomb( (int)x,(int)y,up );
             fogBombs--;
@@ -296,7 +310,8 @@ Player::keyControl() {
 
     // Turbo:
     //
-    if( CL_Keyboard::get_keycode(CL_KEY_A) ) {
+    if (CL_Keyboard::get_keycode(m_keyMap[BOOST]))
+    {
         activateTurbo();
     } else {
         deactivateTurbo();

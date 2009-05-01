@@ -14,20 +14,8 @@ template<typename T>
 class CAMenuSelect : public CAMenuLabel {
 public:
 
-   /** Constructor for selections of more than two items.
-    \param menu Pointer to menu
-    \param pos  Position of the item in the menu (0=top position)
-    \param label Menu item label.
-    \param valueList List of possible values. Format: "value1~value2~value3~..."
-    \param result Pointer to store the index of the selected item (0=first item of list)
-   */
-    CAMenuSelect( CAMenu* menu, int pos, const std::string& label, const std::string& nvalueList, T* result ) 
-    : CAMenuLabel( menu, pos, label ), tResult(result), selectedItem(*result) {
-    std::istringstream iss ( nvalueList );
-    std::string temp;
-    while (std::getline(iss,temp, '~'))
-       valueList.push_back(temp);
-}
+
+    CAMenuSelect( CAMenu* menu, int pos, const std::string& label, const std::string& nvalueList, T* result );
 
 
     /** Returns rtti of this menu item.
@@ -37,37 +25,11 @@ public:
         return CA_MI_MENUSELECT;
     }
 
-   /** Displays the item.
-   */
-    virtual void display( bool highlight )
-    {
-        CAMenuLabel::display( highlight );
 
-        if( font ) {
-            font->set_alignment(origin_top_right, 0, 0);
-            font->draw (menu->getRight() - CA_MENUSPACE/2, top + CA_MENUSPACE/2, valueList[selectedItem]);
-        }
-    }
+    virtual void display( bool highlight );
 
-    /** Handles keys on this label.
-     */
-    virtual void handleKey (const CL_InputEvent &key)
-    {
-        if( key.id==CL_KEY_ENTER ||
-                key.id==CL_KEY_SPACE ||
-                key.id==CL_KEY_RIGHT    ) {
-            selectedItem++;
-            if( selectedItem>=int(valueList.size()) ) selectedItem=0;
-        }
+    virtual void handleKey (const CL_InputEvent &key);
 
-        if( key.id==CL_KEY_LEFT ) {
-            selectedItem--;
-            if( selectedItem<0 ) selectedItem=int(valueList.size())-1;
-        }
-
-        *tResult = (T)(selectedItem);
-        menu->setChanged();
-    }
 
 
     int  getSelectedItem() {
