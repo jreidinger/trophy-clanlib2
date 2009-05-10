@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "calineedit.h"
 #include "caresources.h"
 #include "catrophy.h"

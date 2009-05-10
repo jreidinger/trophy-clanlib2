@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "camenuinput.h"
 #include "camenu.h"
 #include "caresources.h"

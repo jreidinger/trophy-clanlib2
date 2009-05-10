@@ -1,9 +1,5 @@
 #include "player.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
 #include "cartype.h"
 #include "caimagemanipulation.h"
 #include "catrophy.h"
@@ -17,7 +13,7 @@
     \param moving Is this sprite controlled by the player (Keyboard),
                   the computer (Computer) or a net player (Network)
 */
-Player::Player( int id, std::string name,
+Player::Player( int id, const std::string& name,
                     int carNumber,
                     ControlMode controlMode ) {
     for( int i=0; i<CA_FPR; ++i ) {
@@ -37,24 +33,17 @@ Player::Player( int id, std::string name,
 
     ox=oy = 0.0;
 
-    // default key
-    using namespace ConfigureKey;
-    m_keyMap[ACCELERATE]= CL_KEY_UP;
-    m_keyMap[BRAKE] = CL_KEY_DOWN;
-    m_keyMap[LEFT] = CL_KEY_LEFT;
-    m_keyMap[RIGHT] = CL_KEY_RIGHT;
-    m_keyMap[SHOOT] = CL_KEY_X;
-    m_keyMap[BOMB] = CL_KEY_C;
-    m_keyMap[BOOST] = CL_KEY_A;
-    m_keyMap[HORN] = CL_KEY_SPACE;
     reset();
 }
 
 /** Destructor.
 */
-Player::~Player() {
-    for( int i=0; i<CA_FPR; ++i ) {
-        if( sprite[i] ) {
+Player::~Player()
+{
+    for( int i=0; i<CA_FPR; ++i )
+    {
+        if( sprite[i] )
+        {
             delete sprite[i];
             sprite[i] = 0;
         }
@@ -103,7 +92,6 @@ Player::resetForRace() {
 
     resetHitPoints();
 
-    routePoint    = 1;
     routeNumber   = 0;
 
     lapNumber     = 0;
@@ -146,7 +134,8 @@ Player::setCarNumber( int carNumber, bool render ) {
     \param routeNumber The initial route number for this player
 */
 void
-Player::initPlayer( int routeNumber ) {
+Player::initPlayer( int routeNumber )
+{
     //reset();
     this->routeNumber = routeNumber;
     move( CA_APP->track.rp[routeNumber][0][0], CA_APP->track.rp[routeNumber][0][1] );
@@ -217,239 +206,6 @@ Player::setTurbo( float tb ) {
     if( turbo < 0                 ) turbo = 0;
 }
 
-/** Controls the player by keyboard. Only called for keyboard (human) players.
-    Computer players rather call 'autoPilot()'.
-*/
-void
-Player::keyControl() {
-    // We're death and can't drive anymore:
-    //
-    using namespace ConfigureKey;
-    if( death || finished ) {
-        speedMode = Constant;
-    }
-
-    // We're alive:
-    //
-    else {
-        // Accelerate (E/UP):
-        //
-        if (CL_Keyboard::get_keycode(m_keyMap[ACCELERATE]))
-        {
-            speedMode = Accelerate;
-        }
-
-        // Decelerate (D/DOWN):
-        //
-        else if (CL_Keyboard::get_keycode(m_keyMap[BRAKE]))
-        {
-            speedMode = Decelerate;
-        }
-
-        // Don't change speed:
-        //
-        else {
-            speedMode = Constant;
-        }
-    }
-
-    if( !death ) {
-        // Steer left:
-        //
-        if (CL_Keyboard::get_keycode(m_keyMap[LEFT]))
-        {
-            directionMode = Left;
-        }
-
-        // Steer right:
-        //
-        else if (CL_Keyboard::get_keycode(m_keyMap[RIGHT]))
-        {
-            directionMode = Right;
-        }
-
-        // Don't change direction:
-        //
-        else {
-            directionMode = Straight;
-        }
-    }
-
-    // Horn:
-    //
-    if (CL_Keyboard::get_keycode(m_keyMap[HORN]))
-    {
-        CA_RES->effectHorn->play();
-    }
-
-    // Shoot:
-    //
-    if (CL_Keyboard::get_keycode(m_keyMap[SHOOT]))
-    {
-        if( !finished && !death && CA_APP->allowShooting && bullets>0 ) {
-            CA_RES->effectShoot->play( 2 );
-            shoot();
-        }
-    } else {
-        shootMode = false;
-    }
-
-    // Drop fog bomb:
-    //
-    static bool blockKeyF = false;
-    if (CL_Keyboard::get_keycode(m_keyMap[BOMB]))
-    {
-        if( !finished && !death && CA_APP->allowShooting && !blockKeyF && fogBombs!=0 ) {
-            CA_APP->dropFogBomb( (int)x,(int)y,up );
-            fogBombs--;
-            blockKeyF = true;
-        }
-    } else {
-        blockKeyF = false;
-    }
-
-    // Turbo:
-    //
-    if (CL_Keyboard::get_keycode(m_keyMap[BOOST]))
-    {
-        activateTurbo();
-    } else {
-        deactivateTurbo();
-    }
-}
-
-/** Calculates route of computer players.
-*/
-void
-Player::autoPilot() 
-{
-    // Choose new route by shuffle:
-    //
-    if( routePoint >= CA_APP->track.routePoints ) 
-    {
-        routePoint=0;
-        routeNumber = TrophyMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
-    }
-
-    // Next coordinate to locate
-    //
-    float nx = CA_APP->track.rp[routeNumber][routePoint][0];
-    float ny = CA_APP->track.rp[routeNumber][routePoint][1];
-
-    // Angle to next route point:
-    //
-    float b = TrophyMath::getAngle( x,y, nx,ny );
-    float diff = TrophyMath::getAngleDiff( direction, b );
-    float dist = TrophyMath::getDistance( x,y, nx,ny );
-
-    bool retard = false;
-
-    // Steer:
-    //
-    // TODO : autoPilot should also take care of functionMap pixel that are under 
-    // edges of the car (or better, next to the edges)
-    if (diff<20.0 || diff>340.0) {
-        directionMode = Straight;
-    } else if (diff<180.0) {
-        // TODO : was commented
-        //if( diff>40.0 ) retard=true;
-        directionMode = Right;
-    } else if (diff>180.0) {
-        // TODO : was commented
-        //if( diff<320.0 ) retard=true;
-        directionMode = Left;
-    }
-
-    // Switch to next route point:
-    //
-    // TODO : clean these constants all over the code (original = 120)!
-    if (dist < 120.0) {
-        ++routePoint;
-    }
-
-    // Speed:
-    //
-    if( !death && !finished && !retard ) speedMode=Accelerate;
-    else                                   speedMode=Constant;
-
-
-    if( !death && !finished ) 
-    {
-        // Decide wheter to activate turbo or not:
-        //
-        // TODO : strange ... 
-        // CATrophy::Easy -> turboLaunchDistance = 600 or deactivateTurbo() ?
-        if( CA_APP->difficulty!=CATrophy::Easy ) {
-            int turboLaunchDistance = 600;
-            switch( CA_APP->difficulty ) {
-            case CATrophy::Easy:
-                turboLaunchDistance = 600;
-                break;
-            case CATrophy::Medium:
-                turboLaunchDistance = 200;
-                break;
-            case CATrophy::Hard:
-                turboLaunchDistance = 50;
-                break;
-            }
-            int xt = (int)(x + cos( newDirection/ARAD ) * turboLaunchDistance);
-            int yt = (int)(y + sin( newDirection/ARAD ) * turboLaunchDistance);
-            int xt2 = (int)((x + xt)/2);
-            int yt2 = (int)((y + yt)/2);
-            if( turbo>0.0 &&
-                    CA_APP->getSpeedLimit(xt,yt)==15 &&
-                    CA_APP->getSpeedLimit(xt2,yt2)==15 ) {
-                activateTurbo();
-            } else {
-                deactivateTurbo();
-            }
-        } else {
-            deactivateTurbo();
-        }
-
-        // Decide wheter to shoot or not:
-        //
-        if( CA_APP->allowShooting && bullets!=0 ) 
-        {
-            int distance;
-            int angle;
-            int angleDiff;
-            shootMode = false;
-            for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-                if( pl!=id ) {
-                    distance = (int)TrophyMath::getDistance( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angle = (int)TrophyMath::getAngle( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angleDiff = (int)TrophyMath::getAngleDiff( angle, newDirection );
-                    if( distance<CA_SHOOTINGRANGE && (angleDiff < 10.0 || angleDiff > 350.0) ) {
-                        shoot();
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Decide wheter to drop a fog bomb or not:
-        //
-        if( CA_APP->allowShooting && fogBombs!=0 ) 
-        {
-            int distance;
-            int angle;
-            int angleDiff;
-            for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-                if( pl!=id ) {
-                    distance = (int)TrophyMath::getDistance( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angle = (int)TrophyMath::getAngle( x,y, CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angleDiff = (int)TrophyMath::getAngleDiff( angle, newDirection );
-                    if( distance>200 && distance<202 && angleDiff < 185.0 && angleDiff > 175.0 ) {
-                        CA_APP->dropFogBomb( (int)x,(int)y,up );
-                        fogBombs--;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-}
 
 /** Called on every "step" the game makes.
     The Sprite moves according to speed and direction.
@@ -712,8 +468,9 @@ Player::checkFunctionMap()
             {
                 // Check car away (computer players check away stronger):
                 //
-                float cangle=2.5;
-                if( controlMode==Computer ) cangle=7.5;
+                /*float cangle=2.5;
+                if( controlMode==Computer ) cangle=7.5;*/
+                float cangle = getCheckAwayAngle();
                 switch(i) 
                 {
                     default:
@@ -930,7 +687,7 @@ void
 Player::display( int offsetX, int offsetY ) 
 {
     sprite[frame]->draw ( (int)(x+offsetX - sprite[ frame ]->get_width()/2),
-                                 (int)(y+offsetY - sprite[ frame ]->get_height()/2) );
+                          (int)(y+offsetY - sprite[ frame ]->get_height()/2) );
 
     // Display hit points:
     //

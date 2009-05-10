@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "caplayersettingsdialog.h"
 #include "caimagehueselector.h"
 #include "catrophy.h"
@@ -14,8 +12,8 @@ CAPlayerSettingsDialog::CAPlayerSettingsDialog()
 
     resize( 480, 200 );
 
-    char price[16];
-    sprintf( price, "$%d", CA_APP->carType[DEFAULT_CARTYPE].price );
+      std::ostringstream ossPrice;
+      ossPrice << "$" << CA_APP->carType[DEFAULT_CARTYPE].price;
 
     // Line edit for player name:
     //
@@ -26,7 +24,7 @@ CAPlayerSettingsDialog::CAPlayerSettingsDialog()
     // Car-Image:
     //
     carImage = new CAImageHueSelector( CA_APP->carType[DEFAULT_CARTYPE].name.c_str(),
-                                       price,
+                                       ossPrice.str(),
                                        CA_APP->carType[DEFAULT_CARTYPE].surface3d,
                                        true,
                                        CAImageView::Vertical );

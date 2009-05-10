@@ -49,14 +49,18 @@ CAPositionTable::resetRace() {
     The first player who calls this function is the lap winner.
 */
 void
-CAPositionTable::playerFinishedRace( Player* player ) {
-    if( raceRankIndex<CA_MAXPLAYERS ) {
+CAPositionTable::playerFinishedRace( Player* player )
+{
+    if( raceRankIndex<CA_MAXPLAYERS )
+    {
         raceRankList[raceRankIndex] = player;
         player->setRaceRank( raceRankIndex+1 );
-        int points = 700-100*player->getRaceRank();
-        if( points>0 ) {
+        int points = (CA_MAXPLAYERS+1)-player->getRaceRank();
+        if( points>0 )
+        {
             player->setRacePoints( points );
-            player->setTotalPoints( player->getTotalPoints() + points );
+            //player->setTotalPoints( player->getTotalPoints() + points );
+            // total points are now handle by championshipscreen
         }
         player->setMoney( (int)(player->getMoney() + (float)CA_PRIZE/CA_MAXPLAYERS*(CA_MAXPLAYERS-player->getRaceRank()+1)) );
         raceRankIndex++;

@@ -1,5 +1,6 @@
 #include "casignupscreen.h"
 #include "catrophy.h"
+#include "player.h"
 
 /** Constructor.
 */
@@ -55,12 +56,11 @@ CASignUpScreen::reset()
     \param o New Offset.
 */
 void
-CASignUpScreen::setOffset( int o ) 
+CASignUpScreen::setOffset( int offset ) 
 {
     std::string trackPath = (std::string) "tracks/";
 
-    offset = o;
-
+    this->offset = offset;
     reset();
 
     for( int i=0; i<3; ++i ) 
@@ -166,8 +166,7 @@ CASignUpScreen::buildScreen()
             //                                            racePreview[i]->getTop()-22,
             //                                            (i==0 ? "Easy" : (i==1 ? "Medium" : "Hard")) );
         }
-
-    }
+     }
 }
 
 /** Called on key release.

@@ -11,7 +11,6 @@
 #include <ClanLib/display.h>
 
 #include <math.h>
-//#include <unistd.h>
 #include <fstream>
 #include <sstream>
 
@@ -23,12 +22,14 @@
 #include "capositiontable.h"
 #include "cagoody.h"
 #include "catrophy.h"
-#include "player.h"
+#include "humanplayer.h"
+#include "computerplayer.h"
 #include "caplayersettingsdialog.h"
 #include "capanel.h"
 #include "capositiontableview.h"
 #include "camenu.h"
 #include "casignupscreen.h"
+#include "cachampionshipscreen.h"
 
 // Global instance of the application needed by the ClanLib main():
 //
@@ -67,6 +68,7 @@ CATrophy::main( int argc, char** argv )
         strcpy( serverIp, "0.0.0.0" );
         serverPort = 18805;
         difficulty = Medium;
+        m_ConfigureKey = NULL;
 
         // Proccess parameters:
         //
@@ -195,6 +197,7 @@ CATrophy::main( int argc, char** argv )
         deinitPlayers();
         deinitGoodies();
         deinitCarTypes();
+        delete m_ConfigureKey;
 
         // TODO : The only way I found to restore properly the resolution before exiting
         if(fullScreen) display_window->set_windowed();
@@ -373,9 +376,17 @@ CATrophy::initPlayers()
     if(debug) std::cout << "initPlayers begin" << std::endl;
 
     int ct=0;
-    for(int pl=0; pl<CA_MAXPLAYERS; ++pl) {
-        player[pl] = new Player( pl, "", 0,
-                                   ((pl==0) ? Player::Keyboard : Player::Computer) );
+    for(int pl=0; pl<CA_MAXPLAYERS; ++pl)
+    {
+        if (pl == 0)
+        {
+            HumanPlayer* theHumanPlayer = new HumanPlayer( pl, "", 0 );
+            player.push_back( theHumanPlayer );
+            m_ConfigureKey = new CAConfigureKey(theHumanPlayer);
+        }
+        else
+            player.push_back ( new ComputerPlayer( pl, "", 0));
+
         if( pl!=0 ) {
             int sat = TrophyMath::getRandomNumber( -90, 20 );
             int val = TrophyMath::getRandomNumber( -60, 0 );
@@ -596,8 +607,10 @@ CATrophy::initTrack( const std::string& trackName )
         do {
             done = true;
             rn = TrophyMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
-            for( int pl2=0; pl2<pl; ++pl2 ) {
-                if( player[pl2]->getRouteNumber()==rn ) done=false;
+            for( int pl2=0; pl2<pl; ++pl2 )
+            {
+                if( player[pl2]->getRouteNumber() == rn )
+                    done=false;
             }
         } while( !done );
 
@@ -614,7 +627,7 @@ CATrophy::initTrack( const std::string& trackName )
     // Reset time:
     //
     time = 0;
-    strcpy( timeString, "00:00.00" );
+    timeString = "00:00.00";
 
     // Reset some other things which must be reset for each lap:
     //
@@ -727,6 +740,7 @@ void
 CATrophy::resetPlayers() {
     for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
         player[pl]->reset();
+        player[pl]->setTotalPoints(pl*4+pl*3);
         player[pl]->setCarNumber( 0, player[pl]->getCarNumber()!=0 );
     }
 }
@@ -746,7 +760,6 @@ CATrophy::runMenu()
     CAMenu* mainMenu;
     CAMenu* raceMenu;
     //CAMenu* netMenu;
-    CAMenu* configMenu;
     int mainMenuSelection, raceMenuSelection;
     //netMenuSelection, configMenuSelection;
 
@@ -843,21 +856,18 @@ CATrophy::runMenu()
             //
         case 1:
         {
-            configMenu = new CAMenu( "Configure" );
-            configMenu->addMenuSelect( "Fullscreen", "off~on", &CA_APP->fullScreen );
-            configMenu->addMenuSelect( "Sound", "off~on", &CA_APP->sound );
-            configMenu->addMenuSelect( "Sound volume", "0%~10%~20%~30%~40%~50%~60%~70%~80%~90%~100%", &CA_APP->volume );
-            configMenu->addMenuLabel( "Configure Keyboard" );
-            configMenu->addMenuLabel( "Previous Menu" );
-            configMenu->setConfigureMenu( true );
-            configMenu->run();
-            if (configMenu->getSelection() == 3)
+            CAMenu configMenu( "Configure" ) ;
+            configMenu.addMenuSelect( "Fullscreen", "off~on", &CA_APP->fullScreen );
+            configMenu.addMenuSelect( "Sound", "off~on", &CA_APP->sound );
+            configMenu.addMenuSelect( "Sound volume", "0%~10%~20%~30%~40%~50%~60%~70%~80%~90%~100%", &CA_APP->volume );
+            configMenu.addMenuLabel( "Configure Keyboard" );
+            configMenu.addMenuLabel( "Previous Menu" );
+            configMenu.setConfigureMenu( true );
+            configMenu.run();
+            if (configMenu.getSelection() == 3)
             {
-                CAConfigureKey keyboard;
-                keyboard.run();
-                player[0]->setKeyMap(keyboard.getKeyMap());                
+                m_ConfigureKey->run();           
             }
-            delete configMenu;
         }
             break;
 
@@ -993,6 +1003,7 @@ CATrophy::startNewGame()
             int trackNumber;
             do 
             {
+                
                 signUpScreen = new CASignUpScreen();
                 trackNumber = signUpScreen->run();
                 delete signUpScreen;
@@ -1001,6 +1012,10 @@ CATrophy::startNewGame()
                     track.file = trackList[trackNumber];
                     run();
                     goon = runPositionTable( true );
+                    {
+                        CAChampionshipScreen myChampionShip(player, CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white);
+                        myChampionShip.run();
+                    }
                 }
             } while( trackNumber!=-1 && goon );
         }
@@ -1097,7 +1112,7 @@ CATrophy::run()
 
     if( debug ) std::cout << "Start game loop" << std::endl;
 
-    // Loop until 'Q' pressed or race is over:
+    // Loop until 'Escape' pressed or race is over:
     //
     while( CL_Keyboard::get_keycode(CL_KEY_ESCAPE) == false &&
             (!raceOver || CL_System::get_time()-raceOverTime<3000) ) 
@@ -1114,8 +1129,7 @@ CATrophy::run()
             //
             raceOver = true;
             for( c=0; c<CA_MAXPLAYERS; ++c ) {
-                if( c==0 ) player[c]->keyControl();    // Control Human player
-                else       player[c]->autoPilot();     // Control Computer player
+                player[c]->pilot();
 
                 if( player[c]->hasFinished() ) {       // Check if first player has finished
                     firstPlayerFinished = true;

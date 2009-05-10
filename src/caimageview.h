@@ -50,7 +50,7 @@ public:
 protected:
     //! Image data (surface, texts)
     CAImageData image;
-    //! 'Vertiacl' or 'Horizontal' selector (used for child classes)
+    //! 'Vertical' or 'Horizontal' selector (used for child classes)
     Direction direction;
     //! Height of top/ bottom bar
     int barHeight;

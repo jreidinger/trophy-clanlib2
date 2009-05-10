@@ -51,16 +51,16 @@
 */
 namespace TrophyMath 
 {
-        bool   compFloat( float f1, float f2, float tol=0.001 );
-        float  corrAngle( float ang );
-        float  getAngle( float x1, float y1, float x2, float y2 );
-        float  getDistance( float x1, float y1, float x2, float y2 );
-        float  getAngleDiff( float a1, float a2 );
-        bool   getIntersection( int ax1, int ay1, int ax2, int ay2,
-                int bx1, int by1, int bx2, int by2,
+        bool   compFloat( const float f1, const float f2, const float tol=0.001 );
+        float  corrAngle( const float ang );
+        float  getAngle( const float x1, const float y1, const float x2, const float y2 );
+        float  getDistance( const float x1, const float y1, const float x2, const float y2 );
+        float  getAngleDiff( const float a1, float a2 );
+        bool   getIntersection( const int ax1, const int ay1, const int ax2, const int ay2,
+                const int bx1, const int by1, const int bx2, const int by2,
                 int* ix, int* iy );
-        int    getRandomNumber( int min, int max );
-        void   timeToString( char* string, int time );
+        int    getRandomNumber( const int min, const int max );
+        void   timeToString( std::string& timeStr, const int time );
 };
 
 #endif

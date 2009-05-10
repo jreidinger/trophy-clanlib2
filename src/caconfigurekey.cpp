@@ -2,12 +2,15 @@
 #include "caresources.h"
 #include "caimagemanipulation.h"
 #include "catrophy.h"
-
+#include "humanplayer.h"
+#include "caconfigurekey.h"
 
 /** Constructor.
 */
-CAConfigureKey::CAConfigureKey()
-    : CADialog()
+CAConfigureKey::CAConfigureKey(HumanPlayer* human)
+    : CADialog(),
+    m_human(human),
+    m_keyMode(ConfigureKey::ACCELERATE)
 {
     resize( 600, 300 ); // a white rectangle
     title = "Configure Keyboard";
@@ -20,8 +23,6 @@ CAConfigureKey::CAConfigureKey()
     m_keyString[BOMB] = "DROP BOMB";
     m_keyString[BOOST] = "BOOST";
     m_keyString[HORN] = "HORN";
-
-    m_keyMode = ACCELERATE;
 }
 
 CAConfigureKey::~CAConfigureKey()
@@ -60,7 +61,11 @@ void CAConfigureKey::on_key_released( const CL_InputEvent &key )
            buildScreen();
         }
         else
+        {
            done = true;
+           m_keyMode = ConfigureKey::ACCELERATE;
+           m_human->setKeyMap(m_keyMap);
+        }
         
         break;
     }

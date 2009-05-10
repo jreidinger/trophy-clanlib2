@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "caimagemanipulation.h"
 #include "caplayerview.h"
 #include "caresources.h"

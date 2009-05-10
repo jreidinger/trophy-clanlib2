@@ -1,13 +1,14 @@
-#include <stdio.h>
 #include <time.h>
 
 #include "trophymath.h"
+#include <sstream>
+#include <iomanip>
 
 /** Compares two float values.
     \return true if the two values differ less than the tolerance value.
 */
 bool
-TrophyMath::compFloat( float f1, float f2, float tol ) 
+TrophyMath::compFloat( const float f1, const float f2, const float tol ) 
 {
     float delta = f2-f1;
     return( delta>-tol && delta<tol );
@@ -17,7 +18,7 @@ TrophyMath::compFloat( float f1, float f2, float tol )
     \return The corrected angle
 */
 float
-TrophyMath::corrAngle( float ang ) 
+TrophyMath::corrAngle( const float ang ) 
 {
     float ret=ang;
     while(ret<   0.0) ret+=360.0;
@@ -28,7 +29,7 @@ TrophyMath::corrAngle( float ang )
 /** Returns the angle (in degrees) from one point to an other.
 */
 float
-TrophyMath::getAngle( float x1, float y1, float x2, float y2 ) 
+TrophyMath::getAngle( const float x1, const float y1, const float x2, const float y2 ) 
 {
     float xdist, ydist, angle;
 
@@ -61,7 +62,7 @@ TrophyMath::getAngle( float x1, float y1, float x2, float y2 )
 /** Returns the distance from one point to an other.
 */
 float
-TrophyMath::getDistance( float x1, float y1, float x2, float y2 ) 
+TrophyMath::getDistance( const float x1, const float y1, const float x2, const float y2 ) 
 {
     float xd2 = (x2-x1)*(x2-x1);
     float yd2 = (y2-y1)*(y2-y1);
@@ -75,7 +76,7 @@ TrophyMath::getDistance( float x1, float y1, float x2, float y2 )
    All angles in degrees.
 */
 float
-TrophyMath::getAngleDiff( float a1, float a2 ) 
+TrophyMath::getAngleDiff( const float a1, float a2 ) 
 {
     float ret;
 
@@ -89,8 +90,8 @@ TrophyMath::getAngleDiff( float a1, float a2 )
 /** Calculates the intersection point of two lines.
 */
 bool
-TrophyMath::getIntersection( int ax1, int ay1, int ax2, int ay2,
-                         int bx1, int by1, int bx2, int by2,
+TrophyMath::getIntersection( const int ax1, const int ay1, const int ax2, const int ay2,
+                         const int bx1, const int by1, const int bx2, const int by2,
                          int* ix, int* iy ) 
 {
     if( ix && iy ) 
@@ -141,7 +142,7 @@ TrophyMath::getIntersection( int ax1, int ay1, int ax2, int ay2,
 /** Gets a random number from 'min' to 'max'
 */
 int
-TrophyMath::getRandomNumber( int min, int max ) 
+TrophyMath::getRandomNumber( const int min, const int max ) 
 {
     static int counter=0;
     if( counter==1000 || counter==0 ) 
@@ -157,17 +158,18 @@ TrophyMath::getRandomNumber( int min, int max )
     'str' must have at least place for 9 characters.
 */
 void
-TrophyMath::timeToString( char* str, int time ) 
+TrophyMath::timeToString( std::string& timeStr, const int time ) 
 {
     float min = (int)floor( (float)((time)/60000.0) );
     float sec = (float)((time)%60000)/1000.0;
     float hun = ((sec-floor(sec))*100);
 
-    sprintf( str,
-             "%02d:%02d.%02d",
-             (int)min,
-             (int)floor( sec ),
-             (int)floor( hun ) );
+    std::ostringstream ossTime;
+    ossTime << std::setw(2) << std::setfill('0') << int(min) << ":";
+    ossTime << std::setw(2) << std::setfill('0') << int(sec) << ".";
+    ossTime << std::setw(2) << std::setfill('0') << int(hun);
+
+    timeStr = ossTime.str();
 }
 
 // EOF

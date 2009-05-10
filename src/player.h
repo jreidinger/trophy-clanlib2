@@ -1,5 +1,5 @@
-#ifndef CAPLAYER_H
-#define CAPLAYER_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <string>
 #include <ClanLib/core.h>
@@ -7,8 +7,6 @@
 
 #include "utils/hsvcolor.h"
 #include "utils/trophymath.h"
-
-#include "caconfigurekey.h"
 
 struct CarType;
 
@@ -22,13 +20,13 @@ public:
     enum Direction   { Left, Right, Straight };
     enum Speed       { Accelerate, Decelerate, Constant };
 
-    Player( int id, std::string name,
+    Player( int id, const std::string& name,
             int carNumber,
             ControlMode controlMode=Keyboard );
-    ~Player();
+    virtual ~Player();
 
     void   reset();
-    void   resetForRace();
+    virtual void   resetForRace();
 
     void   initPlayer( int routeNumber );
     void   renderSprites( HSVColor col );
@@ -41,7 +39,7 @@ public:
     //! Returns name of this player.
     std::string getName() const { return name; }
     //! Sets name of this player.
-    void   setName( std::string n ) { name=n; }
+    void   setName( const std::string& n ) { name=n; }
 
     //! Returns the color of this player.
     HSVColor  getColor() const { return color; }
@@ -49,26 +47,27 @@ public:
 
     void     setCarNumber( int carNumber, bool render=true );
     //! Returns current car number (0-CA_NUMCARS).
-    int      getCarNumber() { return carNumber; }
+    int      getCarNumber() const { return carNumber; }
 
     /** Sets the newCar flag. Used for showing who has bought
         a new car in the position table.
         */
     void     setNewCar( bool nc ) { newCar=nc; }
     //! Returns the newCar flag.
-    bool     getNewCar() { return newCar; }
+    bool     getNewCar() const { return newCar; }
 
     //! Returns pointer to car type.
     CarType* getCarType() { return carType; }
 
     //! Returns control mode of this player (Keyboard, Computer, Network)
-    ControlMode getControlMode() { return controlMode; }
+    ControlMode getControlMode() const { return controlMode; }
     //! Sets a new control mode for this player.
     void setControlMode( ControlMode cm ) { controlMode = cm; }
 
     //! Returns the direction of this player in degrees (0=right, 90=bottom (!)).
     float  getDirection() const { return direction; }
     void   setDirection(float dir);
+
 
     //! Returns the current speed of this player.
     float  getSpeed() const { return speed; }
@@ -87,15 +86,15 @@ public:
     void   setFrame( int f ) { frame=f; }
 
     //! Returns true if this player is active (true) or not (false).
-    bool   isActive() { return active; }
+    bool   isActive() const { return active; }
     //! Activates or deactivates this player.
     void   activate( bool yes=true ) { active=yes; }
 
     //! Returns true if this player has finished the race successfully.
-    bool   hasFinished() { return finished; }
+    bool   hasFinished() const { return finished; }
 
     //! Returns true if this player died.
-    bool   isDeath() { return death; }
+    bool   isDeath() const { return death; }
 
     //! Returns the life this player has. (0-100)
     float  getLife() const { return life; }
@@ -111,6 +110,8 @@ public:
     int    getFogBombs() const { return fogBombs; }
     //! Sets number of fog bombs left (0-3).
     void   setFogBombs(int f) { fogBombs = (f>3 ? 3 : f); }
+    //! use a fog bombs
+    void   useFogBomb() { fogBombs--;}
 
     //! Returns current rank of this player in the current/last race.
     int    getRaceRank() const { return raceRank; }
@@ -118,12 +119,12 @@ public:
     void   setRaceRank(int r) { raceRank = r; }
 
     //! Returns time used for the last race in millisecnds.
-    int    getRaceTime() { return raceTime; }
+    int    getRaceTime() const { return raceTime; }
     //! Sets time used for the last race in millisecnds.
     void   setRaceTime( int t ) { raceTime = t; }
 
     //! Returns points for the last race.
-    int    getRacePoints() { return racePoints; }
+    int    getRacePoints() const { return racePoints; }
     //! Sets points for the last race.
     void   setRacePoints( int p ) { racePoints = p; }
 
@@ -133,7 +134,7 @@ public:
     void   setTotalRank(int r) { totalRank = r; }
 
     //! Returns total points over all.
-    int    getTotalPoints() { return totalPoints; }
+    int    getTotalPoints() const { return totalPoints; }
     //! Sets total points over all.
     void   setTotalPoints( int p ) { totalPoints = p; }
 
@@ -142,8 +143,7 @@ public:
     //! Sets the players money.
     void   setMoney( int m ) { money = m; }
 
-    void   keyControl();
-    void   autoPilot();
+    virtual void pilot() = 0;
 
     void   advance();
     void   checkCollisions();
@@ -160,29 +160,32 @@ public:
     void   display( int offsetX, int offsetY );
     void   move( float x, float y );
     //! Returns the players position in xp and yp.
-    void   getPosition( float &xp, float &yp ) { xp=x; yp=y; }
+    void   getPosition( float &xp, float &yp ) const { xp=x; yp=y; }
     //! Returns the x position
-    float  getX() { return x; }
+    float  getX() const { return x; }
     //! Returns the y position
-    float  getY() { return y; }
+    float  getY() const { return y; }
 
     void   activateTurbo();
     void   deactivateTurbo();
 
     float  getPosition();
     //! Returns current lap number.
-    int    getLapNumber() { return lapNumber; }
+    int    getLapNumber() const { return lapNumber; }
     //! Returns current route number. Routes are programmed ways for computer players.
-    int    getRouteNumber() { return routeNumber; }
+    int    getRouteNumber() const { return routeNumber; }
+     //! set current route number. Routes are programmed ways for computer players.
+    void   setRouteNumber( int rn ) { routeNumber = rn; }
 
     void   addHitPoint( int x, int y );
     void   resetHitPoints();
-    void   setKeyMap(const std::map<ConfigureKey::DefineKey, int>& keyMap)
-    {
-       m_keyMap = keyMap;
-    }
+
+protected:
+    //! Returns the new direction of this player in degrees (0=right, 90=bottom (!)).
+    float  getNewDirection() const { return newDirection; }
 
 private:
+    virtual float getCheckAwayAngle() = 0;
     //! Player id
     int         id;
     //! Player nick name
@@ -244,8 +247,7 @@ private:
     //! Current velocity in y
     float vy;
 
-    //! Index of next route point to drive to
-    int    routePoint;
+
     //! Route number
     int    routeNumber;
 
@@ -290,8 +292,6 @@ private:
     //! current index for the hitPoint array.
     int    hitPointCounter;
 
-    //! key control
-    std::map<ConfigureKey::DefineKey, int> m_keyMap;
 
 public:
     //! speed mode. Accelerate, Decelerate, Constant

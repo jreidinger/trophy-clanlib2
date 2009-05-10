@@ -16,7 +16,7 @@ public:
 
     void reset();
 
-    void setOffset( int o );
+    void setOffset( int offset );
 
     virtual int run();
     virtual void buildScreen();

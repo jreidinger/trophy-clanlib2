@@ -1,8 +1,10 @@
-#include <stdio.h>
 #include "calabel.h"
 #include "player.h"
 #include "capositiontableview.h"
 #include "catrophy.h"
+#include <string>
+#include <sstream>
+
 
 
 /** Constructor.
@@ -33,16 +35,9 @@ CAPositionTableView::buildScreen() {
     int y;                         // Y-Pos of text line
     int pl;                        // Counter for players
     int rank;                      // Rank of current player
-    char rankStr[5];               // Position string
     int points;                    // Points of current player
-    char pointStr[16];             // Points string
-    char moneyStr[32];             // Money - there's no limit for money
-    char timeStr[16];              // Time string
-    //bool rankTaken[CA_MAXPLAYERS]; // Rank already taken by another player -> move down
+    std::string timeStr;              // Time string
 
-    //for( pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-    //  rankTaken[pl] = false;
-    //}
 
     for( pl=0; pl<CA_MAXPLAYERS; ++pl ) {
 
@@ -53,22 +48,18 @@ CAPositionTableView::buildScreen() {
         } else {
             rank = CA_APP->player[pl]->getTotalRank();
             points = CA_APP->player[pl]->getTotalPoints();
-            strcpy( timeStr, "" );
         }
 
-        // Rank already taken -> move to the next free below.
-        //while( rankTaken[rank-1] && rank-1<CA_MAXPLAYERS ) ++rank;
-
-        //rankTaken[rank-1] = true;
 
         if( rank!=0 ) {
             y = top + 32 + rank*16;
 
             // Rank:
             //
-            sprintf( rankStr, "%d.", rank );
+            std::ostringstream ossRank;
+            ossRank << rank << ".";
             CA_RES->font_normal_11_white->set_alignment(origin_top_right, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 40, y, rankStr );
+            CA_RES->font_normal_11_white->draw( left + 40, y, ossRank.str() );
 
             // Player name:
             //
@@ -83,15 +74,17 @@ CAPositionTableView::buildScreen() {
 
             // Player points:
             //
-            sprintf( pointStr, "%d", points );
-            label->setText( pointStr );
+            std::ostringstream ossPoint;
+            ossPoint << points;
+            label->setText( ossPoint.str() );
             label->move( left + 360, y );
             label->display();
 
             // Money:
             //
-            sprintf( moneyStr, "$%d", CA_APP->player[pl]->getMoney() );
-            label->setText( moneyStr );
+            std::ostringstream ossMoney;
+            ossMoney << "$" << CA_APP->player[pl]->getMoney();
+            label->setText( ossMoney.str() );
             label->move( left + 420, y );
             label->display();
 

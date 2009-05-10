@@ -7,8 +7,6 @@
 CAScreen::CAScreen() {
     done = false;
     cancel = false;
-    title = "";
-    help = "";
 }
 
 /** Destructor.

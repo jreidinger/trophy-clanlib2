@@ -30,6 +30,7 @@
 class CATrophy;
 class Player;
 class CAPanel;
+class CAConfigureKey;
 
 #define CA_APP theApp()            // Macro for getting a pointer to the application (CATrophy*)
 
@@ -131,7 +132,6 @@ public:
 
 public:
     //! Loading screen
-
     CALoadingScreen loading;
 
     //! Game paused?
@@ -157,7 +157,7 @@ public:
     float framesPerSec;
 
     //! Array of Players. Created and destroed by this class.
-    Player* player[CA_MAXPLAYERS];
+    std::vector<Player*> player;
     //! Array of car types.
     CarType carType[CA_NUMCARTYPES];
     //! Array of goodyTypes.
@@ -227,12 +227,13 @@ public:
 
 private:
     //! Current time in milliseconds since race start
-
     int  time;
     //! Current race time as string (e.g. "02:23")
-    char timeString[16];
+    std::string timeString;
 
     CL_DisplayWindow *display_window;
+
+    CAConfigureKey* m_ConfigureKey;
 
     //! The server object
     // CANetServer* netServer;

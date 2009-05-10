@@ -53,11 +53,12 @@ am_trophy_OBJECTS = cagoody.$(OBJEXT) cainfodialog.$(OBJEXT) \
 	cascreen.$(OBJEXT) catrophy.$(OBJEXT) \
 	caloadingscreen.$(OBJEXT) caplayersettingsdialog.$(OBJEXT) \
 	cadialog.$(OBJEXT) caimageselector.$(OBJEXT) \
-	casignupscreen.$(OBJEXT) cawidget.$(OBJEXT) \
-	trophymath.$(OBJEXT) caplayerview.$(OBJEXT) \
+	cachampionshipscreen.$(OBJEXT) casignupscreen.$(OBJEXT) \
+	cawidget.$(OBJEXT) trophymath.$(OBJEXT) caplayerview.$(OBJEXT) \
 	caimageview.$(OBJEXT) canetclient.$(OBJEXT) \
 	caslotselectiondialog.$(OBJEXT) camenu.$(OBJEXT) \
-	capositiontable.$(OBJEXT)
+	capositiontable.$(OBJEXT) humanplayer.$(OBJEXT) \
+	computerplayer.$(OBJEXT)
 trophy_OBJECTS = $(am_trophy_OBJECTS)
 trophy_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -168,12 +169,12 @@ trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositio
 		 cartype.h caimagehueselector.cpp calabel.h camenuitem.cpp camenuselect.cpp capanel.h caresources.cpp caconfigurekey.h\
 		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h \
 		 cacredits.cpp caimagemanipulation.cpp calineedit.h camenulabel.cpp player.h cascreen.cpp catrophy.cpp \
-		 cacredits.h caimagemanipulation.h caloadingscreen.cpp camenulabel.h caplayersettingsdialog.cpp cascreen.h \
-		 catrophy.h cadialog.cpp caimageselector.cpp caloadingscreen.h caplayersettingsdialog.h \
+		 cacredits.h caimagemanipulation.h caloadingscreen.cpp camenulabel.h caplayersettingsdialog.cpp cascreen.h cachampionshipscreen.h \
+		 catrophy.h cadialog.cpp caimageselector.cpp caloadingscreen.h caplayersettingsdialog.h cachampionshipscreen.cpp\
 		 casignupscreen.cpp cawidget.cpp cadialog.h caimageselector.h utils/trophymath.cpp camenuselect.h caplayerview.cpp \
 		 casignupscreen.h cawidget.h cadustclowd.h caimageview.cpp utils/trophymath.h canetclient.cpp caplayerview.h \
 		 caslotselectiondialog.cpp cafogbomb.h caimageview.h camenu.cpp canetclient.h capositiontable.cpp \
-		 caslotselectiondialog.h
+		 caslotselectiondialog.h humanplayer.h humanplayer.cpp computerplayer.cpp computerplayer.h
 
 CLANLIB_MODULES = clanSignals-0.8 clanGL-0.8 clanCore-0.8 clanSound-0.8 clanDisplay-0.8 clanApp-0.8
 AM_LDFLAGS = `pkg-config --libs $(CLANLIB_MODULES)`
@@ -246,6 +247,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cachampionshipscreen.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caconfigurekey.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cacredits.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cadialog.Po@am__quote@
@@ -277,6 +279,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/casoundeffect.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/catrophy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cawidget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/computerplayer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/humanplayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/player.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trophymath.Po@am__quote@
 
