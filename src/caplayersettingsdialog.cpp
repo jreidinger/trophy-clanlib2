@@ -12,8 +12,8 @@ CAPlayerSettingsDialog::CAPlayerSettingsDialog()
 
     resize( 480, 200 );
 
-      std::ostringstream ossPrice;
-      ossPrice << "$" << CA_APP->carType[DEFAULT_CARTYPE].price;
+    std::ostringstream ossPrice;
+    ossPrice << "$" << CA_APP->carType[DEFAULT_CARTYPE].price;
 
     // Line edit for player name:
     //

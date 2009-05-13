@@ -684,7 +684,7 @@ Player::kill() {
 /** Displays the player on it's current position.
 */
 void
-Player::display( int offsetX, int offsetY ) 
+Player::display( const int offsetX, const int offsetY )
 {
     sprite[frame]->draw ( (int)(x+offsetX - sprite[ frame ]->get_width()/2),
                           (int)(y+offsetY - sprite[ frame ]->get_height()/2) );
@@ -695,7 +695,7 @@ Player::display( int offsetX, int offsetY )
     {
         CA_RES->misc_hitpoint->set_frame(TrophyMath::getRandomNumber( 0,4 ));
         CA_RES->misc_hitpoint->draw ( hitPoint[c][0]+offsetX - CA_RES->misc_hitpoint->get_width()/2,
-                                           hitPoint[c][1]+offsetY - CA_RES->misc_hitpoint->get_height()/2);
+                                      hitPoint[c][1]+offsetY - CA_RES->misc_hitpoint->get_height()/2);
     }
     resetHitPoints();
 

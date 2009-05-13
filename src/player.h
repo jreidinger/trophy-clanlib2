@@ -157,7 +157,7 @@ public:
     void   hit( float amount );
     void   kill();
 
-    void   display( int offsetX, int offsetY );
+    virtual void  display( const int offsetX, const int offsetY );
     void   move( float x, float y );
     //! Returns the players position in xp and yp.
     void   getPosition( float &xp, float &yp ) const { xp=x; yp=y; }

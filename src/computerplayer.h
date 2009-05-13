@@ -14,10 +14,16 @@ public:
     ~ComputerPlayer();
     void pilot();
     void resetForRace();
+    void  display( int offsetX, int offsetY );
 private:
     float getCheckAwayAngle();
     //! Index of next route point to drive to
     int    routePoint;
+
+    //! x coordinate of next route points (only for --trackinfo option)
+    float nxTemp;
+    //! y coordinate of next route points (only for --trackinfo option)
+    float nyTemp;
 };
 
 #endif

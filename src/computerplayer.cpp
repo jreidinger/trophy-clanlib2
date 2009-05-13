@@ -11,6 +11,14 @@ Player(id, name, carNumber, Computer)
 ComputerPlayer::~ComputerPlayer()
 {}
 
+void ComputerPlayer::display( const int offsetX, const int offsetY )
+{
+    Player::display(offsetX, offsetY);
+    if( CA_APP->trackInfo )
+        CL_Display::draw_line(getX()+offsetX, getY()+offsetY, nxTemp + offsetX, nyTemp + offsetY, CL_Color::white);
+}
+
+
 /** Calculates route of computer players.
 */
 void ComputerPlayer::pilot()
@@ -27,6 +35,11 @@ void ComputerPlayer::pilot()
     //
     float nx = CA_APP->track.rp[getRouteNumber()][routePoint][0];
     float ny = CA_APP->track.rp[getRouteNumber()][routePoint][1];
+ 
+    // For --trackinfo option
+    //
+    nxTemp = nx;
+    nyTemp = ny;
 
     // Angle to next route point:
     //
@@ -58,6 +71,8 @@ void ComputerPlayer::pilot()
     if (dist < 120.0) {
         ++routePoint;
     }
+    
+
 
     // Speed:
     //

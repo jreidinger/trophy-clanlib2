@@ -10,7 +10,7 @@ struct RankPredicate: public std::binary_function<Player*, Player*, bool>
 {
    bool operator()(const Player* const p1, const Player* const p2)
    {
-       // In case of equality, use alphabetical Order
+       // In case of equality, use alphabetical order
        if (p1->getTotalPoints() == p2->getTotalPoints())
           return (p1->getName() < p2->getName()); 
        else
@@ -90,7 +90,7 @@ CAChampionshipScreen::run()
 void
 CAChampionshipScreen::buildScreen() 
 {
-    // Backgroud:
+    // Background:
     //
     m_background->draw ( CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
     displayTitle();
@@ -117,19 +117,25 @@ CAChampionshipScreen::buildScreen()
 
         const int totalPtWidth = 100;
         const int totalPtLeft = 300;
+
+        const int caWidth = totalPtLeft + totalPtWidth;
+        const int marginLeft = (right+left)/2 - caWidth/2;
+
+        const int caHeight = barHeight * m_player.size();
+        const int marginTop = (top+bottom)/2 - caHeight/2;
         
         // Buttons:
         //
-        m_button->draw ( CL_Rect(left+rankLeft, top+barHeight*rank, left+rankLeft+rankWidth, top+(barHeight*(rank+1))) );
-        m_button->draw ( CL_Rect(left+nameLeft, top+barHeight*rank, left+nameLeft+nameWidth, top+(barHeight*(rank+1))) );
+        m_button->draw ( CL_Rect(marginLeft+rankLeft, marginTop+barHeight*rank, marginLeft+rankLeft+rankWidth, marginTop+(barHeight*(rank+1))) );
+        m_button->draw ( CL_Rect(marginLeft+nameLeft, marginTop+barHeight*rank, marginLeft+nameLeft+nameWidth, marginTop+(barHeight*(rank+1))) );
         if (m_player[rank]->getRacePoints() != 0 && m_displayMode == DISPLAY_ADD_POINTS)
-            m_button->draw ( CL_Rect(left+addPtLeft, top+barHeight*rank, left+addPtLeft+addPtWidth, top+(barHeight*(rank+1))) );
-        m_button->draw ( CL_Rect(left+totalPtLeft, top+barHeight*rank, left+totalPtLeft+totalPtWidth, top+(barHeight*(rank+1))) );
+            m_button->draw ( CL_Rect(marginLeft+addPtLeft, marginTop+barHeight*rank, marginLeft+addPtLeft+addPtWidth, marginTop+(barHeight*(rank+1))) );
+        m_button->draw ( CL_Rect(marginLeft+totalPtLeft, marginTop+barHeight*rank, marginLeft+totalPtLeft+totalPtWidth, marginTop+(barHeight*(rank+1))) );
 
         // Texts:
         //
-        int textPosX = left;
-        int textPosY = top + 4 + barHeight*rank;
+        int textPosX = marginLeft;
+        int textPosY = marginTop + 4 + barHeight*rank;
         m_font->set_alignment(origin_top_center, 0, 0);
         m_font->draw( textPosX+rankLeft+rankWidth/2, textPosY,  ossRankStr.str());
         m_font->draw( textPosX+nameLeft+nameWidth/2, textPosY, m_player[rank]->getName() );

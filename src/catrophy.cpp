@@ -1565,7 +1565,8 @@ CATrophy::buildScreen()
 /** Displays the race map.
 */
 void
-CATrophy::displayMap() {
+CATrophy::displayMap()
+{
     track.visualMap->draw (offsetX,offsetY);
 }
 
