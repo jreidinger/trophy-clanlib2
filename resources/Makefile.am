@@ -1,7 +1,10 @@
 pkgdata_DATA = resources.xml
 
+desktopdir = $(datadir)/applications
+desktop_DATA = trophy.desktop
+
 icondir = $(datadir)/icons
-icon_DATA = icon.png
+icon_DATA = trophy.png
 
 flash2dir = $(pkgdatadir)/cars/flash2
 flash2_DATA = cars/flash2/surface.tga cars/flash2/surface3d.tga 
@@ -73,4 +76,4 @@ Zurich_DATA = tracks/Zurich/vmap.tga tracks/Zurich/config.tck tracks/Zurich/fmap
 Industrialdir = $(pkgdatadir)/tracks/Industrial
 Industrial_DATA = tracks/Industrial/vmap.tga tracks/Industrial/bridge.tga tracks/Industrial/fmap.tga tracks/Industrial/thumb.tga tracks/Industrial/config.tck
 
-EXTRA_DIST = $(pkgdata_DATA) $(icon_DATA) $(flash2_DATA) $(jeep_DATA) $(vw_DATA) $(z3_DATA) $(cars_DATA) $(fonts_DATA) $(goody_DATA) $(gui_DATA) $(menu_DATA) $(misc_DATA) $(panel_DATA) $(sounds_DATA) $(Downtown_DATA) $(Loops_DATA) $(Moon_DATA) $(Rally_DATA) $(Snake_DATA) $(Zigzag_DATA) $(Zurich_DATA) $(Industrial_DATA) 
+EXTRA_DIST = $(desktop_DATA) $(pkgdata_DATA) $(icon_DATA) $(flash2_DATA) $(jeep_DATA) $(vw_DATA) $(z3_DATA) $(cars_DATA) $(fonts_DATA) $(goody_DATA) $(gui_DATA) $(menu_DATA) $(misc_DATA) $(panel_DATA) $(sounds_DATA) $(Downtown_DATA) $(Loops_DATA) $(Moon_DATA) $(Rally_DATA) $(Snake_DATA) $(Zigzag_DATA) $(Zurich_DATA) $(Industrial_DATA)
