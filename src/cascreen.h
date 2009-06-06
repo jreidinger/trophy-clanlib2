@@ -9,7 +9,7 @@
 class CAScreen 
 {
 public:
-    CAScreen();
+    CAScreen(const std::string& n_title = "", const std::string& n_help = "");
     virtual ~CAScreen();
 
     virtual int run() = 0;

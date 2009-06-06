@@ -5,9 +5,11 @@
 #include <ClanLib/signals.h>
 #include <ClanLib/display.h>
 #include "cascreen.h"
+#include "guibox.h"
 
 /** Base class for dialogs.
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class CADialog : public CAScreen {
 public:
@@ -42,6 +44,10 @@ protected:
     bool modal;
     //! Pointer to screen (if dialog is modal) or NULL if it's not modal.
     CAScreen* screen;
+
+private:
+    //! The white gui box
+    GUIBox m_guiBox;
 
 public:
     CL_Slot slot;

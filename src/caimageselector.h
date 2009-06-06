@@ -26,6 +26,8 @@ public:
 
     void setCurrentImage( int index ) {
         currentImage = newImage = index;
+        CAImageView::image.upperText = image[newImage].upperText;
+        CAImageView::image.lowerText = image[newImage].lowerText;
     }
     int  getSelectedImage() {
         return newImage;
@@ -36,7 +38,6 @@ public:
 
 private:
     //! Pointer to surfaces which can be selected
-
     CAImageData image[CA_IV_MAXIMAGES];
     //! Number of surfaces
     int numImages;

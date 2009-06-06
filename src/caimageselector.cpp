@@ -64,6 +64,8 @@ CAImageSelector::addImage( const std::string upperText,
     if( currentImage<0.0 ) {
         currentImage = numImages;
         newImage = numImages;
+        CAImageView::image.upperText = this->image[newImage].upperText;
+        CAImageView::image.lowerText = this->image[newImage].lowerText;
     }
 
     if( numImages<CA_IV_MAXIMAGES ) numImages++;

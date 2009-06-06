@@ -151,7 +151,7 @@ CASignUpScreen::buildScreen()
 
     // Cursor:
     //
-    CL_Display::fill_rect( CL_Rect(racePreview[cursor]->getLeft()-12, racePreview[cursor]->getTop()-28,
+    CL_Display::fill_rect( CL_Rect(racePreview[cursor]->getLeft()-12, racePreview[cursor]->getTop()-12,
                            racePreview[cursor]->getRight()+12, racePreview[cursor]->getBottom()+12),
                            CL_Color (255, 216, 84, (int)((cursorAnim/2)*255) ));
 

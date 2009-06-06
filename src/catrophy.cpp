@@ -30,6 +30,7 @@
 #include "camenu.h"
 #include "casignupscreen.h"
 #include "cachampionshipscreen.h"
+#include "shopscreen.h"
 
 // Global instance of the application needed by the ClanLib main():
 //
@@ -999,14 +1000,13 @@ CATrophy::startNewGame()
 
             // Choose track:
             //
-            CASignUpScreen* signUpScreen;
             int trackNumber;
             do 
             {
-                
-                signUpScreen = new CASignUpScreen();
-                trackNumber = signUpScreen->run();
-                delete signUpScreen;
+                {
+                   CASignUpScreen signUpScreen;
+                   trackNumber = signUpScreen.run();
+                }
                 if( trackNumber != -1 ) 
                 {
                     track.file = trackList[trackNumber];
@@ -1015,6 +1015,10 @@ CATrophy::startNewGame()
                     {
                         CAChampionshipScreen myChampionShip(player, CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white);
                         myChampionShip.run();
+                    }
+                    {
+                        ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white);
+                        myShop.run();
                     }
                 }
             } while( trackNumber!=-1 && goon );
@@ -1501,13 +1505,7 @@ CATrophy::buyCars() {
     if( debug ) std::cout << "Buy new cars begin" << std::endl;
 
     for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-        for( int ca=CA_NUMCARTYPES-1; ca>=0; --ca ) {
-            if( player[pl]->getMoney() >= carType[ca].price && player[pl]->getCarNumber()<ca ) {
-                player[pl]->setCarNumber( ca );
-                player[pl]->setMoney( player[pl]->getMoney()-carType[ca].price );
-                player[pl]->setNewCar( true );
-            }
-        }
+        player[pl]->OnRaceOver();
     }
 
     if( debug ) std::cout << "Buy new cars end" << std::endl;

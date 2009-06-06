@@ -4,9 +4,13 @@
 
 /** Constructor.
 */
-CAScreen::CAScreen() {
-    done = false;
-    cancel = false;
+CAScreen::CAScreen(const std::string& n_title, const std::string& n_help)
+:
+    done   (false),
+    cancel (false),
+    title  (n_title),
+    help   (n_help)
+{
 }
 
 /** Destructor.

@@ -1,10 +1,10 @@
 bin_PROGRAMS = trophy
 trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositiontable.h casoundeffect.cpp \
-		 cagoody.h cainfodialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h \
-		 cagoodytype.h calabel.cpp camenuinput.h capanel.cpp capositiontableview.h caconfigurekey.cpp\
-		 cartype.h caimagehueselector.cpp calabel.h camenuitem.cpp camenuselect.cpp capanel.h caresources.cpp caconfigurekey.h\
-		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h \
-		 cacredits.cpp caimagemanipulation.cpp calineedit.h camenulabel.cpp player.h cascreen.cpp catrophy.cpp \
+		 cagoody.h cainfodialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h shopscreen.h \
+		 cagoodytype.h calabel.cpp camenuinput.h capanel.cpp capositiontableview.h caconfigurekey.cpp shopscreen.cpp \
+		 cartype.h caimagehueselector.cpp calabel.h camenuitem.cpp camenuselect.cpp capanel.h caresources.cpp caconfigurekey.h \
+		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h guibox.h guibox.cpp\
+		 cacredits.cpp caimagemanipulation.cpp calineedit.h camenulabel.cpp player.h cascreen.cpp catrophy.cpp\
 		 cacredits.h caimagemanipulation.h caloadingscreen.cpp camenulabel.h caplayersettingsdialog.cpp cascreen.h cachampionshipscreen.h \
 		 catrophy.h cadialog.cpp caimageselector.cpp caloadingscreen.h caplayersettingsdialog.h cachampionshipscreen.cpp\
 		 casignupscreen.cpp cawidget.cpp cadialog.h caimageselector.h utils/trophymath.cpp camenuselect.h caplayerview.cpp \

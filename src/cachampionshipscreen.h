@@ -31,8 +31,6 @@ public:
 
     virtual void on_key_released (const CL_InputEvent &key);
 
-    void playSwitchSound();
-
 private:
 
     //! Left border position.

@@ -179,6 +179,8 @@ public:
 
     void   addHitPoint( int x, int y );
     void   resetHitPoints();
+    //! Notification of Race Over
+    virtual void OnRaceOver() {}
 
 protected:
     //! Returns the new direction of this player in degrees (0=right, 90=bottom (!)).

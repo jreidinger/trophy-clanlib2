@@ -14,7 +14,8 @@ public:
     ~ComputerPlayer();
     void pilot();
     void resetForRace();
-    void  display( int offsetX, int offsetY );
+    void display( int offsetX, int offsetY );
+    void OnRaceOver();
 private:
     float getCheckAwayAngle();
     //! Index of next route point to drive to

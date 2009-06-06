@@ -82,26 +82,7 @@ CADialog::buildScreen() {
     //
     if( !modal ) CA_RES->menu_bg->draw( CL_Rect(0,0, CA_APP->width,CA_APP->height) );
 
-    int ew = CA_RES->gui_edge2->get_width();
-    int eh = CA_RES->gui_edge2->get_height();
-    int bw = CA_RES->gui_border2->get_width();
-    int bh = CA_RES->gui_border1->get_height();
-
-    CL_Display::fill_rect( CL_Rect(left+bw, top+bh, right-bw, bottom-bh), CL_Color(0, 0, 0, 64) );
-
-    // Edges:
-    //
-    CA_RES->gui_edge1->draw( left, top );
-    CA_RES->gui_edge2->draw( right-ew, top );
-    CA_RES->gui_edge3->draw( left, bottom-eh );
-    CA_RES->gui_edge4->draw( right-ew, bottom-eh );
-
-    // Borders:
-    //
-    CA_RES->gui_border1->draw( CL_Rect(left+ew, top, left+ew+width-2*ew, top+bh) );
-    CA_RES->gui_border2->draw( CL_Rect(right-bw, top+eh, right-bw+bw, top+eh+height-2*eh) );
-    CA_RES->gui_border3->draw( CL_Rect(left+ew, bottom-bh, left+ew+width-2*ew, bottom-bh+bh) );
-    CA_RES->gui_border4->draw( CL_Rect(left, top+eh, left+bw, top+eh+height-2*eh) );
+    m_guiBox.display();
 }
 
 
@@ -117,6 +98,8 @@ CADialog::resize( int w, int h ) {
     top = (CA_APP->height - CA_APP->headerHeight - CA_HELPHEIGHT - height) / 2
           + CA_APP->headerHeight;
     bottom = top + height;
+
+    m_guiBox.setPosition(left, top, right, bottom);
 }
 
 

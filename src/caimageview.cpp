@@ -33,7 +33,8 @@ CAImageView::CAImageView( const std::string upperText,
     this->image.lowerText = lowerText;
     this->image.image = image;
 
-    if( autoResize ) {
+    if( autoResize )
+    {
         setImageSize( image->get_width(), image->get_height() );
     }
 

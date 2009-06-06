@@ -141,7 +141,6 @@ CAChampionshipScreen::buildScreen()
         m_font->draw( textPosX+nameLeft+nameWidth/2, textPosY, m_player[rank]->getName() );
         m_font->draw( textPosX+addPtLeft+addPtWidth/2, textPosY, ossRacePoints.str() );
         m_font->draw( textPosX+totalPtLeft+totalPtWidth/2, textPosY, ossTotalPoints.str() );
-        ossTotalPoints.str();
     }
 }
 

@@ -18,6 +18,21 @@ void ComputerPlayer::display( const int offsetX, const int offsetY )
         CL_Display::draw_line(getX()+offsetX, getY()+offsetY, nxTemp + offsetX, nyTemp + offsetY, CL_Color::white);
 }
 
+/** On Race Over, computers players are checking if they could buy a new car
+*/
+void ComputerPlayer::OnRaceOver()
+{
+    for( int ca=CA_NUMCARTYPES-1; ca>=0; --ca )
+    {
+        if( getMoney() >= CA_APP->carType[ca].price && getCarNumber()<ca )
+        {
+            setCarNumber( ca );
+            setMoney( getMoney()-CA_APP->carType[ca].price );
+            setNewCar( true );
+        }
+    }
+}
+
 
 /** Calculates route of computer players.
 */
