@@ -31,17 +31,14 @@ CAPlayerView::display( int defaultPos ) {
 
     int lap = (int)( floor( player->getPosition() )+1.0 );
     int rank = (player->getRaceRank()==0 ? defaultPos : player->getRaceRank());
-    char lapStr[2];
-    char rankStr[2];
-    int y = (rank-1) * 55 + 110;
+    int y = (rank-1) * 55 + 110 + CA_RES->panel_turbo->get_height()+CA_RES->panel_turbolabel->get_height(); // The ammo label has been added
 
     if( lap>5 ) lap=5;
 
-    lapStr[0] = ( lap<10 ? lap : 0 ) + 48;
-    lapStr[1] = '\0';
-
-    rankStr[0] = ( rank<10 ? rank : 0 ) + 48;
-    rankStr[1] = '\0';
+    std::ostringstream ossLap, ossRank, ossNumLap;
+    ossLap << lap;
+    ossRank << rank;
+    ossNumLap << CA_NUMLAPS;
 
     // Display color button:
     //
@@ -57,13 +54,11 @@ CAPlayerView::display( int defaultPos ) {
     //
     CA_RES->panel_infoview->draw (0, y+20);
     CA_RES->font_lcd_13_green->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_lcd_13_green->draw( 50, y+22, lapStr );
-    char numLapsStr[6];
-    sprintf( numLapsStr, "%d", CA_NUMLAPS );
+    CA_RES->font_lcd_13_green->draw( 50, y+22, ossLap.str() );
     CA_RES->font_lcd_13_green->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_lcd_13_green->draw( 70, y+31, numLapsStr );
+    CA_RES->font_lcd_13_green->draw( 70, y+31, ossNumLap.str() );
     CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_normal_11_white->draw( 99, y+30, rankStr );
+    CA_RES->font_normal_11_white->draw( 99, y+30, ossRank.str() );
 
     // Display cross for death players:
     //

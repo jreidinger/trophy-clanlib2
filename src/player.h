@@ -104,7 +104,7 @@ public:
     //! Returns number of bullets left.
     int    getBullets() const { return bullets; }
     //! Sets number of bullets left.
-    void   setBullets(int b) { bullets = (b>100 ? 100 : b); }
+    void   setBullets(int b) { bullets = (b>500 ? 500 : b); }
 
     //! Returns number of fog bombs left (0-3).
     int    getFogBombs() const { return fogBombs; }

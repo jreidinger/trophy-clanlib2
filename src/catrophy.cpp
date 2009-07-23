@@ -173,6 +173,7 @@ CATrophy::main( int argc, char** argv )
         //
         initCarTypes();
         loading.setProgress( 60 );
+        initUpgrades();
         initGoodies();
         initPlayers();
         // initNetwork();
@@ -197,6 +198,7 @@ CATrophy::main( int argc, char** argv )
         // deinitNetwork();
         deinitPlayers();
         deinitGoodies();
+        deinitUpgrades();
         deinitCarTypes();
         delete m_ConfigureKey;
 
@@ -226,6 +228,8 @@ const std::string
 CATrophy::get_title() {
     return "Trophy " VERSION;
 }
+
+
 
 /** Initializes car types.
 */
@@ -318,6 +322,26 @@ CATrophy::deinitCarTypes()
 
     if(debug) std::cout << "deinitCarTypes end" << std::endl;
 }
+
+/** Initializes car upgrades
+*/
+void CATrophy::initUpgrades()
+{
+     if(debug) std::cout << "initUpgrades begin" << std::endl;
+     upgrades_ressources = new CACarUpgrades();
+     if(debug) std::cout << "initUpgrades end" << std::endl;
+}
+
+/** Deinitializes car upgrades
+*/
+void CATrophy::deinitUpgrades() 
+{
+    if(debug) std::cout << "deinitUpgrades begin" << std::endl;
+    delete upgrades_ressources;
+    upgrades_ressources = 0;
+    if(debug) std::cout << "deinitUpgrades end" << std::endl;
+}
+
 
 /** Initializes goody types and instances.
 */
@@ -1017,7 +1041,7 @@ CATrophy::startNewGame()
                         myChampionShip.run();
                     }
                     {
-                        ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white);
+                        ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white, upgrades_ressources);
                         myShop.run();
                     }
                 }

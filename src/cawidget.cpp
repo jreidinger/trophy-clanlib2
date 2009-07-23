@@ -51,11 +51,13 @@ CAWidget::move( int x, int y ) {
 
 /** Resizes this widget.
     The new position depends also on the alignment.
+    -1 don't resize
 */
 void
-CAWidget::resize( int width, int height ) {
-    this->width = width;
-    this->height = height;
+CAWidget::resize( int width, int height )
+{
+    if (width != -1) this->width = width;
+    if (height != -1) this->height = height;
 
     switch( alignment ) {
     case Left:

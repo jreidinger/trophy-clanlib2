@@ -20,6 +20,7 @@
 #include "camenu.h"
 // #include "canetclient.h"
 // #include "canetserver.h"
+#include "cacarupgrades.h"
 #include "caresources.h"
 #include "track.h"
 #include "cascreen.h"
@@ -56,6 +57,8 @@ public:
 
     void initCarTypes();
     void deinitCarTypes();
+    void initUpgrades();
+    void deinitUpgrades();
     void initGoodies();
     void deinitGoodies();
     void initPlayers();
@@ -224,6 +227,9 @@ public:
 
     //! Sound output
     CL_SoundOutput *sound_output;
+
+    //! Upgrades ressources manager
+    CACarUpgrades *upgrades_ressources;
 
 private:
     //! Current time in milliseconds since race start

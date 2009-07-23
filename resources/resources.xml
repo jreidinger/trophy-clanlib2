@@ -1,6 +1,6 @@
 <resources>
     <section name="tracks">
-        <string name="directories" value="Downtown~Zigzag~Loops~Zurich~Moon~Snake~Rally~Industrial" />
+        <string name="directories" value="Zurich~Downtown~Zigzag~Loops~Moon~Snake~Rally~Industrial" />
     </section>
     <section name="cars">
         <string name="directories" value="vw~jeep~z3~flash2" />
@@ -18,7 +18,7 @@
             <string name="name" value="VW" />
             <integer name="price" value="1500" />
             <surface name="surface" file="cars/vw/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/vw/surface3d.tga" x="0" y="0" width="95" height="93" />
+            <surface name="surface3d" file="cars/vw/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>
         <section name="jeep">
             <integer name="length" value="60" />
@@ -33,7 +33,7 @@
             <string name="name" value="Ranger" />
             <integer name="price" value="3500" />
             <surface name="surface" file="cars/jeep/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/jeep/surface3d.tga" x="0" y="0" width="95" height="93" />
+            <surface name="surface3d" file="cars/jeep/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>
         <section name="z3">
             <integer name="length" value="61" />
@@ -48,7 +48,7 @@
             <string name="name" value="Z3" />
             <integer name="price" value="5500" />
             <surface name="surface" file="cars/z3/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/z3/surface3d.tga" x="0" y="0" width="95" height="93" />
+            <surface name="surface3d" file="cars/z3/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>
         <section name="flash2">
             <integer name="length" value="60" />
@@ -63,7 +63,24 @@
             <string name="name" value="Flash" />
             <integer name="price" value="15000" />
             <surface name="surface" file="cars/flash2/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/flash2/surface3d.tga" x="0" y="0" width="95" height="93" />
+            <surface name="surface3d" file="cars/flash2/surface3d.tga" x="0" y="0" width="100" height="100" />
+        </section>
+    </section>
+    <section name="upgrades">
+        <string name="directories" value="motors~tires" />
+        <section name="motors">
+            <surface name="motor1" file="upgrades/motors/motor_1.tga" x="0" y="0" width="100" height="100" />
+            <surface name="motor2" file="upgrades/motors/motor_2.tga" x="0" y="0" width="100" height="100" />
+            <surface name="motor3" file="upgrades/motors/motor_3.tga" x="0" y="0" width="100" height="100" />
+            <surface name="motor4" file="upgrades/motors/motor_4.tga" x="0" y="0" width="100" height="100" />
+            <surface name="motor5" file="upgrades/motors/motor_5.tga" x="0" y="0" width="100" height="100" />
+        </section>
+        <section name="tires">
+            <surface name="tires1" file="upgrades/tires/tires_1.tga" x="0" y="0" width="100" height="100" />
+            <surface name="tires2" file="upgrades/tires/tires_2.tga" x="0" y="0" width="100" height="100" />
+            <surface name="tires3" file="upgrades/tires/tires_3.tga" x="0" y="0" width="100" height="100" />
+            <surface name="tires4" file="upgrades/tires/tires_4.tga" x="0" y="0" width="100" height="100" />
+            <surface name="tires5" file="upgrades/tires/tires_5.tga" x="0" y="0" width="100" height="100" />
         </section>
     </section>
     <section name="bullets">

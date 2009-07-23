@@ -106,7 +106,15 @@ CAImageHueSelector::display( bool active )
 
     displayTextButtons( active );
 
-    if( hueImage ) hueImage->draw (left + (width-hueImage->get_width())/2, top+barHeight);
+    //if( hueImage ) hueImage->draw (left + (width-hueImage->get_width())/2, top+barHeight);
+
+    if (hueImage)
+    {
+        // center the image
+       const int leftPos = left + (width  - hueImage->get_width()) /2;
+       const int topPos  = top  + (height - hueImage->get_height())/2;
+       hueImage->draw(leftPos, topPos);
+    }
 
     displayArrows( active );
 

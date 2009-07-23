@@ -11,6 +11,7 @@ class Player;
 class CAImageHueSelector;
 class CAImageSelector;
 class CAImageView;
+class CACarUpgrades;
 
 /** The shop screen shown after every race where players can buy upgrade and new cars
    @author Matthieu Lecesne
@@ -19,7 +20,7 @@ class CAImageView;
 class ShopScreen : public CAScreen
 {
 public:
-    ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font);
+    ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font, CACarUpgrades* carRes);
     virtual ~ShopScreen();
 
     void reset();
@@ -45,6 +46,8 @@ private:
     CL_Surface* m_button;
     //! The font use for display car information
     CL_Font* m_font;
+    //! Upgrades ressources manager
+    CACarUpgrades* m_carRes;
 
     //! Left border position.
     int left;

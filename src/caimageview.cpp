@@ -68,7 +68,15 @@ CAImageView::display( bool active ) {
 
     CL_Display::fill_rect( CL_Rect(left, top, right, bottom), CL_Color(0, 0, 0, 64) );
 
-    if( image.image ) image.image->draw( left, top+barHeight );
+//    if( image.image ) image.image->draw( left, top+barHeight );
+
+    if (image.image)
+    {
+        // center the image
+       const int leftPos = left + (width  - image.image->get_width()) /2;
+       const int topPos  = top  + (height - image.image->get_height())/2;
+       image.image->draw(leftPos, topPos);
+    }
 
     displayTextButtons( active );
 

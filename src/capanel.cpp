@@ -38,6 +38,12 @@ CAPanel::display()
     CA_RES->panel_turbo->set_frame(turboIndex);
     CA_RES->panel_turbo->draw (0, 100);
 
+    // Display ammo view
+    CA_RES->panel_turbolabel->draw (0, CA_RES->panel_turbo->get_height()+100);
+    turboIndex = (int)fabs(CA_APP->player[0]->getBullets() / 500.0 * 9.0);
+    CA_RES->panel_turbo->set_frame(turboIndex);
+    CA_RES->panel_turbo->draw (0, CA_RES->panel_turbo->get_height()+CA_RES->panel_turbolabel->get_height()+100);
+
     // Display player views:
     //
     for( int c=0; c<CA_MAXPLAYERS; ++c ) {

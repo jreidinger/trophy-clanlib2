@@ -80,7 +80,8 @@ Player::resetForRace() {
 
     life          = 100.0;
     armor         = 0;
-    bullets       = 33;
+    //bullets       = 33;
+    bullets       = 500;
     fogBombs      = 2;
 
     racePoints  = 0;
@@ -652,7 +653,8 @@ Player::shoot() {
 
         if( hitPl>=0 && hitPl<CA_MAXPLAYERS ) {
             CA_APP->player[hitPl]->addHitPoint( hitX, hitY );
-            CA_APP->player[hitPl]->hit( 0.8 );
+            //CA_APP->player[hitPl]->hit( 0.8 );
+              CA_APP->player[hitPl]->hit( 0.16 );
         }
     }
 }

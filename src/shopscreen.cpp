@@ -6,13 +6,14 @@
 
 /** Constructor.
 */
-ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font)
+ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font, CACarUpgrades* carRes)
 :   CAScreen("T H E  S H O P", "Choose a new car and press Enter to confirm"),
 
     m_player      (player),
     m_background  (background),
     m_button      (button),
     m_font        (font),
+    m_carRes      (carRes),
     left          (0),
     right         (CA_APP->width - left),
     top           (CA_APP->headerHeight + 30),
@@ -48,16 +49,14 @@ ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* butto
     }
 
     
-
-    m_imageView[0] = new CAImageView ( "Motor", "", NULL, false );
-    m_imageView[1] = new CAImageView ( "Tires", "", NULL, false );
-    m_imageView[2] = new CAImageView ( "Armor", "", NULL, false );
-    m_imageView[3] = new CAImageView ( "Continue", "", NULL, false );
-
+    m_imageView[0] = new CAImageView ( "Motor", "", m_carRes->getMotor(0), true );
+    m_imageView[1] = new CAImageView ( "Tires", "", m_carRes->getTires(0), true );
+    m_imageView[2] = new CAImageView ( "Armor", "", m_carRes->getTires(4), true );
+    m_imageView[3] = new CAImageView ( "Continue", "", m_carRes->getMotor(4), true );
     for (int i = 0; i < 4; i++)
     {
-        m_imageView[i]->resize(95+16*2, 93+2*20);
-        m_imageView[i]->move( m_carImage->getLeft() + (m_carImage->getWidth()+32)*i, m_carImage->getBottom() + 32);
+        m_imageView[i]->resize(m_carImage->getWidth(), -1);
+        m_imageView[i]->move(m_carImage->getLeft() + (m_carImage->getWidth()+32)*i, m_carImage->getBottom() + 32);
     }
 
     // Set the position of the text box on the right side of the car image
@@ -149,7 +148,7 @@ ShopScreen::buildScreen()
     //
     static float cursorAnim = 0.0;    // Counter for cursor animation:
     
-    // We need to display four blinking rectangles around the widget (we don't want blinking on the blending part of the widget)
+    // We need to display four blinking rectangles around the widget (we don't want blinking inside the blended part of the widget)
     const CL_Color blinkColor = CL_Color (255, 216, 84, (int)((cursorAnim/2)*255) );
 
     CL_Display::fill_rect( CL_Rect(m_focus->getLeft(), m_focus->getTop()-m_curWidth,
@@ -356,7 +355,7 @@ void ShopScreen::updateText()
         oss << "TODO: Add a nice description for " << CA_APP->carType[carNum].name << " car\n";
         oss << "Max speed : " << CA_APP->carType[carNum].maxSpeed << " px/s\n";
         oss << "Max turbo : " << CA_APP->carType[carNum].maxTurbo << " px\n";
-        oss << "Acceleration : " << CA_APP->carType[carNum].acceleration << " px*px/s\n";
+        oss << "Acceleration : " << CA_APP->carType[carNum].acceleration << " px/(s*s)\n";
     }
     else
     {
