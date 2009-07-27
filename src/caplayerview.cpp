@@ -31,7 +31,7 @@ CAPlayerView::display( int defaultPos ) {
 
     int lap = (int)( floor( player->getPosition() )+1.0 );
     int rank = (player->getRaceRank()==0 ? defaultPos : player->getRaceRank());
-    int y = (rank-1) * 55 + 110 + CA_RES->panel_turbo->get_height()+CA_RES->panel_turbolabel->get_height(); // The ammo label has been added
+    int y = (rank-1) * 55 + 110 + 38; // The turbo jauge + the ammo jauge
 
     if( lap>5 ) lap=5;
 

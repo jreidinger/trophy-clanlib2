@@ -83,6 +83,7 @@ public:
     CL_Surface* panel_infoview;
     CL_Sprite* panel_speed;
     CL_Sprite* panel_turbo;
+    CL_Sprite* panel_ammo;
     CL_Surface* panel_turbolabel;
     CL_Surface* panel_death;
 

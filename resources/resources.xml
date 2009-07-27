@@ -206,6 +206,11 @@
                 <grid pos="0,0" size="120,10" array="1,10" />
             </image>
         </sprite>
+	<sprite name="ammo">
+            <image file="panel/bullets.tga">
+                <grid pos="0,0" size="120,37" array="1,21" />
+            </image>
+	</sprite>
     </section>
     <section name="fonts">
         <sprite name="lcd_13_green_sprite">

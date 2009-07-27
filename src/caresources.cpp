@@ -262,6 +262,7 @@ CAResources::load() {
     panel_speed = new CL_Sprite( "panel/speed", resources );
     panel_turbolabel = new CL_Surface( "panel/turbolabel", resources );
     panel_turbo = new CL_Sprite( "panel/turbo", resources );
+    panel_ammo = new CL_Sprite( "panel/ammo", resources );
     panel_death = new CL_Surface( "panel/death", resources );
 
     CA_APP->loading.setProgress( 45 );
