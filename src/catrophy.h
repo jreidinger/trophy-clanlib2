@@ -162,7 +162,8 @@ public:
     //! Array of Players. Created and destroed by this class.
     std::vector<Player*> player;
     //! Array of car types.
-    CarType carType[CA_NUMCARTYPES];
+    std::vector<CarType> carType;
+    //CarType carType[CA_NUMCARTYPES];
     //! Array of goodyTypes.
     CAGoodyType goodyType[CA_NUMGOODYTYPES];
     //! The goody instances. CA_NUMGOODIES of each type.

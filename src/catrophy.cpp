@@ -262,7 +262,8 @@ CATrophy::initCarTypes()
             break;
         }
 
-        if(debug) std::cout << "  name" << std::endl;
+        carType.push_back(CarType(mainPath, CA_RES->resources, debug));
+/*       if(debug) std::cout << "  name" << std::endl;
 
         path = mainPath + "name";
         carType[i].name = CL_String::load( path, CA_RES->resources );
@@ -300,6 +301,7 @@ CATrophy::initCarTypes()
 
         carType[i].radius = std::sqrt( (double)carType[i].width/2 * (double)carType[i].width/2 + (double)carType[i].length/2 * (double)carType[i].length/2 );
         carType[i].angle = atan( (double)(carType[i].width/2) / (double)(carType[i].length/2) ) * ARAD;
+*/
     }
 
     if(debug) std::cout << "initCarTypes end" << std::endl;
