@@ -11,7 +11,8 @@
     @author Andrew Mustun
 */
 template<typename T>
-class CAMenuSelect : public CAMenuLabel {
+class CAMenuSelect : public CAMenuLabel
+{
 public:
 
 
@@ -21,7 +22,8 @@ public:
     /** Returns rtti of this menu item.
         CA_MI_MENUSELECT for menu selects.
     */
-    virtual int rtti() {
+    virtual int rtti()
+    {
         return CA_MI_MENUSELECT;
     }
 
@@ -40,8 +42,8 @@ public:
     }
 
 private:
+    void updateValue();
     //! List of values to select.
-
     std::vector<std::string> valueList;
     
     //! Pointer to result given by constructor or 0 if result is boolean.

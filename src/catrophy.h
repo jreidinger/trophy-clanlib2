@@ -163,7 +163,6 @@ public:
     std::vector<Player*> player;
     //! Array of car types.
     std::vector<CarType> carType;
-    //CarType carType[CA_NUMCARTYPES];
     //! Array of goodyTypes.
     CAGoodyType goodyType[CA_NUMGOODYTYPES];
     //! The goody instances. CA_NUMGOODIES of each type.
@@ -217,6 +216,9 @@ public:
     int width;
     //! Total height (screen resolution in y)
     int height;
+
+    //! resolution : 800x600, 640x480 or 1024x768
+    std::string resolution;
 
     //! Ip set in the net options dialog or "auto"
     char serverIp[16];

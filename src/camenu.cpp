@@ -215,5 +215,5 @@ CAMenu::on_key_pressed (const CL_InputEvent &key)
 
 template void CAMenu::addMenuSelect<int>( const std::string& label, const std::string valueList, int* result );
 template void CAMenu::addMenuSelect<bool>( const std::string& label, const std::string valueList, bool* result );
-
+template void CAMenu::addMenuSelect<std::string>( const std::string& label, const std::string valueList, std::string* result );
 // EOF

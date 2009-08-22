@@ -55,11 +55,11 @@ CATrophy::main( int argc, char** argv )
     {
         // Default paramters:
         //
+	display_window = NULL;
         debug = false;
         trackInfo = false;
         framesPerSec = 40;
-        width = CA_WIDTH;
-        height = CA_HEIGHT;
+        resolution = CA_RESOLUTION;
         fullScreen = false;
         fast = false;
         server = false;
@@ -112,14 +112,11 @@ CATrophy::main( int argc, char** argv )
             } else if( !strcmp(argv[c], "--fast" ) ) {
                 fast = true;
             } else if( !strcmp(argv[c], "--640x480" ) ) {
-                width = 640;
-                height = 480;
+                resolution = "640x480";
             } else if( !strcmp(argv[c], "--800x600" ) ) {
-                width = 800;
-                height = 600;
+                resolution = "800x600";
             } else if( !strcmp(argv[c], "--1024x768" ) ) {
-                width = 1024;
-                height = 768;
+                resolution = "1024x768";
             }
 
             // Audio options:
@@ -152,7 +149,7 @@ CATrophy::main( int argc, char** argv )
         // Some layout things:
         //
         panelWidth = 120;
-        headerHeight = (int)((float)height/4.2f);
+
 
         // Init sound:
         //
@@ -160,6 +157,8 @@ CATrophy::main( int argc, char** argv )
         sound_output = new CL_SoundOutput(44100);
 
         reconfigure();
+	
+	headerHeight = (int)((float)height/4.2f);
 
         // Load resources:
         //
@@ -263,45 +262,6 @@ CATrophy::initCarTypes()
         }
 
         carType.push_back(CarType(mainPath, CA_RES->resources, debug));
-/*       if(debug) std::cout << "  name" << std::endl;
-
-        path = mainPath + "name";
-        carType[i].name = CL_String::load( path, CA_RES->resources );
-
-        if(debug) std::cout << "  surface" << std::endl;
-
-        path = mainPath + "surface";
-        carType[i].surface = new CL_Surface( path, CA_RES->resources );
-
-        if(debug) std::cout << "  surface3d" << std::endl;
-
-        path = mainPath + "surface3d";
-        carType[i].surface3d = new CL_Surface( path, CA_RES->resources );
-
-        path = mainPath + "length";
-        carType[i].length = CL_Integer( path, CA_RES->resources );
-        path = mainPath + "width";
-        carType[i].width = CL_Integer( path, CA_RES->resources );
-        path = mainPath + "maxSpeed";
-        carType[i].maxSpeed = 6 * CL_Integer( path, CA_RES->resources );
-        path = mainPath + "minSpeed";
-        carType[i].minSpeed = 6 * CL_Integer( path, CA_RES->resources );
-        path = mainPath + "maxTurbo";
-        carType[i].maxTurbo = CL_Integer( path, CA_RES->resources );
-        path = mainPath + "acceleration";
-        carType[i].acceleration = 6 * CL_Integer( path, CA_RES->resources );
-        path = mainPath + "deceleration";
-        carType[i].deceleration = 6 * CL_Integer( path, CA_RES->resources );
-        path = mainPath + "steeringPower";
-        carType[i].steeringPower = CL_Integer( path, CA_RES->resources );
-        path = mainPath + "slidingFactor";
-        carType[i].slidingFactor = 0.01 * CL_Integer( path, CA_RES->resources );
-        path = mainPath + "price";
-        carType[i].price = CL_Integer( path, CA_RES->resources );
-
-        carType[i].radius = std::sqrt( (double)carType[i].width/2 * (double)carType[i].width/2 + (double)carType[i].length/2 * (double)carType[i].length/2 );
-        carType[i].angle = atan( (double)(carType[i].width/2) / (double)(carType[i].length/2) ) * ARAD;
-*/
     }
 
     if(debug) std::cout << "initCarTypes end" << std::endl;
@@ -695,6 +655,11 @@ CATrophy::reconfigure()
     static bool lastFullScreen = fullScreen;
 
     sound_output->set_global_volume(volume/(float)10);
+    std::size_t pos = resolution.find('x');
+    std::istringstream issW (resolution.substr(0, pos));
+    issW >> width;
+    std::istringstream issH (resolution.substr(pos+1));
+    issH >> height;
     if(firstCall)
     {
         try 
@@ -708,13 +673,29 @@ CATrophy::reconfigure()
         }
         lastFullScreen = fullScreen;
     }
-    else if(lastFullScreen != fullScreen ) 
+    else if (lastFullScreen != fullScreen )
     {
         if(fullScreen) 
             display_window->set_fullscreen(width, height);
         else
             display_window->set_windowed();
         lastFullScreen = fullScreen;
+    }
+    else
+    {
+        try
+	{
+            display_window->set_size(width, height);
+	    input_context = display_window->get_ic();
+	    if(fullScreen) 
+                display_window->set_fullscreen(width, height);
+            else
+                display_window->set_windowed();
+	}
+	catch( CL_Error err ) 
+        {
+            std::cout << "Exception caught: " << err.message << std::endl;
+        }
     }
 
     // Init mouse cursor:
@@ -885,13 +866,27 @@ CATrophy::runMenu()
         {
             CAMenu configMenu( "Configure" ) ;
             configMenu.addMenuSelect( "Fullscreen", "off~on", &CA_APP->fullScreen );
+	        std::vector<std::string> ResolutionArray;
+	        ResolutionArray.push_back("640x480");
+	        ResolutionArray.push_back("800x600");
+	        ResolutionArray.push_back("1024x768");
+	        std::vector<std::string>::const_iterator it = std::find(ResolutionArray.begin(), ResolutionArray.end(), resolution);
+	        std::ostringstream oss;
+	        oss << *it++ << "~";
+	        if (it == ResolutionArray.end())
+	            it = ResolutionArray.begin();
+            oss << *it++ << "~";
+			if (it == ResolutionArray.end())
+	            it = ResolutionArray.begin();
+			oss << *it;
+            configMenu.addMenuSelect( "Resolution", oss.str(), &CA_APP->resolution);
             configMenu.addMenuSelect( "Sound", "off~on", &CA_APP->sound );
             configMenu.addMenuSelect( "Sound volume", "0%~10%~20%~30%~40%~50%~60%~70%~80%~90%~100%", &CA_APP->volume );
             configMenu.addMenuLabel( "Configure Keyboard" );
             configMenu.addMenuLabel( "Previous Menu" );
             configMenu.setConfigureMenu( true );
             configMenu.run();
-            if (configMenu.getSelection() == 3)
+            if (configMenu.getSelection() == 4)
             {
                 m_ConfigureKey->run();           
             }

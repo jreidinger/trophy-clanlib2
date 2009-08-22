@@ -1,6 +1,7 @@
 #include "camenu.h"
 #include "camenuselect.h"
 #include "caresources.h"
+#include <string>
 
   /** Constructor for selections of more than two items.
     \param menu Pointer to menu
@@ -11,7 +12,7 @@
    */
     template<typename T>
     CAMenuSelect<T>::CAMenuSelect( CAMenu* menu, int pos, const std::string& label, const std::string& nvalueList, T* result ) 
-    : CAMenuLabel( menu, pos, label ), tResult(result), selectedItem(*result)
+    : CAMenuLabel( menu, pos, label ), tResult(result), selectedItem(0)
     {
         std::istringstream iss ( nvalueList );
         std::string temp;
@@ -49,12 +50,24 @@
             if( selectedItem<0 ) selectedItem=int(valueList.size())-1;
         }
 
-        *tResult = (T)(selectedItem);
+        updateValue();
         menu->setChanged();
     }
+    
+    
+    template<typename T>
+    void CAMenuSelect<T>::updateValue()
+    {
+        *tResult = T(selectedItem);
+    }
 
+    template<>
+    void CAMenuSelect<std::string>::updateValue()
+    {
+        *tResult = valueList[selectedItem];
+    }
 
 template class CAMenuSelect<int>;
 template class CAMenuSelect<bool>;
-
+template class CAMenuSelect<std::string>;
 // EOF

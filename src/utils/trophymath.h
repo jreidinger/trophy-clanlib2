@@ -15,8 +15,7 @@
 #define CA_MAXTRACKS      64      // Max number of tracks
 #define CA_NUMCARTYPES     4      // Max number of car types
 
-#define CA_WIDTH         800      // Width of screen
-#define CA_HEIGHT        600      // Height      "
+#define CA_RESOLUTION     "800x600"  //resolution
 
 #define CA_HELPHEIGHT     50      // Height of help-frame at the bottom
 
