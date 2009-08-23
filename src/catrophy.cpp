@@ -866,20 +866,7 @@ CATrophy::runMenu()
         {
             CAMenu configMenu( "Configure" ) ;
             configMenu.addMenuSelect( "Fullscreen", "off~on", &CA_APP->fullScreen );
-	        std::vector<std::string> ResolutionArray;
-	        ResolutionArray.push_back("640x480");
-	        ResolutionArray.push_back("800x600");
-	        ResolutionArray.push_back("1024x768");
-	        std::vector<std::string>::const_iterator it = std::find(ResolutionArray.begin(), ResolutionArray.end(), resolution);
-	        std::ostringstream oss;
-	        oss << *it++ << "~";
-	        if (it == ResolutionArray.end())
-	            it = ResolutionArray.begin();
-            oss << *it++ << "~";
-			if (it == ResolutionArray.end())
-	            it = ResolutionArray.begin();
-			oss << *it;
-            configMenu.addMenuSelect( "Resolution", oss.str(), &CA_APP->resolution);
+            configMenu.addMenuSelect( "Resolution", "640x480~800x600~1024x768", &CA_APP->resolution);
             configMenu.addMenuSelect( "Sound", "off~on", &CA_APP->sound );
             configMenu.addMenuSelect( "Sound volume", "0%~10%~20%~30%~40%~50%~60%~70%~80%~90%~100%", &CA_APP->volume );
             configMenu.addMenuLabel( "Configure Keyboard" );
