@@ -28,19 +28,24 @@ struct CAImageData {
 /** An Image with text above and below it.
     This class is also used as basis class for image selectors.
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class CAImageView : public CAWidget  {
 public:
     enum Direction { Vertical, Horizontal };
 
     CAImageView();
-    CAImageView( const std::string upperText,
-                 const std::string lowerText,
+    CAImageView( const std::string& upperText,
+                 const std::string& lowerText,
                  CL_Surface* image,
                  bool autoResize=true );
     ~CAImageView();
 
     virtual void setImageSize( int w, int h );
+    virtual void setImage(CL_Surface* image);
+    virtual void setUpperText(const std::string& upperText) {image.upperText = upperText;}
+    virtual void setLowerText(const std::string& lowerText) {image.lowerText = lowerText;}
+    virtual void setAutoresize(const bool autoresize) {m_autoresize = autoresize;}
 
     virtual void display( bool active=true );
     virtual void displayArrows( bool active=true );
@@ -54,6 +59,8 @@ protected:
     Direction direction;
     //! Height of top/ bottom bar
     int barHeight;
+    //! must autoresize
+    bool m_autoresize;
 };
 
 #endif

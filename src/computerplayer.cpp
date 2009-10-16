@@ -26,9 +26,7 @@ void ComputerPlayer::OnRaceOver()
     {
         if( getMoney() >= CA_APP->carType[ca].price && getCarNumber()<ca )
         {
-            setCarNumber( ca );
-            setMoney( getMoney()-CA_APP->carType[ca].price );
-            setNewCar( true );
+            buyNewCar( ca );
         }
     }
 }

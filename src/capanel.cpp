@@ -26,7 +26,7 @@ CAPanel::display()
 
     // Display speed view:
     //
-    int speedIndex = (int)fabs(CA_APP->player[0]->getSpeed() / CA_APP->player[0]->getCarType()->maxSpeed * 10.0);
+    int speedIndex = (int)fabs(CA_APP->player[0]->getSpeed() / CA_APP->player[0]->getCar()->getMotor()->getMaxSpeed() * 10.0);
     if( speedIndex>10 ) speedIndex = 10;
     CA_RES->panel_speed->set_frame(speedIndex);
     CA_RES->panel_speed->draw (0, 57);
@@ -34,7 +34,7 @@ CAPanel::display()
     // Display turbo view:
     //
     CA_RES->panel_turbolabel->draw (0, 88);
-    int turboIndex = (int)fabs(CA_APP->player[0]->getTurbo() / CA_APP->player[0]->getCarType()->maxTurbo * 9.0);
+    int turboIndex = (int)fabs(CA_APP->player[0]->getTurbo() / CA_APP->player[0]->getCar()->maxTurbo * 9.0);
     CA_RES->panel_turbo->set_frame(turboIndex);
     CA_RES->panel_turbo->draw (0, 100);
 

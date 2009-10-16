@@ -1,6 +1,7 @@
 #include "casignupscreen.h"
 #include "catrophy.h"
 #include "player.h"
+#include "upgradespanel.h"
 
 /** Constructor.
 */
@@ -13,7 +14,7 @@ CASignUpScreen::CASignUpScreen()
 
     left = (CA_APP->width - 640)/2;
     right = CA_APP->width - left;
-    top = CA_APP->headerHeight;
+    top = CA_APP->headerHeight + 30;
     bottom = top + 400;
 
     numTracks = CA_APP->trackList.size();
@@ -58,31 +59,31 @@ CASignUpScreen::reset()
 void
 CASignUpScreen::setOffset( int offset ) 
 {
-    std::string trackPath = (std::string) "tracks/";
+    std::string trackPath = "tracks/";
 
     this->offset = offset;
     reset();
 
     for( int i=0; i<3; ++i ) 
     {
-        //printf( "\ni: %d", i );
-
         if( i<numTracks ) 
         {
-            //image[i] = CL_TargaProvider::create( trackPath + CA_APP->trackList.getItem(i+offset) + "/thumb.tga", NULL );
             try
             {
                 image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
             }
             catch(CL_Error err)
             {
-                trackPath = (std::string) "../resources/tracks/";
+                trackPath = "../resources/tracks/";
                 image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
             }
-            racePreview[i] = new CAImageView( CA_APP->trackList[i+offset], "", image[i], false );
+            std::ostringstream oss;
+            oss << "$" << CA_PRIZE;
+            
+            racePreview[i] = new CAImageView( CA_APP->trackList[i+offset], oss.str(), image[i], false );
 
             racePreview[i]->setImageSize( 150, 92 );
-            racePreview[i]->move( left + 50 + 195*i, top + 50 );
+            racePreview[i]->move( left + 195*i, top + 50 );
         } 
         else 
         {
@@ -97,9 +98,6 @@ CASignUpScreen::setOffset( int offset )
 int
 CASignUpScreen::run() 
 {
-    //CL_Input::chain_button_release.push_back( this );
-    //slot = CL_Input::sig_button_release.connect(thCreateSlot(this, &CASignUpScreen::on_button_release));
-    //slot = CL_Input::sig_button_press.connect(this, &CASignUpScreen::on_button_release);
     slot = CL_Keyboard::sig_key_up().connect(this, &CASignUpScreen::on_key_released);
 
     CA_APP->fadeScreen( true, this );
@@ -159,14 +157,22 @@ CASignUpScreen::buildScreen()
 
     // Race previews:
     //
-    for( int i=0; i<3; ++i ) {
-        if( racePreview[i] ) {
+    for( int i=0; i<3; ++i )
+    {
+        if( racePreview[i] )
+        {
             racePreview[i]->display();
-            //CA_RES->font_normal_14_white->print_center( racePreview[i]->getHCenter(),
-            //                                            racePreview[i]->getTop()-22,
-            //                                            (i==0 ? "Easy" : (i==1 ? "Medium" : "Hard")) );
+            /*CA_RES->font_normal_14_white->draw( racePreview[i]->getHCenter(),
+                                                racePreview[i]->getTop()-22,
+                                                (i==0 ? "Easy" : (i==1 ? "Medium" : "Hard")) );*/
         }
-     }
+    }
+
+    //
+    // UpgradesPanel
+    UpgradesPanel uPanel(CA_APP->player[0], CA_RES->font_normal_14_white, CA_RES->font_lcd_13_green, racePreview[2]->getRight() + 32, racePreview[0]->getTop()-22);
+    uPanel.display();
+    
 }
 
 /** Called on key release.

@@ -145,6 +145,8 @@ public:
     int  volume;
     //! Fullscreen mode?
     bool fullScreen;
+    // ! big Money Mode
+    bool m_cheatMoney;
     //! Fast mode (no screen fading) (command line argument --fast)
     bool fast;
     //! Are we a server (command line argument --server)
@@ -159,7 +161,7 @@ public:
     //! Frames per second we can do at maximum
     float framesPerSec;
 
-    //! Array of Players. Created and destroed by this class.
+    //! Array of Players. Created and destroyed by this class.
     std::vector<Player*> player;
     //! Array of car types.
     std::vector<CarType> carType;
@@ -232,7 +234,7 @@ public:
     CL_SoundOutput *sound_output;
 
     //! Upgrades ressources manager
-    CACarUpgrades *upgrades_ressources;
+    CACarUpgrades *carUp;
 
 private:
     //! Current time in milliseconds since race start

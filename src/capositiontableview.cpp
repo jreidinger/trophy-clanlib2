@@ -91,7 +91,7 @@ CAPositionTableView::buildScreen() {
             // Car name:
             //
             CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 500, y, CA_APP->player[pl]->getCarType()->name );
+            CA_RES->font_normal_11_white->draw( left + 500, y, CA_APP->player[pl]->getCar()->name );
             /*label->setText( CA_APP->player[pl]->getCarType().name );
             label->move( left + 420, y );
             label->display();*/

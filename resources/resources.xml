@@ -14,9 +14,12 @@
             <integer name="acceleration" value="25" />
             <integer name="deceleration" value="50" />
             <integer name="steeringPower" value="180" />
-            <integer name="slidingFactor" value="75" />
+            <integer name="slidingFactor" value="60" />
             <string name="name" value="VW" />
             <integer name="price" value="1500" />
+            <integer name="motorPrice" value="500" />
+            <integer name="tiresPrice" value="200" />
+            <integer name="armorPrice" value="300" />
             <surface name="surface" file="cars/vw/surface.tga" x="0" y="0" width="64" height="64" />
             <surface name="surface3d" file="cars/vw/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>
@@ -29,9 +32,12 @@
             <integer name="acceleration" value="30" />
             <integer name="deceleration" value="60" />
             <integer name="steeringPower" value="200" />
-            <integer name="slidingFactor" value="85" />
+            <integer name="slidingFactor" value="65" />
             <string name="name" value="Ranger" />
             <integer name="price" value="3500" />
+            <integer name="motorPrice" value="750" />
+            <integer name="tiresPrice" value="300" />
+            <integer name="armorPrice" value="500" />
             <surface name="surface" file="cars/jeep/surface.tga" x="0" y="0" width="64" height="64" />
             <surface name="surface3d" file="cars/jeep/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>
@@ -44,9 +50,12 @@
             <integer name="acceleration" value="30" />
             <integer name="deceleration" value="60" />
             <integer name="steeringPower" value="200" />
-            <integer name="slidingFactor" value="85" />
+            <integer name="slidingFactor" value="70" />
             <string name="name" value="Z3" />
             <integer name="price" value="5500" />
+            <integer name="motorPrice" value="1000" />
+            <integer name="tiresPrice" value="500" />
+            <integer name="armorPrice" value="750" />
             <surface name="surface" file="cars/z3/surface.tga" x="0" y="0" width="64" height="64" />
             <surface name="surface3d" file="cars/z3/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>
@@ -59,9 +68,12 @@
             <integer name="acceleration" value="50" />
             <integer name="deceleration" value="60" />
             <integer name="steeringPower" value="200" />
-            <integer name="slidingFactor" value="90" />
+            <integer name="slidingFactor" value="80" />
             <string name="name" value="Flash" />
             <integer name="price" value="15000" />
+            <integer name="motorPrice" value="1500" />
+            <integer name="tiresPrice" value="1000" />
+            <integer name="armorPrice" value="1500" />
             <surface name="surface" file="cars/flash2/surface.tga" x="0" y="0" width="64" height="64" />
             <surface name="surface3d" file="cars/flash2/surface3d.tga" x="0" y="0" width="100" height="100" />
         </section>

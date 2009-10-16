@@ -61,20 +61,20 @@ CAWidget::resize( int width, int height )
 
     switch( alignment ) {
     case Left:
-        right = left+width;
+        right = left+ this->width;
         break;
 
     case Right:
-        left = right-width;
+        left = right- this->width;
         break;
 
     case Center:
-        left = (left+right)/2 - width/2;
-        right = (left+right)/2 + width/2;
+        left = (left+right)/2 - this->width/2;
+        right = (left+right)/2 + this->width/2;
         break;
     }
 
-    bottom = top+height;
+    bottom = top + this->height;
 
 }
 

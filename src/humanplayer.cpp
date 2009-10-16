@@ -119,7 +119,7 @@ void HumanPlayer::pilot()
         activateTurbo();
     } else {
         deactivateTurbo();
-    }
+    } 
 }
 
 float HumanPlayer::getCheckAwayAngle()

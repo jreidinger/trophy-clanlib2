@@ -21,11 +21,13 @@ CAImageView::CAImageView()
     \param autoresize Automatically resize the image preview 
                       to fit the image.
 */
-CAImageView::CAImageView( const std::string upperText,
-                          const std::string lowerText,
+CAImageView::CAImageView( const std::string& upperText,
+                          const std::string& lowerText,
                           CL_Surface* image,
                           bool autoResize )
-        : CAWidget( CAWidget::Left ) {
+        : CAWidget( CAWidget::Left ),
+        m_autoresize(autoResize)
+{
     if( CA_APP->debug ) std::cout << "CAImageView() begin 2" << std::endl;
 
     barHeight = CA_RES->font_normal_14_white->get_height() + 6;
@@ -33,7 +35,7 @@ CAImageView::CAImageView( const std::string upperText,
     this->image.lowerText = lowerText;
     this->image.image = image;
 
-    if( autoResize )
+    if( m_autoresize )
     {
         setImageSize( image->get_width(), image->get_height() );
     }
@@ -56,6 +58,16 @@ CAImageView::setImageSize( int w, int h ) {
     height = h + barHeight * 2;
     right = left + width;
     bottom = top + height;
+}
+
+void
+CAImageView::setImage( CL_Surface* image) {
+    
+    this->image.image = image;
+    if( m_autoresize )
+    {
+       setImageSize( image->get_width(), image->get_height() );
+    }
 }
 
 /** Displays the image view with its current image/ texts.

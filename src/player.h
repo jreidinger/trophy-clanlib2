@@ -7,11 +7,11 @@
 
 #include "utils/hsvcolor.h"
 #include "utils/trophymath.h"
-
-struct CarType;
+#include "cartype.h"
 
 /** Covers all data and methods for a single player.
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class Player 
 {
@@ -45,19 +45,15 @@ public:
     HSVColor  getColor() const { return color; }
     void     setColor( HSVColor c, bool render=true );
 
-    void     setCarNumber( int carNumber, bool render=true );
+    
+    void     buyNewCar(const int carNumber, const bool render = true);
+    
+    void     setCarNumber(const int carNumber, const bool render = true);
     //! Returns current car number (0-CA_NUMCARS).
     int      getCarNumber() const { return carNumber; }
 
-    /** Sets the newCar flag. Used for showing who has bought
-        a new car in the position table.
-        */
-    void     setNewCar( bool nc ) { newCar=nc; }
-    //! Returns the newCar flag.
-    bool     getNewCar() const { return newCar; }
-
-    //! Returns pointer to car type.
-    CarType* getCarType() { return carType; }
+    //! Returns pointers to player car
+    CarType* getCar() { return &m_Pcar; }
 
     //! Returns control mode of this player (Keyboard, Computer, Network)
     ControlMode getControlMode() const { return controlMode; }
@@ -78,7 +74,7 @@ public:
     void   setTurbo( float tb );
 
     //! Returns true if this player is currently on a bridge, false otherwise.
-    bool   isUp() { return up; }
+    bool   isUp() const { return up; }
 
     //! Returns the current frame number.
     int    getFrame() const { return frame; }
@@ -140,8 +136,10 @@ public:
 
     //! Returns the players money.
     int    getMoney() const { return money; }
-    //! Sets the players money.
-    void   setMoney( int m ) { money = m; }
+    //! Give Money to player
+    void  addMoney(const int value) { money+= value;}
+    //! Take Money from player return true if the player had enough money
+    bool spendMoney(const int value);
 
     virtual void pilot() = 0;
 
@@ -202,11 +200,9 @@ private:
     HSVColor     color;
 
     //! Current car type
-    CarType*  carType;
+    CarType  m_Pcar;
     //! Car number (index of CA_Trophy::carType[])
     int         carNumber;
-    //! Flag which tells us if that player has bought a new car.
-    bool        newCar;
     //! Rendered sprites for this player (rotated and color-cycled)
     CL_Surface* sprite[CA_FPR];
 
@@ -255,8 +251,6 @@ private:
 
     //! Life   (0-100)
     float  life;
-    //! Armor (0-100)
-    int    armor;
     //! Turbo  (counts down to 0, 0 = no more turbo left)
     float  turbo;
     //! Is the turbo active? (left shift pressed)

@@ -5,116 +5,139 @@
 #include <ClanLib/display.h>
 
 #include "utils/trophymath.h"
+#include "cacarupgrades.h"
+#include <string>
 
-/** Structure for car types.
-    @author Andrew Mustun
+class CAImageView;
+class Player;
+
+/** class for car options
+    @author Matthieu Lecesne
 */
-struct CarType 
+class CarOption
 {
-    /** Constructor.
-    */
-    CarType() 
-    {
-        surface = 0;
-        surface3d = 0;
-    }
+    public:
+        CarOption(CL_ResourceManager* resources, CACarUpgrades* carRes, int maxOpt, const std::string& pathPrice, const std::string& name);
+        CL_Surface* getImage() const;
+        int getCurrent() const { return m_current;}
+        int getMax() const { return m_maxOpt;}
+        bool isMax() const { return m_current == m_maxOpt;}
+        int getPrice () const;
+        bool buyOption (Player* pl);
+        std::string getPriceString() const;
+        void updateImageView(CAImageView* imageView, const int imageViewWidth);
+        std::string getName() const {return m_name;}
+    protected:
+        //! Upgrades ressources manager
+        const CACarUpgrades* m_carUp;
+    private:
+        virtual void upgrade() = 0;
+        virtual CL_Surface* getSurface(const int ImageNum) const = 0;
 
-    CarType(const std::string& mainPath, CL_ResourceManager* resources, bool debug = false)
-    {
-        if(debug) std::cout << "  name" << std::endl;
-
-        std::string path = mainPath + "name";
-        name = CL_String::load( path, resources );
-
-        if(debug) std::cout << "  surface" << std::endl;
-
-        path = mainPath + "surface";
-        surface = new CL_Surface( path, resources );
-
-        if(debug) std::cout << "  surface3d" << std::endl;
-
-        path = mainPath + "surface3d";
-        surface3d = new CL_Surface( path, resources );
-
-        path = mainPath + "length";
-        length = CL_Integer( path, resources );
-        path = mainPath + "width";
-        width = CL_Integer( path, resources );
-        path = mainPath + "maxSpeed";
-        maxSpeed = 6 * CL_Integer( path, resources );
-        path = mainPath + "minSpeed";
-        minSpeed = 6 * CL_Integer( path, resources );
-        path = mainPath + "maxTurbo";
-        maxTurbo = CL_Integer( path, resources );
-        path = mainPath + "acceleration";
-        acceleration = 6 * CL_Integer( path, resources );
-        path = mainPath + "deceleration";
-        deceleration = 6 * CL_Integer( path, resources );
-        path = mainPath + "steeringPower";
-        steeringPower = CL_Integer( path, resources );
-        path = mainPath + "slidingFactor";
-        slidingFactor = 0.01 * CL_Integer( path, resources );
-        path = mainPath + "price";
-        price = CL_Integer( path, resources );
-
-        radius = std::sqrt( (double)width/2 * (double)width/2 + (double)length/2 * (double)length/2 );
-        angle = atan( (double)(width/2) / (double)(length/2) ) * ARAD;
-    }
-
-    /** Destructor.
-    */
-/*    ~CarType() 
-    {
-        if( surface ) 
-        {
-            delete surface;
-            surface = 0;
-        }
-        if( surface3d ) 
-        {
-            delete surface3d;
-            surface3d = 0;
-        }
-    }
-*/
-
-
-
-    //! Car name (e.g. "Capri")
-    std::string   name;
-
-    //! Pointer to surface resource (r,g,b,m,y,c)
-    CL_Surface* surface;
-    //! Pointer to surface resource 3d (r,g,b,m,y,c)
-    CL_Surface* surface3d;
-
-    //! Current car length in pixel
-    int length;
-    //! Current car width in pixel
-    int width;
-    //! Half of the diagonal
-    float radius;
-    //! Angle to edge
-    float angle;
-
-    //! Maximum speed in pixels per second
-    float maxSpeed;
-    //! Minimum speed in pixels per second
-    float minSpeed;
-    //! Maximum turbo load in pixels
-    float maxTurbo;
-    //! Acceleration in pixels per square second
-    float acceleration;
-    //! Deceleration in pixels per square second
-    float deceleration;
-    //! Steering power in degrees per second
-    float steeringPower;
-    //! Sliding factor (1=no, 0.8=much, ...)
-    float slidingFactor;
-
-    //! Price in USD
-    int   price;
+        // ! current option value
+        int m_current;
+        // ! max option value
+        int m_maxOpt;
+        // ! List of the upgrades price
+        std::vector<int> m_PriceList;
+        // ! Name of the option (Engine, Tires, Armor)
+        std::string m_name;
 };
+
+//! Motor change the acceleration and the maxSpeed 
+class CarMotor : public CarOption
+{
+    public:
+        CarMotor(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp);
+        inline float getAcceleration() const { return m_acceleration;}
+        inline float getMaxSpeed() const { return m_maxSpeed;}
+    private:
+        void upgrade();
+        CL_Surface* getSurface(const int imageNum) const;
+        //! Acceleration in pixels per square second
+        float m_acceleration;
+        //! Maximum speed in pixels per second
+        float m_maxSpeed;
+};
+
+
+//! Tires change the slidingFactor 
+class CarTires : public CarOption
+{
+    public:
+        CarTires(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp);
+        inline float getSlidingFactor() const { return m_slidingFactor; }
+    private:
+        void upgrade();
+        CL_Surface* getSurface(const int imageNum) const;
+        //! Sliding factor (1=no, 0.8=much, ...)
+        float m_slidingFactor;
+};
+
+// ! Armor change the armor ;-)
+class CarArmor: public CarOption
+{
+      public:
+        CarArmor(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp);
+         inline float getArmor() const  { return m_armor;}
+    private:
+        void upgrade();
+        CL_Surface* getSurface(const int imageNum) const;
+        // ! Armor value
+        float m_armor;
+};
+
+
+/** class for car types.
+    @author Andrew Mustun
+    @author Matthieu Lecesne
+*/
+class CarType 
+{
+	public:
+
+        CarType(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp, const bool debug = false);
+
+        CarMotor* getMotor() {return &m_motor;}
+        CarTires* getTires() {return &m_tires;}
+        CarArmor* getArmor() {return &m_armor;}
+
+        //! Car name (e.g. "Capri")
+        std::string   name;
+
+        //! Pointer to surface resource (r,g,b,m,y,c)
+        CL_Surface* surface;
+        //! Pointer to surface resource 3d (r,g,b,m,y,c)
+        CL_Surface* surface3d;
+
+        //! Current car length in pixel
+        int length;
+        //! Current car width in pixel
+        int width;
+        //! Half of the diagonal
+        float radius;
+        //! Angle to edge
+        float angle;
+
+        //! Minimum speed in pixels per second
+        float minSpeed;
+        //! Maximum turbo load in pixels
+        float maxTurbo;
+
+        //! Deceleration in pixels per square second
+        float deceleration;
+        //! Steering power in degrees per second
+        float steeringPower;
+
+        //! Price in USD
+        int   price;
+
+    private:
+        CarMotor m_motor;
+        CarTires m_tires;
+        CarArmor m_armor;
+};
+
 
 #endif
 

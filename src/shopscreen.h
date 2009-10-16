@@ -23,10 +23,6 @@ public:
     ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font, CACarUpgrades* carRes);
     virtual ~ShopScreen();
 
-    void reset();
-
-    void setOffset( int o );
-
     virtual int run();
     virtual void buildScreen();
 
@@ -34,8 +30,6 @@ public:
 
 private:
     void updateText();
-
-    void drawTextButton(const CL_Rect& rect, const std::string& text);
 
     
     //! the human player
@@ -61,8 +55,10 @@ private:
     //! Car image selector.
     CAImageSelector* m_carImage;
 
-    //! the 4 bottom boxes (upgrades and continue)
-    CAImageView* m_imageView[4];
+    //! the 3 bottom boxes (upgrades)
+    CAImageView* m_imageView[3];
+    // ! the continue box
+    CAImageView* m_continue;
 
     //! the widget which have focus
     CAWidget* m_focus;

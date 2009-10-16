@@ -15,8 +15,11 @@
 */
 Player::Player( int id, const std::string& name,
                     int carNumber,
-                    ControlMode controlMode ) {
-    for( int i=0; i<CA_FPR; ++i ) {
+                    ControlMode controlMode )
+: m_Pcar(CA_APP->carType[carNumber])
+{
+    for( int i=0; i<CA_FPR; ++i )
+    {
         sprite[i] = 0;
     }
 
@@ -24,8 +27,8 @@ Player::Player( int id, const std::string& name,
     this->name = name;
     this->controlMode = controlMode;
     this->carNumber = carNumber;
-    setCarNumber( carNumber, false );
-    cMaxSpeed = carType->maxSpeed;
+    
+    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed();
     active = true;
 
     explFrame = 0.0;
@@ -79,8 +82,6 @@ Player::resetForRace() {
     shootMode     = false;
 
     life          = 100.0;
-    armor         = 0;
-    //bullets       = 33;
     bullets       = 500;
     fogBombs      = 2;
 
@@ -88,7 +89,7 @@ Player::resetForRace() {
     raceRank    = 0;
     raceTime    = 0;
 
-    turbo       = carType->maxTurbo;    // Current turbo load (in pixel!)
+    turbo       = m_Pcar.maxTurbo;    // Current turbo load (in pixel!)
     turboActive = 0;
 
     resetHitPoints();
@@ -100,8 +101,6 @@ Player::resetForRace() {
     lastLapPart   = 0;
     finished      = false;
     death         = false;
-
-    newCar        = false;
 }
 
 /** Sets a new color for this player.
@@ -116,18 +115,31 @@ Player::setColor( HSVColor col, bool render ) {
     }
 }
 
+/** buy a new car (car number 0-CA_NUMCARS)
+    \param carNumber (index of CATrophy::carType)
+ */
+void
+Player::buyNewCar(const int carNumber, const bool render)
+{
+    setCarNumber(carNumber, render);
+    spendMoney( CA_APP->carType[carNumber].price );
+}
+
+
 /** Sets a new car for this player.
     \param carNumber Car number (index of CATrophy::carType[])
     \param render Render new sprites?
 */
 void
-Player::setCarNumber( int carNumber, bool render ) {
-    if( carNumber<CA_NUMCARTYPES ) carType = &(CA_APP->carType[carNumber]);
-    else                           carType = &(CA_APP->carType[0]);
+Player::setCarNumber( const int carNumber,const bool render ) {
+    if( carNumber<CA_NUMCARTYPES ) m_Pcar = CarType(CA_APP->carType[carNumber]);
+    else                           m_Pcar = CarType(CA_APP->carType[0]);
+    if (this->carNumber != carNumber)
+    {
+        this->carNumber = carNumber;
 
-    this->carNumber = carNumber;
-
-    if( render ) renderSprites( color );
+        if( render ) renderSprites( color );
+    }
 }
 
 /** Init a computer player. This method moves the player to the start
@@ -150,7 +162,7 @@ void
 Player::renderSprites( HSVColor col ) 
 {
     /*
-       CL_Surface* tmpSf = CAImageManipulation::changeHSV( carType->surface,
+       CL_Surface* tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface,
        color.h, color.s, color.v );
        for( int i=0; i<CA_FPR; ++i ) {
        if( sprite[i] ) delete sprite[i];
@@ -163,7 +175,7 @@ Player::renderSprites( HSVColor col )
     // green as the transparency channel - which results in this
     // massive overhead of calculations / waste of memory - sorry.
     CL_Surface* tmpSf;
-    tmpSf = CAImageManipulation::changeHSV( carType->surface, color.h, color.s, color.v );
+    tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface, color.h, color.s, color.v );
     for( int i=0; i<CA_FPR; ++i ) 
     {
         if( sprite[i] ) delete sprite[i];
@@ -194,7 +206,8 @@ Player::setSpeed( float sp )
     speed = sp;
 
     if( speed > cMaxSpeed         ) speed = cMaxSpeed;
-    if( speed < carType->minSpeed ) speed = carType->minSpeed;
+    if( speed < m_Pcar.minSpeed ) speed = m_Pcar.minSpeed;
+
 }
 
 /** Changes the turbo load of this sprite.
@@ -203,8 +216,19 @@ void
 Player::setTurbo( float tb ) {
     turbo = tb;
 
-    if( turbo > carType->maxTurbo ) turbo = carType->maxTurbo;
+    if( turbo > m_Pcar.maxTurbo ) turbo = m_Pcar.maxTurbo;
     if( turbo < 0                 ) turbo = 0;
+}
+
+bool Player::spendMoney(const int value)
+{
+    bool wasAbleToBuy = false;
+    if (money >= value)
+    {
+        money-= value;
+        wasAbleToBuy = true;
+    }
+    return wasAbleToBuy;
 }
 
 
@@ -225,7 +249,7 @@ Player::advance()
     // Slide towards direction:
     //
     if( !TrophyMath::compFloat(direction, newDirection) ) {
-        float dirStep = (carType->steeringPower / CA_APP->framesPerSec) * carType->slidingFactor;
+        float dirStep = (m_Pcar.steeringPower / CA_APP->framesPerSec) * m_Pcar.getTires()->getSlidingFactor();
 
         if( (newDirection>direction && newDirection-direction<=180.0) ||
                 (newDirection<direction && direction-newDirection> 180.0) ) {
@@ -278,8 +302,8 @@ Player::advance()
 
         // Regulate Speed:
         //
-        if( speedMode==Accelerate ) setSpeed( speed + (carType->acceleration / CA_APP->framesPerSec) );
-        else if( speedMode==Decelerate ) setSpeed( speed - (carType->deceleration / CA_APP->framesPerSec) );
+        if( speedMode==Accelerate ) setSpeed( speed + (m_Pcar.getMotor()->getAcceleration() / CA_APP->framesPerSec) );
+        else if( speedMode==Decelerate ) setSpeed( speed - (m_Pcar.deceleration / CA_APP->framesPerSec) );
         else                             {
             setSpeed( speed * 0.96 );
             if( fabs(speed)<10.0 ) speed=0.0;
@@ -288,7 +312,8 @@ Player::advance()
         // Control direction:
         //
         // TODO : It seems that the turning problem of cars is here ... maybe when steeringPower < 1.5 ?
-        float steeringPower = (carType->steeringPower / CA_APP->framesPerSec) * (speed / carType->maxSpeed);
+        // TODO: examines what happens when speed > getMaxSpeed (ie during turbo)
+        float steeringPower = (m_Pcar.steeringPower / CA_APP->framesPerSec) * (speed / m_Pcar.getMotor()->getMaxSpeed());
         //if( steeringPower<1.5 && steeringPower>=0.0 ) steeringPower = 1.5;
         if( (steeringPower<200 / CA_APP->framesPerSec) && steeringPower>=0.0 ) steeringPower = 200 / CA_APP->framesPerSec;
 
@@ -319,7 +344,7 @@ Player::advance()
         // Auto Reload turbo
         //
         else {
-            setTurbo( turbo + TrophyMath::getDistance( x,y, nx,ny ) * (carType->maxTurbo/5000.0) );
+            setTurbo( turbo + TrophyMath::getDistance( x,y, nx,ny ) * (m_Pcar.maxTurbo/5000.0) );
         }
 
         // Move now:
@@ -581,8 +606,8 @@ void
 Player::calcEdges() {
     float dx, dy;
 
-    dx = cos( (newDirection + carType->angle) / ARAD ) * carType->radius;
-    dy = sin( (newDirection + carType->angle) / ARAD ) * carType->radius;
+    dx = cos( (newDirection + m_Pcar.angle) / ARAD ) * m_Pcar.radius;
+    dy = sin( (newDirection + m_Pcar.angle) / ARAD ) * m_Pcar.radius;
 
     edge[0][0] = (int)(x + dx);
     edge[0][1] = (int)(y + dy);
@@ -590,8 +615,8 @@ Player::calcEdges() {
     edge[2][0] = (int)(x - dx);
     edge[2][1] = (int)(y - dy);
 
-    dx = cos( (newDirection - carType->angle) / ARAD ) * carType->radius;
-    dy = sin( (newDirection - carType->angle) / ARAD ) * carType->radius;
+    dx = cos( (newDirection - m_Pcar.angle) / ARAD ) * m_Pcar.radius;
+    dy = sin( (newDirection - m_Pcar.angle) / ARAD ) * m_Pcar.radius;
 
     edge[1][0] = (int)(x + dx);
     edge[1][1] = (int)(y + dy);
@@ -665,7 +690,7 @@ Player::shoot() {
 void
 Player::hit( float amount ) {
     if( !death && !finished ) {
-        life -= amount/100.0*(100.0-armor);
+        life -= amount/100.0*(100.0-m_Pcar.getArmor()->getArmor());
         if( life<0.1 ) {
             kill();
         }
@@ -712,9 +737,9 @@ Player::display( const int offsetX, const int offsetY )
         CA_RES->misc_gunfire->draw ( gunX+offsetX, gunY+offsetY );
     }
 
-    // Display car fire if we're death:
-    //
-    if( death ) 
+    // Display car fire if we're death or if we are almost dead:
+    // TODO: differentate death and almost dead
+    if( death || life <10) 
     {
         CA_RES->misc_carfire->set_frame((int)floor(explFrame));
         CA_RES->misc_carfire->draw ( (int)(x+offsetX - CA_RES->misc_carfire->get_width()/2),
@@ -737,7 +762,7 @@ Player::move( float x, float y ) {
 void
 Player::activateTurbo() {
     if( turbo>0 ) {
-        cMaxSpeed = carType->maxSpeed * CA_TURBOFACTOR;
+        cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed() * CA_TURBOFACTOR;
         turboActive = true;
     }
 }
@@ -746,7 +771,7 @@ Player::activateTurbo() {
 */
 void
 Player::deactivateTurbo() {
-    cMaxSpeed = carType->maxSpeed;
+    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed();
     turboActive =false;
 }
 

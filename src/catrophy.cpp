@@ -55,11 +55,12 @@ CATrophy::main( int argc, char** argv )
     {
         // Default paramters:
         //
-	display_window = NULL;
+	    display_window = NULL;
         debug = false;
         trackInfo = false;
         framesPerSec = 40;
         resolution = CA_RESOLUTION;
+        m_cheatMoney = false;
         fullScreen = false;
         fast = false;
         server = false;
@@ -95,6 +96,7 @@ CATrophy::main( int argc, char** argv )
                 std::cout << "--debug, -d : active debugging information" << std::endl;
                 std::cout << "--trackinfo"  << std::endl;
                 std::cout << "--help, -h : show this help message" << std::endl;
+                std::cout << "--bigmoney : start with $75,000" << std::endl;
                 std::cout << "--fullscreen, -f : fullscreen" << std::endl;
                 std::cout << "--fast" << std::endl;
                 std::cout << "--640x480, --800x600, --1024x768 : use corresponding resolution" << std::endl;
@@ -103,6 +105,11 @@ CATrophy::main( int argc, char** argv )
                 std::cout << "--client" << std::endl;
                 std::cout << "--ip" << std::endl;
                 exit(0);
+            }
+
+            else if( !strcmp(argv[c], "--bigmoney" ) )
+            {
+                m_cheatMoney = true;
             }
 
             // Graphic options:
@@ -157,8 +164,8 @@ CATrophy::main( int argc, char** argv )
         sound_output = new CL_SoundOutput(44100);
 
         reconfigure();
-	
-	headerHeight = (int)((float)height/4.2f);
+
+        headerHeight = (int)((float)height/4.2f);
 
         // Load resources:
         //
@@ -170,9 +177,10 @@ CATrophy::main( int argc, char** argv )
 
         // Init everything:
         //
-        initCarTypes();
-        loading.setProgress( 60 );
+       
         initUpgrades();
+        loading.setProgress( 60 );
+        initCarTypes();
         initGoodies();
         initPlayers();
         // initNetwork();
@@ -261,7 +269,7 @@ CATrophy::initCarTypes()
             break;
         }
 
-        carType.push_back(CarType(mainPath, CA_RES->resources, debug));
+        carType.push_back(CarType(mainPath, CA_RES->resources, carUp, debug));
     }
 
     if(debug) std::cout << "initCarTypes end" << std::endl;
@@ -290,7 +298,7 @@ CATrophy::deinitCarTypes()
 void CATrophy::initUpgrades()
 {
      if(debug) std::cout << "initUpgrades begin" << std::endl;
-     upgrades_ressources = new CACarUpgrades();
+     carUp = new CACarUpgrades();
      if(debug) std::cout << "initUpgrades end" << std::endl;
 }
 
@@ -299,8 +307,8 @@ void CATrophy::initUpgrades()
 void CATrophy::deinitUpgrades() 
 {
     if(debug) std::cout << "deinitUpgrades begin" << std::endl;
-    delete upgrades_ressources;
-    upgrades_ressources = 0;
+    delete carUp;
+    carUp = 0;
     if(debug) std::cout << "deinitUpgrades end" << std::endl;
 }
 
@@ -749,11 +757,18 @@ CATrophy::resetPlayers() {
     for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
         player[pl]->reset();
         player[pl]->setTotalPoints(pl*4+pl*3);
-        player[pl]->setCarNumber( 0, player[pl]->getCarNumber()!=0 );
+        int carNum = 0;
+        if (pl>2)
+            carNum = pl - 2;
+        player[pl]->setCarNumber( carNum );
+    }
+    if (m_cheatMoney)
+    {
+        player[0]->addMoney (74000);
     }
 }
 
-/** Called by CATrophy::main() to start the menu in an std::endless loop.
+/** Called by CATrophy::main() to start the menu in an endless loop.
 */
 void
 CATrophy::runMenu() 
@@ -1025,7 +1040,7 @@ CATrophy::startNewGame()
                         myChampionShip.run();
                     }
                     {
-                        ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white, upgrades_ressources);
+                        ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white, carUp);
                         myShop.run();
                     }
                 }

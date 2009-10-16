@@ -56,7 +56,7 @@ public:
         return height;
     }
 
-protected:
+public:
     //! Left border position.
 
     int left;

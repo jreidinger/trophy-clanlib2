@@ -13,7 +13,7 @@ CASlotSelectionDialog::CASlotSelectionDialog( const std::string title )
     help = "Use Arrow Keys to change selection and press Enter to\nconfirm";
     left = (CA_APP->width - 320)/2;
     right = CA_APP->width - left;
-    top = CA_APP->headerHeight;
+    top = CA_APP->headerHeight+30;
     bottom = top + 400;
 }
 

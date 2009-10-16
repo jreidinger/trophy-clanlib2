@@ -59,10 +59,8 @@ CAPositionTable::playerFinishedRace( Player* player )
         if( points>0 )
         {
             player->setRacePoints( points );
-            //player->setTotalPoints( player->getTotalPoints() + points );
-            // total points are now handle by championshipscreen
         }
-        player->setMoney( (int)(player->getMoney() + (float)CA_PRIZE/CA_MAXPLAYERS*(CA_MAXPLAYERS-player->getRaceRank()+1)) );
+        player->addMoney((float)CA_PRIZE/CA_MAXPLAYERS*(CA_MAXPLAYERS-player->getRaceRank()+1));
         raceRankIndex++;
     }
 }
