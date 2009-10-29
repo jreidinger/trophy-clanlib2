@@ -94,6 +94,13 @@
             <surface name="tires4" file="upgrades/tires/tires_4.tga" x="0" y="0" width="100" height="100" />
             <surface name="tires5" file="upgrades/tires/tires_5.tga" x="0" y="0" width="100" height="100" />
         </section>
+        <section name="armors">
+            <surface name="armor1" file="upgrades/armors/armor_1.tga" x="0" y="0" width="100" height="100" />
+            <surface name="armor2" file="upgrades/armors/armor_2.tga" x="0" y="0" width="100" height="100" />
+            <surface name="armor3" file="upgrades/armors/armor_3.tga" x="0" y="0" width="100" height="100" />
+            <surface name="armor4" file="upgrades/armors/armor_4.tga" x="0" y="0" width="100" height="100" />
+            <surface name="armor5" file="upgrades/armors/armor_5.tga" x="0" y="0" width="100" height="100" />
+        </section>
     </section>
     <section name="bullets">
         <string name="directories" value="rocket" />
@@ -115,6 +122,7 @@
     </section>
     <section name="misc">
         <surface name="cross" file="misc/cross.tga" x="0" y="0" width="16" height="16" />
+        <surface name="flag" file="misc/flag.tga" x="0" y="0" width="100" height="100" />
         <surface name="picture" file="misc/picture.tga" x="0" y="0" width="102" height="128" />
         <surface name="info" file="misc/info.tga" x="0" y="0" width="48" height="48" />
         <surface name="caution" file="misc/caution.tga" x="0" y="0" width="48" height="48" />

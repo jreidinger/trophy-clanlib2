@@ -19,6 +19,12 @@ CACarUpgrades::CACarUpgrades()
         oss << upgradesPath << "/tires/tires" << i+1;
         tires.push_back ( new CL_Surface( oss.str(), CA_RES->resources ));
     }
+    for (int i = 0; i < 5; i++)
+    {
+        std::ostringstream oss;
+        oss << upgradesPath << "/armors/armor" << i+1;
+        armors.push_back ( new CL_Surface( oss.str(), CA_RES->resources ));
+    }
 }
 
 CACarUpgrades::~CACarUpgrades()
@@ -41,6 +47,15 @@ CACarUpgrades::~CACarUpgrades()
         }
     }
     tires.clear();
+    for (int i = 0; i < 5; i++)
+    {
+        if (armors[i] != 0)
+        {
+            delete armors[i];
+            armors[i] = 0;
+        }
+    }
+    armors.clear();
 }
 
 

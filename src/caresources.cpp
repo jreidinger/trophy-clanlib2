@@ -35,6 +35,7 @@ CAResources::CAResources() {}
 */
 CAResources::~CAResources() {
     delete misc_cross;
+    delete misc_flag;
     delete misc_light;
     delete misc_hitpoint;
     delete misc_gunfire;
@@ -213,6 +214,7 @@ CAResources::load() {
     // Load generic sprites:
     //
     misc_cross = new CL_Surface( "misc/cross", resources );
+    misc_flag = new CL_Surface( "misc/flag", resources );
     misc_light = new CL_Sprite( "misc/light", resources );
     misc_hitpoint = new CL_Sprite( "misc/hitpoint", resources );
     misc_gunfire = new CL_Sprite( "misc/gunfire", resources );

@@ -60,7 +60,7 @@ ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* butto
     m_player->getCar()->getTires()->updateImageView(m_imageView[1], m_carImage->getWidth());
     m_player->getCar()->getArmor()->updateImageView(m_imageView[2], m_carImage->getWidth());
 
-    m_continue = new CAImageView ( "Continue", "", m_carRes->getMotor(4), true );
+    m_continue = new CAImageView ( "Continue", "", CA_RES->misc_flag/*m_carRes->getMotor(4)*/, true );
     m_continue->resize(m_carImage->getWidth(), -1);
 
     for (int i = 0; i < 3; i++)

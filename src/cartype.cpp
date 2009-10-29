@@ -126,7 +126,7 @@ void CarArmor::upgrade()
 CL_Surface* CarArmor::getSurface(const int imageNum) const
 {
     // TODO : use an armor image instead of tires
-    return m_carUp->getTires(imageNum);
+    return m_carUp->getArmor(imageNum);
 }
 
 

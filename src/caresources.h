@@ -54,6 +54,7 @@ public:
     CL_Font* font_lcd_13_green;
 
     CL_Surface* misc_cross;
+    CL_Surface* misc_flag;
     CL_Sprite* misc_light;
     CL_Sprite* misc_hitpoint;
     CL_Sprite* misc_gunfire;
