@@ -3,10 +3,17 @@
 
 #include "player.h"
 
-#define CA_POSITIONTABLE CAPositionTable::getPositionTable()
+
+enum RaceLevel
+{
+	Easy =0,
+	Medium = 1,
+	Hard = 2
+};
 
 /** Controls the position table data.
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class CAPositionTable {
 public:
@@ -16,6 +23,7 @@ public:
     void resetRace();
     void playerFinishedRace( Player* player );
     void playerDied( Player* player );
+    void setRaceLevel(const RaceLevel rl) {m_raceLevel = rl;}
 
 private:
     CAPositionTable();
@@ -29,11 +37,13 @@ private:
         successfully finished the current race.
         raceRankList[0] is the first.
     */
-    Player* raceRankList[CA_MAXPLAYERS];
+    Player* raceRankList[CA_RACEMAXPLAYERS];
     //! Index of next rank.
     int raceRankIndex;
     //! Index of next rank from bottom
     int raceRankIndexBottom;
+    // Difficulty of actual race
+    RaceLevel m_raceLevel;
 
 };
 

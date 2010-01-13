@@ -11,15 +11,27 @@ class Player;
    @author Andrew Mustun
    @author Matthieu Lecesne
 */
+
+/** Prediate to sort player by rank
+*/
+struct RankPredicate: public std::binary_function<Player*, Player*, bool>
+{
+   bool operator()(const Player* const p1, const Player* const p2);
+};
+
+
 enum DisplayMode
 {
-   DISPLAY_ADD_POINTS,
-   DISPLAY_CHAMPIONSHIP
+    DISPLAY_ADD_POINTS_EASY,
+    DISPLAY_ADD_POINTS_MEDIUM,
+    DISPLAY_ADD_POINTS_HARD,
+    DISPLAY_CHAMPIONSHIP
 };
 
 class CAChampionshipScreen : public CAScreen {
 public:
-    CAChampionshipScreen(const std::vector<Player*> player, CL_Surface* background, CL_Surface* button, CL_Font* font);
+    CAChampionshipScreen(const std::vector<Player*> player, const std::vector<std::vector<Player*> > runningPlayer,
+                                          CL_Surface* background, CL_Surface* button, CL_Surface* button_easy, CL_Surface* button_medium, CL_Surface* button_hard, CL_Font* font);
     ~CAChampionshipScreen();
 
     void reset();
@@ -43,14 +55,23 @@ private:
     int bottom;
     //! Height of the button
     int barHeight;
-    //! player sorted by Totalrank
+    //! all players sorted by Totalrank
     std::vector<Player*> m_player;
+    //! players running in the 3 races
+    std::vector<std::vector <Player*> > m_runningPlayers;
     //! The Background Surface
     CL_Surface* m_background;
     //! The font use for display championship result
     CL_Font* m_font;
     //! The button use in the championship table
     CL_Surface* m_button;
+     //! The button use for easy race point
+    CL_Surface* m_buttonEasy;
+     //! The button use for medium race point
+    CL_Surface* m_buttonMedium;
+     //! The button use for hard race point
+    CL_Surface* m_buttonHard;
+    
      //! display mode (display the point earned in last Race)
     DisplayMode m_displayMode;
 

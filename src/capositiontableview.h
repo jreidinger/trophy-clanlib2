@@ -6,6 +6,7 @@
 
 /**Shows and controls the position table.
   *@author Andrew Mustun
+  *@author Matthieu Lecesne
   */
 class CAPositionTableView : public CADialog {
 public:
@@ -17,7 +18,6 @@ public:
 
 private:
     //! Race or total results
-
     bool race;
     //! Label for table output
     CALabel* label;

@@ -2,15 +2,30 @@
 #include "catrophy.h"
 #include "player.h"
 #include "upgradespanel.h"
+#include "caimageview.h"
+#include "cachampionshipscreen.h" // For RankPredicate
+#include <vector>
+
+struct FindPlayer:public std::binary_function<std::vector<Player*>, Player*, bool>
+{
+    bool operator()(std::vector<Player*>& racePlayers, Player* player) const
+    {
+       std::vector<Player*>::const_iterator it = std::find(racePlayers.begin(), racePlayers.end(), player);
+       return (it != racePlayers.end());
+    }
+};
 
 /** Constructor.
 */
-CASignUpScreen::CASignUpScreen()
-        : CAScreen() {
+CASignUpScreen::CASignUpScreen(std::vector<Player*> player)
+ : CAScreen(),
+    m_Player(player)
+{
     cursor = 0;
     offset = 0;
     title = "P R E S S   E N T E R   T O   S I G N   U P";
     help = "Use Arrow Keys to change selection and press Enter to\nconfirm";
+    m_selected = false;
 
     left = (CA_APP->width - 640)/2;
     right = CA_APP->width - left;
@@ -19,11 +34,50 @@ CASignUpScreen::CASignUpScreen()
 
     numTracks = CA_APP->trackList.size();
 
-    for( int i=0; i<3; ++i ) {
+    for( int i=0; i<3; ++i )
+    {
         image[i] = 0;
         racePreview[i] = 0;
     }
 
+    //setOffset( 0 );
+    std::sort(m_Player.begin(), m_Player.end(), RankPredicate()); // We sort player by points
+    int beginRandom = m_Player.size()/2;
+    int endRandom = m_Player.size() -1;
+    for (int race=0; race<3; race++)
+    {
+        std::vector<std::string>::const_iterator it = m_trackList.begin();
+        int rn = 0;
+        do 
+        {
+            rn = TrophyMath::getRandomNumber( 0, numTracks-1 );
+	        it = std::find(m_trackList.begin(), m_trackList.end(), CA_APP->trackList[rn]);
+        }
+	    while (it != m_trackList.end());
+        m_trackList.push_back(CA_APP->trackList[rn]);
+	//
+	    m_RacePlayer.push_back(std::vector<Player*>());
+	    m_StringRacePlayer.push_back(std::vector<std::string>());
+
+        for (int pl=0; pl<CA_RACEMAXPLAYERS; pl++)
+        {
+            std::vector<std::vector<Player*> >::const_iterator it;
+            int rn = 0;
+            do
+            {
+                rn = TrophyMath::getRandomNumber( beginRandom, endRandom );
+                it = std::find_if(m_RacePlayer.begin(), m_RacePlayer.end(), std::bind2nd(FindPlayer(), m_Player[rn]));
+            }
+            while ( it != m_RacePlayer.end() || m_Player[rn] == CA_APP->player[0]);
+            m_RacePlayer[race].push_back(m_Player[rn]);
+            m_Player[rn]->resetForRace();
+            std::ostringstream oss;
+            oss << rn+1 << ") " <<  m_Player[rn]->getName();
+            m_StringRacePlayer[race].push_back(oss.str());
+        }
+        beginRandom -= m_Player.size()/4;
+        endRandom -= m_Player.size()/4;
+    }
     setOffset( 0 );
 }
 
@@ -70,17 +124,21 @@ CASignUpScreen::setOffset( int offset )
         {
             try
             {
-                image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
+                //image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
+                image[i] = new CL_Surface (CL_TargaProvider( trackPath + m_trackList[i] + "/thumb.tga" ));
+                
             }
             catch(CL_Error err)
             {
                 trackPath = "../resources/tracks/";
-                image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
+                //image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
+                image[i] = new CL_Surface (CL_TargaProvider( trackPath + m_trackList[i] + "/thumb.tga" ));
             }
             std::ostringstream oss;
-            oss << "$" << CA_PRIZE;
+            oss << "$" << (i==0 ? CA_PRIZE : (i==1 ? CA_PRIZE_MEDIUM : CA_PRIZE_HARD));
             
-            racePreview[i] = new CAImageView( CA_APP->trackList[i+offset], oss.str(), image[i], false );
+            //racePreview[i] = new CAImageView( CA_APP->trackList[i+offset], oss.str(), image[i], false );
+            racePreview[i] = new CAImageView( m_trackList[i], oss.str(), image[i], false );
 
             racePreview[i]->setImageSize( 150, 92 );
             racePreview[i]->move( left + 195*i, top + 50 );
@@ -89,6 +147,39 @@ CASignUpScreen::setOffset( int offset )
         {
             image[i] = 0;
             racePreview[i] = 0;
+        }
+    }
+}
+
+/** get the players in the same race of the player)
+*/
+std::vector<Player*> CASignUpScreen::getRacePlayers()
+{
+    return m_RacePlayer[cursor];
+}
+
+/** get all players running in the 3 races (easy, medium and hard)
+*/
+std::vector<std::vector<Player*> > CASignUpScreen::getAllRunningPlayers()
+{
+    return m_RacePlayer;
+}
+
+
+void CASignUpScreen::addVirtualPoints()
+{
+    for( int i=0; i<3; ++i ) 
+    {
+        if (i!=cursor)
+        {
+            int random =TrophyMath::getRandomNumber(0,5);
+            unsigned int playerFinished = m_RacePlayer[i].size();
+            if (random <= 0)
+                playerFinished--;
+             if (random <= 1)
+                playerFinished--;
+            for (unsigned int j=0; j<playerFinished; j++)
+                m_RacePlayer[i][j]->setRacePoints (((CA_RACEMAXPLAYERS)-j) * (i +1));
         }
     }
 }
@@ -115,7 +206,7 @@ CASignUpScreen::run()
         // Play background sound:
         CASoundEffect::playBackgroundMelody();
 
-        CL_Display::flip();   // Copy framebufer to screen
+        CL_Display::flip();   // Copy framebuffer to screen
         CL_System::keep_alive();      // VERY VITAL for the system!
 
         CA_APP->measureFrameTime( false );
@@ -127,7 +218,15 @@ CASignUpScreen::run()
     //CL_Input::chain_button_release.remove( this );
 
     CL_Keyboard::sig_key_up().disconnect(slot);
-    return (cancel ? -1 : cursor+offset);
+    std::vector<std::string>::const_iterator it = std::find(CA_APP->trackList.begin(), CA_APP->trackList.end(), m_trackList[cursor]);
+    
+    //return (cancel ? -1 : cursor+offset);
+    return (cancel ? -1 : it-CA_APP->trackList.begin());
+}
+
+int CASignUpScreen::getRaceLevel()
+{
+    return cursor;
 }
 
 /** Builds the screen.
@@ -157,17 +256,26 @@ CASignUpScreen::buildScreen()
 
     // Race previews:
     //
-    for( int i=0; i<3; ++i )
+    for( int race=0; race<3; ++race )
     {
-        if( racePreview[i] )
+        if( racePreview[race] )
         {
-            racePreview[i]->display();
-            /*CA_RES->font_normal_14_white->draw( racePreview[i]->getHCenter(),
-                                                racePreview[i]->getTop()-22,
-                                                (i==0 ? "Easy" : (i==1 ? "Medium" : "Hard")) );*/
+            racePreview[race]->display();
+            CA_RES->font_normal_14_white->draw( racePreview[race]->getHCenter(),
+                                                racePreview[race]->getTop()-22,
+                                                (race==0 ? "Easy" : (race==1 ? "Medium" : "Hard")) );
+        }
+        if (m_selected == true)
+        {
+            for (unsigned int pl=0; pl<m_RacePlayer[race].size(); pl++)
+            {
+                CA_RES->font_normal_14_white->draw (racePreview[race]->getHCenter(),
+                                                    racePreview[race]->getBottom()+22*(pl+1), m_StringRacePlayer[race][pl] );
+            }
         }
     }
 
+  
     //
     // UpgradesPanel
     UpgradesPanel uPanel(CA_APP->player[0], CA_RES->font_normal_14_white, CA_RES->font_lcd_13_green, racePreview[2]->getRight() + 32, racePreview[0]->getTop()-22);
@@ -193,12 +301,15 @@ CASignUpScreen::on_key_released (const CL_InputEvent &key)
         //
     case CL_KEY_LEFT:
     case CL_KEY_N:
-        if( cursor>0 ) {
-            cursor--;
-            playSwitchSound();
-        } else if( offset>0 ) {
-            setOffset( offset-1 );
-            playSwitchSound();
+        if (!m_selected)
+        {
+            if( cursor>0 ) {
+                cursor--;
+                playSwitchSound();
+            } /*else if( offset>0 ) {
+                setOffset( offset-1 );
+                playSwitchSound();
+            }*/
         }
         break;
 
@@ -206,12 +317,15 @@ CASignUpScreen::on_key_released (const CL_InputEvent &key)
         //
     case CL_KEY_RIGHT:
     case CL_KEY_M:
-        if( cursor<2 && cursor<numTracks-1 ) {
-            cursor++;
-            playSwitchSound();
-        } else if( offset<numTracks-3 ) {
-            setOffset( offset+1 );
-            playSwitchSound();
+        if (!m_selected)
+        {
+            if( cursor<2 && cursor<numTracks-1 ) {
+                cursor++;
+                playSwitchSound();
+            } /*else if( offset<numTracks-3 ) {
+                setOffset( offset+1 );
+                playSwitchSound();
+            }*/
         }
         break;
 
@@ -219,7 +333,21 @@ CASignUpScreen::on_key_released (const CL_InputEvent &key)
         //
     case CL_KEY_ENTER:
     case CL_KEY_SPACE:
-        done = true;
+        {
+            if (m_selected == true)
+            {
+                done = true;
+            }
+            else
+            {
+                    m_RacePlayer[cursor][0] = CA_APP->player[0];
+                    std::vector<Player*>::const_iterator it = std::find(m_Player.begin(), m_Player.end(), m_RacePlayer[cursor][0]); // we trying to find the rank of the player
+                    std::ostringstream oss;
+                    oss << it - m_Player.begin() +1 << ") " <<  (*it)->getName();
+                    m_StringRacePlayer[cursor][0] = oss.str();  
+                    m_selected = true;
+            }
+        }
         break;
 
     default:

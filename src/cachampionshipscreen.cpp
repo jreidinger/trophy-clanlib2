@@ -4,33 +4,33 @@
 #include <functional>
 #include <algorithm>
 
-/** Prediate to sort player by rank
-*/
-struct RankPredicate: public std::binary_function<Player*, Player*, bool>
-{
-   bool operator()(const Player* const p1, const Player* const p2)
+bool RankPredicate::operator()(const Player* const p1, const Player* const p2)
    {
-       // In case of equality, use alphabetical order
+       // In case of level, use alphabetical order
        if (p1->getTotalPoints() == p2->getTotalPoints())
           return (p1->getName() < p2->getName()); 
        else
           return (p1->getTotalPoints() > p2->getTotalPoints());
    }
-};
 
 
 /** Constructor.
 */
-CAChampionshipScreen::CAChampionshipScreen(const std::vector<Player*> player, CL_Surface* background, CL_Surface* button, CL_Font* font)
+CAChampionshipScreen::CAChampionshipScreen(const std::vector<Player*> player, const std::vector<std::vector<Player*> > runningPlayer,
+                                                                           CL_Surface* background, CL_Surface* button, CL_Surface* buttonEasy, CL_Surface* buttonMedium, CL_Surface* buttonHard, CL_Font* font)
    : CAScreen(),
    m_player(player),
+   m_runningPlayers(runningPlayer),
    m_background(background),
    m_font(font),
    m_button(button),
-   m_displayMode(DISPLAY_ADD_POINTS)
+   m_buttonEasy(buttonEasy),
+   m_buttonMedium(buttonMedium),
+   m_buttonHard(buttonHard),
+   m_displayMode(DISPLAY_ADD_POINTS_EASY)
 {
-    left = (CA_APP->width - 640)/2;
-    right = CA_APP->width - left;
+    left = 0;
+    right = CA_APP->width;
     top = CA_APP->headerHeight + 30;
     bottom = CA_APP->headerHeight + 400;
     barHeight = m_font->get_height() + 6;
@@ -96,46 +96,61 @@ CAChampionshipScreen::buildScreen()
     displayTitle();
 
     CL_Display::fill_rect( CL_Rect(left, top, right, bottom), CL_Color(0, 0, 0, 64) );
+    
+    const int rankWidth = 30;
+    const int rankLeft = 0;
+
+    const int nameWidth = 200;
+    const int nameLeft = 50;
+
+    const int addPtWidth = 30;
+    const int addPtLeft = 260;
+
+    const int totalPtWidth = 50;
+    const int totalPtLeft = 300;
+
+    const int caWidth = (totalPtLeft + totalPtWidth)*2;
+    const int middleMargin = 30;
+   
+
+    const int caHeight = (barHeight * m_player.size())/2;
+    const int marginTop = (top+bottom)/2 - caHeight/2;
 
     for (unsigned int rank=0; rank < m_player.size(); rank++)
     {
         std::ostringstream ossRankStr, ossTotalPoints, ossRacePoints;
         ossRankStr << rank + 1 << ".";
         ossTotalPoints << m_player[rank]->getTotalPoints();
-        if (m_player[rank]->getRacePoints() != 0 && m_displayMode == DISPLAY_ADD_POINTS)
-            ossRacePoints << "+" << m_player[rank]->getRacePoints();
-
-
-        const int rankWidth = 30;
-        const int rankLeft = 0;
-
-        const int nameWidth = 200;
-        const int nameLeft = 50;
- 
-        const int addPtWidth = 30;
-        const int addPtLeft = 260;
-
-        const int totalPtWidth = 100;
-        const int totalPtLeft = 300;
-
-        const int caWidth = totalPtLeft + totalPtWidth;
-        const int marginLeft = (right+left)/2 - caWidth/2;
-
-        const int caHeight = barHeight * m_player.size();
-        const int marginTop = (top+bottom)/2 - caHeight/2;
-        
+        int marginLeft = (right+left)/2 + middleMargin/2;
+        int upPos = rank - m_player.size()/2; 
+        if (rank < m_player.size()/2 )
+        {
+            marginLeft -= caWidth/2 + middleMargin;
+            upPos = rank;
+        }
         // Buttons:
         //
-        m_button->draw ( CL_Rect(marginLeft+rankLeft, marginTop+barHeight*rank, marginLeft+rankLeft+rankWidth, marginTop+(barHeight*(rank+1))) );
-        m_button->draw ( CL_Rect(marginLeft+nameLeft, marginTop+barHeight*rank, marginLeft+nameLeft+nameWidth, marginTop+(barHeight*(rank+1))) );
-        if (m_player[rank]->getRacePoints() != 0 && m_displayMode == DISPLAY_ADD_POINTS)
-            m_button->draw ( CL_Rect(marginLeft+addPtLeft, marginTop+barHeight*rank, marginLeft+addPtLeft+addPtWidth, marginTop+(barHeight*(rank+1))) );
-        m_button->draw ( CL_Rect(marginLeft+totalPtLeft, marginTop+barHeight*rank, marginLeft+totalPtLeft+totalPtWidth, marginTop+(barHeight*(rank+1))) );
+        m_button->draw ( CL_Rect(marginLeft+rankLeft, marginTop+barHeight*upPos, marginLeft+rankLeft+rankWidth, marginTop+(barHeight*(upPos+1))) );
+        m_button->draw ( CL_Rect(marginLeft+nameLeft, marginTop+barHeight*upPos, marginLeft+nameLeft+nameWidth, marginTop+(barHeight*(upPos+1))) );
+        if (m_displayMode != DISPLAY_CHAMPIONSHIP)
+        {
+            for (int i=0; i<= int(m_displayMode); i++)
+            {
+                std::vector<Player*>::const_iterator it = std::find(m_runningPlayers[i].begin(), m_runningPlayers[i].end(), m_player[rank]);
+                if (it != m_runningPlayers[i].end() && m_player[rank]->getRacePoints() != 0)
+                {
+                    CL_Surface* buttonToUse = (i==0 ? m_buttonEasy : (i==1)? m_buttonMedium : m_buttonHard); // Choose the button color
+                    buttonToUse->draw ( CL_Rect(marginLeft+addPtLeft, marginTop+barHeight*upPos, marginLeft+addPtLeft+addPtWidth, marginTop+(barHeight*(upPos+1))) );
+                    ossRacePoints << "+" << m_player[rank]->getRacePoints();
+                }
+            }
+        }
+        m_button->draw ( CL_Rect(marginLeft+totalPtLeft, marginTop+barHeight*upPos, marginLeft+totalPtLeft+totalPtWidth,  marginTop+(barHeight*(upPos+1))) );
 
         // Texts:
         //
-        int textPosX = marginLeft;
-        int textPosY = marginTop + 4 + barHeight*rank;
+        const int textPosX = marginLeft;
+        const int textPosY = marginTop + 4 + barHeight*upPos;
         m_font->set_alignment(origin_top_center, 0, 0);
         m_font->draw( textPosX+rankLeft+rankWidth/2, textPosY,  ossRankStr.str());
         m_font->draw( textPosX+nameLeft+nameWidth/2, textPosY, m_player[rank]->getName() );
@@ -162,9 +177,11 @@ CAChampionshipScreen::on_key_released (const CL_InputEvent &key)
         //
     case CL_KEY_ENTER:
     case CL_KEY_SPACE:
-        if (m_displayMode == DISPLAY_ADD_POINTS)
+        if (m_displayMode != DISPLAY_CHAMPIONSHIP)
         {
-            m_displayMode = DISPLAY_CHAMPIONSHIP;
+            int displayInt = int(m_displayMode) + 1;
+            m_displayMode = DisplayMode(displayInt);
+            if (m_displayMode == DISPLAY_CHAMPIONSHIP)
             for (unsigned int pl=0; pl < m_player.size(); pl++)
             {
                 m_player[pl]->setTotalPoints( m_player[pl]->getTotalPoints() + m_player[pl]->getRacePoints() );

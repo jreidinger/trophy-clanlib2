@@ -43,6 +43,7 @@ CATrophy* theApp();
     It's usually accessed over the macro CA_APP. E.g.: CA_APP->buildScreen();
     This class starts the Game, inits the moduls and displays things.
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class CATrophy : public CL_ClanApplication,
     public CAScreen {
@@ -111,7 +112,7 @@ public:
     void makeDustClowd( int x, int y, bool up );
     void measureFrameTime( bool start );
     void waitForSilence();
-    void buyCars();
+    //void buyCars();
 
     // Display / view methods:
     //
@@ -163,6 +164,8 @@ public:
 
     //! Array of Players. Created and destroyed by this class.
     std::vector<Player*> player;
+    //! Array of Players who are running in the same Race of the player
+    std::vector<Player*> m_RacePlayer;
     //! Array of car types.
     std::vector<CarType> carType;
     //! Array of goodyTypes.

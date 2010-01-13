@@ -36,11 +36,11 @@ CAPositionTable::~CAPositionTable() {}
 */
 void
 CAPositionTable::resetRace() {
-    for( int i=0; i<CA_MAXPLAYERS; ++i ) {
+    for( int i=0; i<CA_RACEMAXPLAYERS; ++i ) {
         raceRankList[i] = 0;
     }
     raceRankIndex = 0;
-    raceRankIndexBottom = CA_MAXPLAYERS-1;
+    raceRankIndexBottom = CA_RACEMAXPLAYERS-1;
 }
 
 
@@ -51,16 +51,16 @@ CAPositionTable::resetRace() {
 void
 CAPositionTable::playerFinishedRace( Player* player )
 {
-    if( raceRankIndex<CA_MAXPLAYERS )
+    if( raceRankIndex<CA_RACEMAXPLAYERS )
     {
         raceRankList[raceRankIndex] = player;
         player->setRaceRank( raceRankIndex+1 );
-        int points = (CA_MAXPLAYERS+1)-player->getRaceRank();
+        int points = ((CA_RACEMAXPLAYERS+1)-player->getRaceRank()) * (m_raceLevel +1);
         if( points>0 )
         {
             player->setRacePoints( points );
         }
-        player->addMoney((float)CA_PRIZE/CA_MAXPLAYERS*(CA_MAXPLAYERS-player->getRaceRank()+1));
+        player->addMoney((float)CA_PRIZE/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
         raceRankIndex++;
     }
 }

@@ -22,7 +22,7 @@ CAPlayerView::~CAPlayerView() {
     \param defaultPos default position if rank is 0 (race startup)
 */
 void
-CAPlayerView::display( int defaultPos ) {
+CAPlayerView::display( const int defaultPos ) {
     // Maybe we need to re-render the button sprite:
     //
     if( currentColor!=player->getColor() ) {

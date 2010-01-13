@@ -41,7 +41,7 @@ void ComputerPlayer::pilot()
     if( routePoint >= CA_APP->track.routePoints ) 
     {
         routePoint=0;
-        setRouteNumber( TrophyMath::getRandomNumber( 0, CA_MAXPLAYERS-1 ));
+        setRouteNumber( TrophyMath::getRandomNumber( 0, CA_RACEMAXPLAYERS-1 ));
     }
 
     // Next coordinate to locate
@@ -81,6 +81,7 @@ void ComputerPlayer::pilot()
     // Switch to next route point:
     //
     // TODO : clean these constants all over the code (original = 120)!
+    // This constant is the distance where the computer take the next route Point
     if (dist < 120.0) {
         ++routePoint;
     }
@@ -101,7 +102,7 @@ void ComputerPlayer::pilot()
         // CATrophy::Easy -> turboLaunchDistance = 600 or deactivateTurbo() ?
         if( CA_APP->difficulty!=CATrophy::Easy )
         {
-            int turboLaunchDistance = 600;
+            int turboLaunchDistance = 600; // TODO : the turbo is use even before turbo launh distance
             switch( CA_APP->difficulty )
             {
             case CATrophy::Easy:
@@ -137,12 +138,12 @@ void ComputerPlayer::pilot()
             int angle;
             int angleDiff;
             shootMode = false;
-            for( int pl=0; pl<CA_MAXPLAYERS; ++pl )
+            for( int pl=0; pl<CA_RACEMAXPLAYERS; ++pl )
             {
                 if( pl!= getId() )
                 {
-                    distance = (int)TrophyMath::getDistance( getX(), getY(), CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
-                    angle = (int)TrophyMath::getAngle( getX(), getY(), CA_APP->player[pl]->getX(),CA_APP->player[pl]->getY() );
+                    distance = (int)TrophyMath::getDistance( getX(), getY(), CA_APP->m_RacePlayer[pl]->getX(),CA_APP->m_RacePlayer[pl]->getY() );
+                    angle = (int)TrophyMath::getAngle( getX(), getY(), CA_APP->m_RacePlayer[pl]->getX(),CA_APP->m_RacePlayer[pl]->getY() );
                     angleDiff = (int)TrophyMath::getAngleDiff( angle, getNewDirection() );
                     if( distance<CA_SHOOTINGRANGE && (angleDiff < 10.0 || angleDiff > 350.0) )
                     {
@@ -160,12 +161,12 @@ void ComputerPlayer::pilot()
             int distance;
             int angle;
             int angleDiff;
-            for( int pl=0; pl<CA_MAXPLAYERS; ++pl )
+            for( int pl=0; pl<CA_RACEMAXPLAYERS; ++pl )
             {
                 if( pl!=getId() )
                 {
-                    distance = (int)TrophyMath::getDistance( getX(), getY(), CA_APP->player[pl]->getX(), CA_APP->player[pl]->getY() );
-                    angle = (int)TrophyMath::getAngle( getX(), getY(), CA_APP->player[pl]->getX(), CA_APP->player[pl]->getY() );
+                    distance = (int)TrophyMath::getDistance( getX(), getY(), CA_APP->m_RacePlayer[pl]->getX(), CA_APP->m_RacePlayer[pl]->getY() );
+                    angle = (int)TrophyMath::getAngle( getX(), getY(), CA_APP->m_RacePlayer[pl]->getX(), CA_APP->m_RacePlayer[pl]->getY() );
                     angleDiff = (int)TrophyMath::getAngleDiff( angle, getNewDirection() );
                     if( distance > 200 && distance < 202 && angleDiff < 185.0 && angleDiff > 175.0 )
                     {

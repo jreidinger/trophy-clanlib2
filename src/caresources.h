@@ -14,6 +14,8 @@
 /** Offers global access to all resources.
     This way we avoid double loading of resources.
     @author Andrew Mustun
+    @author Colin Pitrat
+    @author Matthieu Lecesne
 */
 class CAResources {
 
@@ -97,6 +99,9 @@ public:
     CL_Surface* gui_border3;
     CL_Surface* gui_border4;
     CL_Surface* gui_button;
+    CL_Surface* gui_button_red;
+    CL_Surface* gui_button_green;
+    CL_Surface* gui_button_blue;
     CL_Surface* gui_arrow_l;
     CL_Surface* gui_arrow_r;
     CL_Surface* gui_arrow_t;

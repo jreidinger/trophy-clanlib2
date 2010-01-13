@@ -29,6 +29,7 @@ Player::Player( int id, const std::string& name,
     this->carNumber = carNumber;
     
     cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed();
+    cAcceleration = m_Pcar.getMotor()->getAcceleration();
     active = true;
 
     explFrame = 0.0;
@@ -302,7 +303,7 @@ Player::advance()
 
         // Regulate Speed:
         //
-        if( speedMode==Accelerate ) setSpeed( speed + (m_Pcar.getMotor()->getAcceleration() / CA_APP->framesPerSec) );
+        if( speedMode==Accelerate ) setSpeed( speed + (cAcceleration / CA_APP->framesPerSec) );
         else if( speedMode==Decelerate ) setSpeed( speed - (m_Pcar.deceleration / CA_APP->framesPerSec) );
         else                             {
             setSpeed( speed * 0.96 );
@@ -360,52 +361,62 @@ Player::advance()
 /** Checks collisions of this sprite with others.
 */
 void
-Player::checkCollisions() {
+Player::checkCollisions()
+{
     // Other players:
     //
-    for( int c=0; c<CA_MAXPLAYERS; ++c ) {
-        Player* pl = CA_APP->player[c];
-        if( pl!=this ) {
+    for( int c=0; c<CA_RACEMAXPLAYERS; ++c )
+    {
+        Player* pl = CA_APP->m_RacePlayer[c];
+        if( pl!=this )
+        {
             if( x+32 > pl->getX()-32 && x-32 < pl->getX()+32 &&
                     y+32 > pl->getY()-32 && y-32 < pl->getY()+32 &&
-                    up == pl->isUp() ) {
+                    up == pl->isUp() )
+            {
 
                 bool inters = false;
                 int ix, iy;
 
-                for( int i=0; i<4 && !inters; ++i ) {
+                for( int i=0; i<4 && !inters; ++i )
+                {
                     int ni = i+1;
                     if( ni==4 ) ni=0;
 
-                    for( int j=0; j<4 && !inters; ++j ) {
+                    for( int j=0; j<4 && !inters; ++j )
+                    {
                         int nj = j+1;
                         if( nj==4 ) nj=0;
 
                         if( TrophyMath::getIntersection( edge[i][0], edge[i][1], edge[ni][0], edge[ni][1],
                                                      pl->edge[j][0], pl->edge[j][1], pl->edge[nj][0], pl->edge[nj][1],
-                                                     &ix, &iy) ) {
+                                                     &ix, &iy) )
+                        {
                             inters = true;
                         }
                     }
                 }
 
-                if( inters ) {
-
+                if( inters )
+                {
                     // Play crash sound:
                     //
-                    if( id==0 || pl->getId()==0 ) {
+                    if( id==0 || pl->getId()==0 )
+                    {
                         if( CA_APP->sound ) CA_RES->effectCrash->play();
                     }
 
                     float ang = TrophyMath::getAngle (x, y, pl->getX(), pl->getY());
-                    if( pl->checkEdgeState() ) {      // Don't check players into borders
+                    if( pl->checkEdgeState() )
+                    {      // Don't check players into borders
                         pl->move( pl->getX()+cos(ang/ARAD)*4,
                                   pl->getY()+sin(ang/ARAD)*4 );
                         pl->setSpeed( pl->getSpeed()*0.98 );
                         pl->hit( 0.1 );
                     }
 
-                    if( checkEdgeState() ) {
+                    if( checkEdgeState() )
+                    {
                         move( x-cos(ang/ARAD)*4,
                               y-sin(ang/ARAD)*4 );
                         setSpeed( getSpeed()*0.98 );
@@ -419,27 +430,38 @@ Player::checkCollisions() {
 
     // Goodies:
     //
-    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ ) {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
+    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ )
+    {
+        for( int gi=0; gi<CA_NUMGOODIES; gi++ )
+        {
             CAGoody* go = CA_APP->goody[gt][gi];
 
             if( go->isActive() ) {
                 if( go->isUp()==isUp() &&
-                        TrophyMath::getDistance( x,y, go->getX(),go->getY() ) < 28.0 ) {
+                        TrophyMath::getDistance( x,y, go->getX(),go->getY() ) < 28.0 )
+                {
 
-                    if( go->getType()->name == "Turbo" ) {
+                    if( go->getType()->name == "Turbo" )
+                    {
                         setTurbo( turbo+1000 );
                         if( id==0 ) CA_RES->effectGoodyTurbo->play();
-                    } else if( go->getType()->name == "Life" ) {
+                    }
+                    else if( go->getType()->name == "Life" )
+                    {
                         if( !death && !finished ) setLife( life+25.0 );
                         if( id==0 ) CA_RES->effectGoodyLife->play();
-                    } else if (go->getType ()->name == "Bullets") {
+                    }
+                    else if (go->getType ()->name == "Bullets")
+                    {
                         setBullets( bullets+100 );
                         if( id==0 ) CA_RES->effectGoodyBullets->play();
-                    } else if (go->getType ()->name == "Fogbomb") {
+                    }
+                    else if (go->getType ()->name == "Fogbomb") {
                         setFogBombs( fogBombs+1 );
                         if( id==0 ) CA_RES->effectGoodyFogbomb->play();
-                    } else if( go->getType()->name == "Money" ) {
+                    }
+                    else if( go->getType()->name == "Money" )
+                    {
                         money+=100;
                         if( id==0 ) CA_RES->effectGoodyMoney->play();
                     }
@@ -590,7 +612,7 @@ Player::checkFunctionMap()
                 if( lapNumber==CA_NUMLAPS ) {
                     finished = true;
                     raceTime = CA_APP->getTime();
-                    CA_POSITIONTABLE->playerFinishedRace( this );
+                    CAPositionTable::getPositionTable()->playerFinishedRace( this );
                 }
             }
             lapParts=1;
@@ -628,10 +650,12 @@ Player::calcEdges() {
 /** Shooting
 */
 void
-Player::shoot() {
+Player::shoot()
+{
     // Count down bullets:
     //
-    if( bullets>0 ) {
+    if( bullets>0 )
+    {
         bullets--;
 
         shootMode = true;
@@ -653,19 +677,24 @@ Player::shoot() {
 
         // Look for a hit player:
         //
-        for( pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-            if( pl!=id && isUp()==CA_APP->player[pl]->isUp() ) {
-                for( en=0; en<4; ++en ) {
+        for( pl=0; pl<CA_RACEMAXPLAYERS; ++pl )
+        {
+            if( CA_APP->m_RacePlayer[pl]!=this && isUp()==CA_APP->m_RacePlayer[pl]->isUp() )
+            {
+                for( en=0; en<4; ++en )
+                {
                     en2 = ((en==3) ? 0 : (en+1));
                     inters = TrophyMath::getIntersection( rayX1, rayY1, rayX2, rayY2,
-                                                      CA_APP->player[pl]->edge[en][0],
-                                                      CA_APP->player[pl]->edge[en][1],
-                                                      CA_APP->player[pl]->edge[en2][0],
-                                                      CA_APP->player[pl]->edge[en2][1],
+                                                      CA_APP->m_RacePlayer[pl]->edge[en][0],
+                                                      CA_APP->m_RacePlayer[pl]->edge[en][1],
+                                                      CA_APP->m_RacePlayer[pl]->edge[en2][0],
+                                                      CA_APP->m_RacePlayer[pl]->edge[en2][1],
                                                       &ix, &iy );
-                    if( inters ) {
+                    if( inters )
+                    {
                         dist = (int)TrophyMath::getDistance( rayX1, rayY1, ix,iy );
-                        if( dist<minDist ) {
+                        if( dist<minDist )
+                        {
                             minDist = dist;
                             hitPl = pl;
                             hitX = ix + (int)(cos( newDirection/ARAD ) * 5);
@@ -676,10 +705,10 @@ Player::shoot() {
             }
         }
 
-        if( hitPl>=0 && hitPl<CA_MAXPLAYERS ) {
-            CA_APP->player[hitPl]->addHitPoint( hitX, hitY );
-            //CA_APP->player[hitPl]->hit( 0.8 );
-              CA_APP->player[hitPl]->hit( 0.16 );
+        if( hitPl>=0 && hitPl<CA_RACEMAXPLAYERS )
+        {
+            CA_APP->m_RacePlayer[hitPl]->addHitPoint( hitX, hitY );
+            CA_APP->m_RacePlayer[hitPl]->hit( 0.16 );
         }
     }
 }
@@ -704,7 +733,7 @@ Player::kill() {
     if( !death ) {
         life=0.0;
         death=true;
-        CA_POSITIONTABLE->playerDied( this );
+        CAPositionTable::getPositionTable()->playerDied( this );
     }
 }
 
@@ -763,6 +792,7 @@ void
 Player::activateTurbo() {
     if( turbo>0 ) {
         cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed() * CA_TURBOFACTOR;
+        cAcceleration = m_Pcar.getMotor()->getAcceleration() * CA_TURBOFACTOR;
         turboActive = true;
     }
 }
@@ -772,6 +802,7 @@ Player::activateTurbo() {
 void
 Player::deactivateTurbo() {
     cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed();
+    cAcceleration = m_Pcar.getMotor()->getAcceleration();
     turboActive =false;
 }
 

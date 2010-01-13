@@ -79,6 +79,9 @@ CAResources::~CAResources() {
     delete gui_border3;
     delete gui_border4;
     delete gui_button;
+    delete gui_button_red;
+    delete gui_button_green;
+    delete gui_button_blue;
     delete gui_arrow_l;
     delete gui_arrow_r;
     delete gui_arrow_t;
@@ -280,6 +283,12 @@ CAResources::load() {
     gui_border3 = new CL_Surface( "gui/border3", resources );
     gui_border4 = new CL_Surface( "gui/border4", resources );
     gui_button = new CL_Surface( "gui/button", resources );
+    gui_button_red = new CL_Surface("gui/button", resources );
+    gui_button_red->set_color (1.0f, 0.0f, 0.0f);
+    gui_button_green = new CL_Surface("gui/button", resources );
+    gui_button_green->set_color (0.0f, 1.0f, 0.0f);
+    gui_button_blue = new CL_Surface("gui/button", resources );
+    gui_button_blue->set_color (0.0f, 0.0f, 1.0f);
     gui_arrow_l = new CL_Surface( "gui/arrow_l", resources );
     gui_arrow_r = new CL_Surface( "gui/arrow_r", resources );
     gui_arrow_t = new CL_Surface( "gui/arrow_t", resources );

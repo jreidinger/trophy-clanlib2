@@ -187,7 +187,7 @@ protected:
 private:
     virtual float getCheckAwayAngle() = 0;
     //! Player id
-    int         id;
+    int          id;
     //! Player nick name
     std::string   name;
     //! Active
@@ -200,7 +200,7 @@ private:
     HSVColor     color;
 
     //! Current car type
-    CarType  m_Pcar;
+    CarType     m_Pcar;
     //! Car number (index of CA_Trophy::carType[])
     int         carNumber;
     //! Rendered sprites for this player (rotated and color-cycled)
@@ -213,8 +213,10 @@ private:
 
     //! current speed in pixel per second
     float  speed;
-    //! Current max speed. This might differ from maxSpeed.
+    //! Current max speed. This might differ from maxSpeed (ie during turbo).
     float  cMaxSpeed;
+    //! Current acceleration speed. This might differ for accelaration (ie during turbo).
+    float cAcceleration;
     //! Direction we want to have (but maybe we still slide towards it)
     float  newDirection;
     /** Current direction (angle in deg). We drive in that direction

@@ -3,9 +3,19 @@
 
 /** Constructor.
 */
-CAPanel::CAPanel() {
-    for( int c=0; c<CA_MAXPLAYERS; ++c ) {
-        playerView[c] = new CAPlayerView( CA_APP->player[c] );
+CAPanel::CAPanel()
+{
+    for( int c=0; c<CA_RACEMAXPLAYERS; ++c )
+    {
+        m_playerView.push_back(new CAPlayerView( CA_APP->m_RacePlayer[c] ));
+    }
+}
+
+CAPanel::~CAPanel()
+{
+    for( unsigned int c=0; c<m_playerView.size(); ++c )
+    {
+        delete m_playerView[c];
     }
 }
 
@@ -45,8 +55,9 @@ CAPanel::display()
 
     // Display player views:
     //
-    for( int c=0; c<CA_MAXPLAYERS; ++c ) {
-        playerView[c]->display( c+1 );
+    for( unsigned int c=0; c<m_playerView.size(); ++c )
+    {
+        m_playerView[c]->display( c+1 );
     }
 
     // Display frames per second:

@@ -12,7 +12,7 @@ public:
     CAPlayerView( Player* player );
     ~CAPlayerView();
 
-    void display( int defaultPos );
+    void display( const int defaultPos );
     void renderButton();
 
 private:

@@ -184,7 +184,7 @@ CATrophy::main( int argc, char** argv )
         initGoodies();
         initPlayers();
         // initNetwork();
-        initPanel();
+        // initPanel();
         initTrackList();
 
         track.visualMap = 0;
@@ -201,7 +201,7 @@ CATrophy::main( int argc, char** argv )
         // Deinit everything:
         //
         deinitTrack();
-        deinitPanel();
+        // deinitPanel();
         // deinitNetwork();
         deinitPlayers();
         deinitGoodies();
@@ -398,7 +398,31 @@ CATrophy::initPlayers()
     if( CA_MAXPLAYERS>3 ) player[3]->setName( "Speedy Joe" );
     if( CA_MAXPLAYERS>4 ) player[4]->setName( "Sunnyboy" );
     if( CA_MAXPLAYERS>5 ) player[5]->setName( "Jane" );
-
+    if( CA_MAXPLAYERS>6 ) player[6]->setName( "Player 6" );
+    if( CA_MAXPLAYERS>7 ) player[7]->setName( "Player 7" );
+    if( CA_MAXPLAYERS>8 ) player[8]->setName( "Player 8" );
+    if( CA_MAXPLAYERS>9 ) player[9]->setName( "Player 9" );
+    if( CA_MAXPLAYERS>10 ) player[10]->setName( "Player 10" );
+    if( CA_MAXPLAYERS>11 ) player[11]->setName( "Player 11" );
+    if( CA_MAXPLAYERS>12 ) player[12]->setName( "Player 12" );
+    if( CA_MAXPLAYERS>13 ) player[13]->setName( "Player 13" );
+    if( CA_MAXPLAYERS>14 ) player[14]->setName( "Player 14" );
+    if( CA_MAXPLAYERS>15 ) player[15]->setName( "Player 15" );
+    if( CA_MAXPLAYERS>16 ) player[16]->setName( "Player 16" );
+    if( CA_MAXPLAYERS>17 ) player[17]->setName( "Player 17" );
+    if( CA_MAXPLAYERS>18 ) player[18]->setName( "Player 18" );
+    if( CA_MAXPLAYERS>19 ) player[19]->setName( "Player 19" );
+    if( CA_MAXPLAYERS>20 ) player[20]->setName( "Player 20" );
+    if( CA_MAXPLAYERS>21 ) player[21]->setName( "Player 21" );
+    if( CA_MAXPLAYERS>22 ) player[22]->setName( "Player 22" );
+    if( CA_MAXPLAYERS>23 ) player[23]->setName( "Player 23" );
+    if( CA_MAXPLAYERS>24 ) player[24]->setName( "Player 24" );
+    if( CA_MAXPLAYERS>25 ) player[25]->setName( "Player 25" );
+    if( CA_MAXPLAYERS>26 ) player[26]->setName( "Player 26" );
+    if( CA_MAXPLAYERS>27 ) player[27]->setName( "Player 27" );
+    if( CA_MAXPLAYERS>28 ) player[28]->setName( "Player 28" );
+    if( CA_MAXPLAYERS>29 ) player[29]->setName( "Player 29" );
+    if( CA_MAXPLAYERS>30 ) player[30]->setName( "Player 30" );
     if(debug) std::cout << "initPlayers end" << std::endl;
 }
 
@@ -572,7 +596,7 @@ CATrophy::initTrack( const std::string& trackName )
                 else if( name=="RP" ) {
                     int pi;
                     iss >> pi;
-                    if (pi<CA_MAXROUTEPOINTS && iv<CA_MAXPLAYERS) {
+                    if (pi<CA_MAXROUTEPOINTS && iv<CA_RACEMAXPLAYERS) {
                         track.rp[iv][pi][0] = xv;
                         track.rp[iv][pi][1] = yv;
                         if (pi+1>track.routePoints) track.routePoints = pi+1;
@@ -594,27 +618,48 @@ CATrophy::initTrack( const std::string& trackName )
 
     loading.setProgress( 40 );
 
-    // Place and reset players:
+    // Choose players for race
     //
-    for( int pl=0; pl<CA_MAXPLAYERS; pl++ ) {
+ /*   m_RacePlayer.clear();
+    m_RacePlayer.push_back(player[0]);
+    for (int pl=1; pl<CA_RACEMAXPLAYERS; pl++)
+    {
+        bool done = false;
+        int rn;
+        while (! done)
+        {
+            rn = TrophyMath::getRandomNumber( 1, CA_MAXPLAYERS-1 );
+            done = true;
+            for( unsigned int pl2=0; pl2<m_RacePlayer.size(); ++pl2 )
+            {
+                if( m_RacePlayer[pl2] == player[rn] )
+                    done=false;
+            }
+        }
+        m_RacePlayer.push_back(player[rn]);
+    }*/
+
+    
+    for( int pl=0; pl<CA_RACEMAXPLAYERS; pl++ ) {
         int rn;
         bool done;
         do {
             done = true;
-            rn = TrophyMath::getRandomNumber( 0, CA_MAXPLAYERS-1 );
+            rn = TrophyMath::getRandomNumber( 0, CA_RACEMAXPLAYERS-1 );
             for( int pl2=0; pl2<pl; ++pl2 )
             {
-                if( player[pl2]->getRouteNumber() == rn )
+                if( m_RacePlayer[pl2]->getRouteNumber() == rn )
                     done=false;
             }
         } while( !done );
 
-        player[pl]->resetForRace();
-        player[pl]->initPlayer( rn );
+        m_RacePlayer[pl]->resetForRace();
+        m_RacePlayer[pl]->initPlayer( rn );
 
         loading.setProgress( 50.0 + 50.0/CA_MAXPLAYERS*pl );
     }
 
+        
     // Reset starting light:
     //
     lightState = 0;
@@ -632,7 +677,7 @@ CATrophy::initTrack( const std::string& trackName )
     resetGoodies();
     resetFogBombs();
     resetDustClowds();
-    CA_POSITIONTABLE->resetRace();
+    CAPositionTable::getPositionTable()->resetRace();
 
     if(debug) std::cout << "Init track end" << std::endl;
 }
@@ -753,14 +798,30 @@ CATrophy::resetDustClowds() {
     (car types, points, money).
 */
 void
-CATrophy::resetPlayers() {
-    for( int pl=0; pl<CA_MAXPLAYERS; ++pl ) {
+CATrophy::resetPlayers()
+{
+    for( int pl=0; pl<CA_MAXPLAYERS; ++pl )
+    {
         player[pl]->reset();
         player[pl]->setTotalPoints(pl*4+pl*3);
-        int carNum = 0;
-        if (pl>2)
-            carNum = pl - 2;
-        player[pl]->setCarNumber( carNum );
+        if (pl > 3*CA_MAXPLAYERS/4)
+        {
+            player[pl]->setCarNumber( 3 );
+        }
+        else if (pl > CA_MAXPLAYERS/2)
+        {
+             player[pl]->setCarNumber( 2 );
+        }
+        else if (pl > CA_MAXPLAYERS/4)
+        {
+            player[pl]->setCarNumber( 1 );
+        }
+        else
+        {
+            player[pl]->setCarNumber( 0 );
+        }
+
+        player[0]->setCarNumber(0); // human player always start with the worst car
     }
     if (m_cheatMoney)
     {
@@ -919,7 +980,7 @@ CATrophy::runMenu()
     } while( !done );
 }
 
-/** Called by CATrophy::runMenu() to start the position table in an std::endless loop.
+/** Called by CATrophy::runMenu() to start the position table in an endless loop.
     \param race true: Show table for last race / false: Total results table
     \return true on success (User pressed Enter or Space) otherwise false (User pressed ESC)
 */
@@ -1018,7 +1079,7 @@ CATrophy::startNewGame()
         delete difficultyMenu;
         if( dif >= 0 ) 
         {
-            difficulty = (Difficulty)dif;
+            difficulty = Difficulty (dif);
             bool goon=true;
 
             // Choose track:
@@ -1026,17 +1087,22 @@ CATrophy::startNewGame()
             int trackNumber;
             do 
             {
-                {
-                   CASignUpScreen signUpScreen;
-                   trackNumber = signUpScreen.run();
-                }
+                RaceLevel raceLevel;
+                
+                    CASignUpScreen signUpScreen(player);
+                    trackNumber = signUpScreen.run();
+                    raceLevel = RaceLevel(signUpScreen.getRaceLevel());
+                    m_RacePlayer = signUpScreen.getRacePlayers();
+                
                 if( trackNumber != -1 ) 
                 {
+                    CAPositionTable::getPositionTable()->setRaceLevel(raceLevel);
                     track.file = trackList[trackNumber];
-                    run();
+                    run(); // This is where the race start
+                    signUpScreen.addVirtualPoints();
                     goon = runPositionTable( true );
                     {
-                        CAChampionshipScreen myChampionShip(player, CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white);
+                        CAChampionshipScreen myChampionShip(player, signUpScreen.getAllRunningPlayers(), CA_RES->menu_bg, CA_RES->gui_button, CA_RES->gui_button_green,  CA_RES->gui_button_blue, CA_RES->gui_button_red, CA_RES->font_normal_11_white);
                         myChampionShip.run();
                     }
                     {
@@ -1104,14 +1170,14 @@ CATrophy::controlNetPlayer( int id,
 }
 
 /** Called by CATrophy::runMenu() to start the
-    game in an std::endless loop.
+    game in an endless loop. this is the endless loop of the race
 */
 int
 CATrophy::run() 
 {
     if(debug) std::cout << "Game Running" << std::endl;
 
-    int  gameStartTime;     // Race started
+    int  gameStartTime;  // Race started
     int  goodyTime;         // Last goody placed at...
 
     bool blocked = false;   // mouse blocked?
@@ -1123,9 +1189,13 @@ CATrophy::run()
     bool raceOver = false;  // Set to true if race is over
     int  raceOverTime = 0;  // Time stamp at the time when the race was over.
 
-    // Init track:
+    // Init track and choose player for race
     //
     initTrack( track.file );
+
+    // Init the panel
+    //
+    initPanel();
 
     // Init map offset:
     //
@@ -1146,7 +1216,8 @@ CATrophy::run()
     {
         measureFrameTime( true );
 
-        if( CL_Keyboard::get_keycode(CL_KEY_P) ) {
+        if( CL_Keyboard::get_keycode(CL_KEY_P) )
+        {
             pause = !pause;
         }
 
@@ -1155,12 +1226,16 @@ CATrophy::run()
             // Control players:
             //
             raceOver = true;
-            for( c=0; c<CA_MAXPLAYERS; ++c ) {
-                player[c]->pilot();
+            for( c=0; c<CA_RACEMAXPLAYERS; ++c )
+            {
+                m_RacePlayer[c]->pilot();
 
-                if( player[c]->hasFinished() ) {       // Check if first player has finished
+                if( m_RacePlayer[c]->hasFinished() )
+                {       // Check if first player has finished
                     firstPlayerFinished = true;
-                } else if( c==0 && player[c]->getLife()>0.0 ) {  // Check if race is over...
+                }
+                else if( c==0 && m_RacePlayer[c]->getLife()>0.0 )
+                {  // Check if race is over...
                     raceOver=false;
                 }
             }
@@ -1168,21 +1243,25 @@ CATrophy::run()
 
             // 'Advance' goodies:
             //
-            for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ ) {
-                for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
+            for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ )
+            {
+                for( int gi=0; gi<CA_NUMGOODIES; gi++ )
+                {
                     goody[gt][gi]->advance();
                 }
             }
 
             // Advance players:
             //
-            for(c=0; c<CA_MAXPLAYERS; ++c) {
-                player[c]->advance();
+            for(c=0; c<CA_RACEMAXPLAYERS; ++c)
+            {
+                m_RacePlayer[c]->advance();
             }
 
             // Place goodies:
             //
-            if( CL_System::get_time() > (unsigned int)(goodyTime+CA_GOODYTIME) ) {
+            if( CL_System::get_time() > (unsigned int)(goodyTime+CA_GOODYTIME) )
+            {
                 goodyTime = CL_System::get_time();
                 placeGoody();
             }
@@ -1251,7 +1330,8 @@ CATrophy::run()
 
         // Allow shooting after 3 seconds:
         //
-        if( !allowShooting && (CL_System::get_time()-gameStartTime) > 3000 ) {
+        if( !allowShooting && (CL_System::get_time()-gameStartTime) > 3000 )
+        {
             allowShooting=true;
         }
 
@@ -1279,14 +1359,17 @@ CATrophy::run()
 
     // Finish all players manually
     //
-    for( int rank=1; rank<=CA_MAXPLAYERS; ++rank ) {
+    for( int rank=1; rank<=CA_RACEMAXPLAYERS; ++rank )
+    {
         // Players which are alive:
         //
-        for( c=0; c<CA_MAXPLAYERS; ++c ) {
-            if( !player[c]->hasFinished() &&
-                    !player[c]->isDeath() &&
-                    player[c]->getRaceRank()==rank ) {
-                CA_POSITIONTABLE->playerFinishedRace( player[c] );
+        for( c=0; c<CA_RACEMAXPLAYERS; ++c )
+        {
+            if( !m_RacePlayer[c]->hasFinished() &&
+                    !m_RacePlayer[c]->isDeath() &&
+                    m_RacePlayer[c]->getRaceRank()==rank )
+            {
+                CAPositionTable::getPositionTable()->playerFinishedRace( m_RacePlayer[c] );
                 break;
             }
         }
@@ -1300,9 +1383,15 @@ CATrophy::run()
                               true, this );
     raceOverDlg.run();
 
-    buyCars();
-
+    //buyCars();
+    for( int pl=0; pl<CA_MAXPLAYERS; ++pl )
+    {
+        player[pl]->OnRaceOver();
+    }
+    
     fadeScreen( false, this );
+
+    deinitPanel();
 
     return 0;
 }
@@ -1360,12 +1449,12 @@ CATrophy::setRanks() {
 
     // Clear ranks for players in the race and adjust first available rank
     //
-    for( pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-        if( !player[pl]->isDeath() ) {
-            if( player[pl]->hasFinished() ) {
-                if( player[pl]->getRaceRank()>=rank ) rank = player[pl]->getRaceRank()+1;
+    for( pl=0; pl<CA_RACEMAXPLAYERS; ++pl ) {
+        if( !m_RacePlayer[pl]->isDeath() ) {
+            if( m_RacePlayer[pl]->hasFinished() ) {
+                if( m_RacePlayer[pl]->getRaceRank()>=rank ) rank = m_RacePlayer[pl]->getRaceRank()+1;
             } else {
-                player[pl]->setRaceRank(0);
+                m_RacePlayer[pl]->setRaceRank(0);
             }
         }
     }
@@ -1373,9 +1462,9 @@ CATrophy::setRanks() {
     do {
         pos = 0.0;
         nextRank=-1;
-        for( pl=0; pl<CA_MAXPLAYERS; ++pl ) {
-            if( player[pl]->getRaceRank()==0 ) {
-                thisPos = player[pl]->getPosition();
+        for( pl=0; pl<CA_RACEMAXPLAYERS; ++pl ) {
+            if( m_RacePlayer[pl]->getRaceRank()==0 ) {
+                thisPos = m_RacePlayer[pl]->getPosition();
                 if( thisPos>pos ) {
                     nextRank = pl;
                     pos = thisPos;
@@ -1384,13 +1473,13 @@ CATrophy::setRanks() {
         }
 
         if( nextRank!=-1 ) {
-            if( !player[nextRank]->hasFinished() && !player[nextRank]->isDeath() ) {
-                player[nextRank]->setRaceRank( rank );
+            if( !m_RacePlayer[nextRank]->hasFinished() && !m_RacePlayer[nextRank]->isDeath() ) {
+                m_RacePlayer[nextRank]->setRaceRank( rank );
             }
         }
 
         rank++;
-    } while( nextRank!=-1 && rank<=CA_MAXPLAYERS );
+    } while( nextRank!=-1 && rank<=CA_RACEMAXPLAYERS );
 }
 
 /** Gets the speed limit for a coordinate of the map
@@ -1494,9 +1583,12 @@ void
 CATrophy::measureFrameTime( bool start ) {
     static int frameStart = 0;
 
-    if( start ) {
+    if( start )
+    {
         frameStart = CL_System::get_time();
-    } else {
+    }
+    else
+    {
         int timeElapsed = CL_System::get_time()-frameStart;
         if( timeElapsed>0 ) framesPerSec = 1000.0 / timeElapsed;
         if( framesPerSec<1.0 ) framesPerSec = 1.0;
@@ -1521,7 +1613,7 @@ CATrophy::waitForSilence() {
 
 /** Distributes cars to players which have enough money.
 */
-void
+/*void
 CATrophy::buyCars() {
     // Players with a lot of money get new cars:
     //
@@ -1532,7 +1624,7 @@ CATrophy::buyCars() {
     }
 
     if( debug ) std::cout << "Buy new cars end" << std::endl;
-}
+}*/
 
 /** Builds the whole game screen. ONLY this function is called
     for this purpose.
@@ -1616,8 +1708,8 @@ CATrophy::displayBridge() {
 */
 void
 CATrophy::displayPlayers( bool up ) {
-    for( int c=0; c<CA_MAXPLAYERS; ++c) {
-        if( player[c]->isUp()==up ) player[c]->display( offsetX, offsetY );
+    for( int c=0; c<CA_RACEMAXPLAYERS; ++c) {
+        if( m_RacePlayer[c]->isUp()==up ) m_RacePlayer[c]->display( offsetX, offsetY );
     }
 }
 
@@ -1637,10 +1729,10 @@ CATrophy::displayFogBombs( bool up, bool bomb ) {
                 if( !fogBomb[c].exploded && (int)(fogBomb[c].frame)==4 ) {
                     fogBomb[c].exploded=true;
                     CA_RES->effectFogBomb->play( 2 );
-                    for( int pl=0; pl<CA_MAXPLAYERS; ++pl) {
-                        int dist = (int)TrophyMath::getDistance( fogBomb[c].x, fogBomb[c].y, player[pl]->getX(), player[pl]->getY() );
-                        if( player[pl]->isUp()==up && dist<90 ) {
-                            player[pl]->hit( 30.0-(dist/3.0) );
+                    for( int pl=0; pl<CA_RACEMAXPLAYERS; ++pl) {
+                        int dist = (int)TrophyMath::getDistance( fogBomb[c].x, fogBomb[c].y, m_RacePlayer[pl]->getX(), m_RacePlayer[pl]->getY() );
+                        if( m_RacePlayer[pl]->isUp()==up && dist<90 ) {
+                            m_RacePlayer[pl]->hit( 30.0-(dist/3.0) );
                         }
                     }
                 }
@@ -1733,7 +1825,7 @@ void
 CATrophy::displayTrackPoints() {
     char str[16];
     for( int r=0; r<track.routePoints; ++r ) {
-        for( int t=0; t<CA_MAXPLAYERS; ++t ) {
+        for( int t=0; t<CA_RACEMAXPLAYERS; ++t ) {
             sprintf( str, "%d/%d", r, t );
             CA_RES->misc_cross->draw (track.rp[t][r][0]+offsetX-8, track.rp[t][r][1]+offsetY-8);
             CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);

@@ -36,22 +36,23 @@ CAPositionTableView::buildScreen() {
     int pl;                        // Counter for players
     int rank;                      // Rank of current player
     int points;                    // Points of current player
-    std::string timeStr;              // Time string
+    std::string timeStr;           // Time string
 
 
-    for( pl=0; pl<CA_MAXPLAYERS; ++pl ) {
+    for( pl=0; pl<CA_RACEMAXPLAYERS; ++pl ) {
 
         if(race) {
-            rank = CA_APP->player[pl]->getRaceRank();
-            points = CA_APP->player[pl]->getRacePoints();
-            TrophyMath::timeToString( timeStr, CA_APP->player[pl]->getRaceTime() );
+            rank = CA_APP->m_RacePlayer[pl]->getRaceRank();
+            points = CA_APP->m_RacePlayer[pl]->getRacePoints();
+            TrophyMath::timeToString( timeStr, CA_APP->m_RacePlayer[pl]->getRaceTime() );
         } else {
-            rank = CA_APP->player[pl]->getTotalRank();
-            points = CA_APP->player[pl]->getTotalPoints();
+            rank = CA_APP->m_RacePlayer[pl]->getTotalRank();
+            points = CA_APP->m_RacePlayer[pl]->getTotalPoints();
         }
 
 
-        if( rank!=0 ) {
+        if( rank!=0 )
+        {
             y = top + 32 + rank*16;
 
             // Rank:
@@ -64,7 +65,7 @@ CAPositionTableView::buildScreen() {
             // Player name:
             //
             CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 64, y, CA_APP->player[pl]->getName() );
+            CA_RES->font_normal_11_white->draw( left + 64, y, CA_APP->m_RacePlayer[pl]->getName() );
 
             // Race time:
             //
@@ -83,7 +84,7 @@ CAPositionTableView::buildScreen() {
             // Money:
             //
             std::ostringstream ossMoney;
-            ossMoney << "$" << CA_APP->player[pl]->getMoney();
+            ossMoney << "$" << CA_APP->m_RacePlayer[pl]->getMoney();
             label->setText( ossMoney.str() );
             label->move( left + 420, y );
             label->display();
@@ -91,7 +92,7 @@ CAPositionTableView::buildScreen() {
             // Car name:
             //
             CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 500, y, CA_APP->player[pl]->getCar()->name );
+            CA_RES->font_normal_11_white->draw( left + 500, y, CA_APP->m_RacePlayer[pl]->getCar()->name );
             /*label->setText( CA_APP->player[pl]->getCarType().name );
             label->move( left + 420, y );
             label->display();*/
