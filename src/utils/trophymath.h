@@ -25,7 +25,6 @@
 
 #define CA_MAXFOGBOMBS    10      // Max number of fog bombs
 #define CA_MAXDUSTCLOWDS  50      // Max number of dust clowds
-#define CA_NUMGOODYTYPES   5      // Number of different goodie items
 #define CA_NUMGOODIES      6      // Number of goodies of each type (max)
 #define CA_GOODYTIME     250      // Pace a goody all ... millisecs
 

@@ -45,18 +45,18 @@ PROGRAMS = $(bin_PROGRAMS)
 am_trophy_OBJECTS = cagoody.$(OBJEXT) cainfodialog.$(OBJEXT) \
 	canetserver.$(OBJEXT) casoundeffect.$(OBJEXT) \
 	camenuinput.$(OBJEXT) capositiontableview.$(OBJEXT) \
-	calabel.$(OBJEXT) capanel.$(OBJEXT) caconfigurekey.$(OBJEXT) \
-	shopscreen.$(OBJEXT) cartype.$(OBJEXT) \
-	caimagehueselector.$(OBJEXT) camenuitem.$(OBJEXT) \
-	camenuselect.$(OBJEXT) caresources.$(OBJEXT) \
-	calineedit.$(OBJEXT) player.$(OBJEXT) guibox.$(OBJEXT) \
-	cacredits.$(OBJEXT) caimagemanipulation.$(OBJEXT) \
-	camenulabel.$(OBJEXT) cascreen.$(OBJEXT) catrophy.$(OBJEXT) \
-	cacarupgrades.$(OBJEXT) caloadingscreen.$(OBJEXT) \
-	caplayersettingsdialog.$(OBJEXT) cadialog.$(OBJEXT) \
-	caimageselector.$(OBJEXT) cachampionshipscreen.$(OBJEXT) \
-	casignupscreen.$(OBJEXT) cawidget.$(OBJEXT) \
-	trophymath.$(OBJEXT) caplayerview.$(OBJEXT) \
+	cagoodytype.$(OBJEXT) calabel.$(OBJEXT) capanel.$(OBJEXT) \
+	caconfigurekey.$(OBJEXT) shopscreen.$(OBJEXT) \
+	cartype.$(OBJEXT) caimagehueselector.$(OBJEXT) \
+	camenuitem.$(OBJEXT) camenuselect.$(OBJEXT) \
+	caresources.$(OBJEXT) calineedit.$(OBJEXT) player.$(OBJEXT) \
+	guibox.$(OBJEXT) cacredits.$(OBJEXT) \
+	caimagemanipulation.$(OBJEXT) camenulabel.$(OBJEXT) \
+	cascreen.$(OBJEXT) catrophy.$(OBJEXT) cacarupgrades.$(OBJEXT) \
+	caloadingscreen.$(OBJEXT) caplayersettingsdialog.$(OBJEXT) \
+	cadialog.$(OBJEXT) caimageselector.$(OBJEXT) \
+	cachampionshipscreen.$(OBJEXT) casignupscreen.$(OBJEXT) \
+	cawidget.$(OBJEXT) trophymath.$(OBJEXT) caplayerview.$(OBJEXT) \
 	caimageview.$(OBJEXT) canetclient.$(OBJEXT) \
 	caslotselectiondialog.$(OBJEXT) camenu.$(OBJEXT) \
 	capositiontable.$(OBJEXT) humanplayer.$(OBJEXT) \
@@ -168,7 +168,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositiontable.h casoundeffect.cpp \
 		 cagoody.h cainfodialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h shopscreen.h \
-		 cagoodytype.h calabel.cpp camenuinput.h capanel.cpp capositiontableview.h caconfigurekey.cpp shopscreen.cpp \
+		 cagoodytype.h cagoodytype.cpp calabel.cpp camenuinput.h capanel.cpp capositiontableview.h caconfigurekey.cpp shopscreen.cpp \
 		 cartype.h cartype.cpp caimagehueselector.cpp calabel.h camenuitem.cpp camenuselect.cpp capanel.h caresources.cpp caconfigurekey.h \
 		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h guibox.h guibox.cpp \
 		 cacredits.cpp caimagemanipulation.cpp calineedit.h camenulabel.cpp player.h cascreen.cpp catrophy.cpp cacarupgrades.h cacarupgrades.cpp \
@@ -257,6 +257,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cacredits.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cadialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cagoody.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cagoodytype.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caimagehueselector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caimagemanipulation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caimageselector.Po@am__quote@

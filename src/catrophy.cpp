@@ -318,31 +318,22 @@ void CATrophy::deinitUpgrades()
 void
 CATrophy::initGoodies() 
 {
-    goodyType[0].name    = "Turbo";
-    goodyType[0].surface = CA_RES->goody_turbo;
-    goodyType[0].life    = 30000;
-
-    goodyType[1].name    = "Life";
-    goodyType[1].surface = CA_RES->goody_life;
-    goodyType[1].life    = 30000;
-
-    goodyType[2].name    = "Money";
-    goodyType[2].surface = CA_RES->goody_money;
-    goodyType[2].life    = 15000;
-
-    goodyType[3].name    = "Bullets";
-    goodyType[3].surface = CA_RES->goody_bullets;
-    goodyType[3].life    = 30000;
-
-    goodyType[4].name    = "Fogbomb";
-    goodyType[4].surface = CA_RES->goody_fogbomb;
-    goodyType[4].life    = 10000;
-
+    goodyType.push_back(new CAGoodyTypeDerived<Turbo>        (CA_RES->goody_turbo, 30000, CA_RES->effectGoodyTurbo));
+    goodyType.push_back(new CAGoodyTypeDerived<Life>           (CA_RES->goody_life, 30000, CA_RES->effectGoodyLife));
+    goodyType.push_back(new CAGoodyTypeDerived<Money>       (CA_RES->goody_money, 15000, CA_RES->effectGoodyMoney));
+    goodyType.push_back(new CAGoodyTypeDerived<Bullets>       (CA_RES->goody_bullets, 30000, CA_RES->effectGoodyBullets));
+    goodyType.push_back(new CAGoodyTypeDerived<FogBombs> (CA_RES->goody_fogbomb, 10000, CA_RES->effectGoodyFogbomb));
+    
     // Create goody instances:
     //
-    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ ) {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
-            goody[gt][gi] = new CAGoody( &goodyType[gt] );
+    // TODO: maybe use fly weight pattern
+    for( unsigned int gt=0; gt<goodyType.size(); gt++ )
+    {
+        std::vector<CAGoody*> vecGoody;
+        goody.push_back(vecGoody);
+        for( int gi=0; gi<CA_NUMGOODIES; gi++ )
+        {
+            goody[gt].push_back(new CAGoody( goodyType[gt] ));
         }
     }
 }
@@ -352,8 +343,8 @@ CATrophy::initGoodies()
 void
 CATrophy::deinitGoodies() 
 {
-    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ ) {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
+    for( unsigned int gt=0; gt<goody.size(); gt++ ) { // TODO: should use goody.size()
+        for( unsigned int gi=0; gi<goody[gt].size(); gi++ ) {
             if( goody[gt][gi] ) delete goody[gt][gi];
             goody[gt][gi] = 0;
         }
@@ -618,27 +609,6 @@ CATrophy::initTrack( const std::string& trackName )
 
     loading.setProgress( 40 );
 
-    // Choose players for race
-    //
- /*   m_RacePlayer.clear();
-    m_RacePlayer.push_back(player[0]);
-    for (int pl=1; pl<CA_RACEMAXPLAYERS; pl++)
-    {
-        bool done = false;
-        int rn;
-        while (! done)
-        {
-            rn = TrophyMath::getRandomNumber( 1, CA_MAXPLAYERS-1 );
-            done = true;
-            for( unsigned int pl2=0; pl2<m_RacePlayer.size(); ++pl2 )
-            {
-                if( m_RacePlayer[pl2] == player[rn] )
-                    done=false;
-            }
-        }
-        m_RacePlayer.push_back(player[rn]);
-    }*/
-
     
     for( int pl=0; pl<CA_RACEMAXPLAYERS; pl++ ) {
         int rn;
@@ -765,8 +735,8 @@ CATrophy::reconfigure()
 */
 void
 CATrophy::resetGoodies() {
-    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ ) {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
+    for( unsigned int gt=0; gt<goody.size(); gt++ ) {
+        for( unsigned int gi=0; gi<goody[gt].size(); gi++ ) {
             goody[gt][gi]->setActive( false );
         }
     }
@@ -1243,9 +1213,9 @@ CATrophy::run()
 
             // 'Advance' goodies:
             //
-            for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ )
+            for( unsigned int gt=0; gt<goody.size(); gt++ )
             {
-                for( int gi=0; gi<CA_NUMGOODIES; gi++ )
+                for( unsigned int gi=0; gi<goody[gt].size(); gi++ )
                 {
                     goody[gt][gi]->advance();
                 }
@@ -1405,7 +1375,7 @@ CATrophy::placeGoody() {
 
     int sx = TrophyMath::getRandomNumber( 8, track.visualMap->get_width()-8 );
     int sy = TrophyMath::getRandomNumber( 8, track.visualMap->get_height()-8 );
-    int gt = TrophyMath::getRandomNumber( 0, CA_NUMGOODYTYPES-1 );
+    int gt = TrophyMath::getRandomNumber( 0, goodyType.size()-1 );
     int level = TrophyMath::getRandomNumber( 0, 1 );
     bool validPlace = true;
     int referenceLevel = 0;
@@ -1425,8 +1395,9 @@ CATrophy::placeGoody() {
         }
     }
 
+    
     if( validPlace ) {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
+        for( unsigned int gi=0; gi<goody[gt].size(); gi++ ) {
             if( !goody[gt][gi]->isActive() ) {
                 goody[gt][gi]->move( sx, sy, (referenceLevel==2 ? level : (referenceLevel==1)) );
                 goody[gt][gi]->setActive( true );
@@ -1687,8 +1658,8 @@ CATrophy::displayMap()
 */
 void
 CATrophy::displayGoodies( bool up ) {
-    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ ) {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ ) {
+    for( unsigned int gt=0; gt<goody.size(); gt++ ) {
+        for( unsigned int gi=0; gi<goody[gt].size(); gi++ ) {
             if( goody[gt][gi]->isUp()==up ) goody[gt][gi]->display( offsetX, offsetY );
         }
     }

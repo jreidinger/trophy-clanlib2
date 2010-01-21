@@ -4,17 +4,50 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
+class Player;
+class CASoundEffect;
+
 /** Structure for goody types.
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
-struct CAGoodyType {
-    //! Goody name
-    std::string   name;
+class CAGoodyType
+{
+public:
+    CAGoodyType (CL_Surface* surface, int life, CASoundEffect* soundEffect);
+    void catchGoodie(Player* pl);
+    virtual void action(Player* pl) = 0;
+    void playSound() const;
+    void draw(int x, int y) const;
+    int getLife() const { return m_life;}
+
+private:
     //! Pixmaps for this goody
-    CL_Surface* surface;
+    CL_Surface* m_surface;
     //! Life time in milliseconds
-    int life;
+    int m_life;
+    //! The sound effect played when the layer catch the goody
+    CASoundEffect* m_soundEffect;
 };
+
+enum TypeGoodie
+{
+    Turbo = 1,
+    Life,
+    Bullets,
+    FogBombs,
+    Money
+};
+
+
+template<TypeGoodie N>
+class CAGoodyTypeDerived : public CAGoodyType
+{
+    public:
+    CAGoodyTypeDerived(CL_Surface* surface, int life, CASoundEffect* soundEffect);
+    void action(Player* pl);
+};
+
 
 #endif
 

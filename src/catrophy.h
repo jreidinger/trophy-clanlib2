@@ -169,9 +169,11 @@ public:
     //! Array of car types.
     std::vector<CarType> carType;
     //! Array of goodyTypes.
-    CAGoodyType goodyType[CA_NUMGOODYTYPES];
+    //CAGoodyType* goodyType[CA_NUMGOODYTYPES]; // TODO : vector
+     std::vector<CAGoodyType*> goodyType;
     //! The goody instances. CA_NUMGOODIES of each type.
-    CAGoody* goody[CA_NUMGOODYTYPES][CA_NUMGOODIES];
+    //CAGoody* goody[5][CA_NUMGOODIES]; // TODO : vector
+    std::vector<std::vector<CAGoody*> > goody;
 
     //! Chosen difficulty (easy, medium, hard)
     Difficulty   difficulty;

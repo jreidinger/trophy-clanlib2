@@ -28,8 +28,8 @@ Player::Player( int id, const std::string& name,
     this->controlMode = controlMode;
     this->carNumber = carNumber;
     
-    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed();
-    cAcceleration = m_Pcar.getMotor()->getAcceleration();
+    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed(); // TODO: chack if cMaxSpeed is increase after an upgrade
+    cAcceleration = m_Pcar.getMotor()->getAcceleration(); // TODO: idem
     active = true;
 
     explFrame = 0.0;
@@ -92,6 +92,8 @@ Player::resetForRace() {
 
     turbo       = m_Pcar.maxTurbo;    // Current turbo load (in pixel!)
     turboActive = 0;
+    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed(); // TODO: chack if cMaxSpeed is increase after an upgrade
+    cAcceleration = m_Pcar.getMotor()->getAcceleration(); // TODO: idem
 
     resetHitPoints();
 
@@ -214,7 +216,7 @@ Player::setSpeed( float sp )
 /** Changes the turbo load of this sprite.
 */
 void
-Player::setTurbo( float tb ) {
+Player::setTurbo( const float tb ) {
     turbo = tb;
 
     if( turbo > m_Pcar.maxTurbo ) turbo = m_Pcar.maxTurbo;
@@ -430,46 +432,20 @@ Player::checkCollisions()
 
     // Goodies:
     //
-    for( int gt=0; gt<CA_NUMGOODYTYPES; gt++ )
-    {
-        for( int gi=0; gi<CA_NUMGOODIES; gi++ )
+    for( unsigned int gt=0; gt<CA_APP->goody.size(); gt++ )
+        for( unsigned int gi=0; gi<CA_APP->goody[gt].size(); gi++ )
         {
             CAGoody* go = CA_APP->goody[gt][gi];
 
             if( go->isActive() ) {
                 if( go->isUp()==isUp() &&
-                        TrophyMath::getDistance( x,y, go->getX(),go->getY() ) < 28.0 )
+                        TrophyMath::getDistance( x,y, go->getX(),go->getY() ) < 28.0 ) // TODO: Hard value
                 {
-
-                    if( go->getType()->name == "Turbo" )
-                    {
-                        setTurbo( turbo+1000 );
-                        if( id==0 ) CA_RES->effectGoodyTurbo->play();
-                    }
-                    else if( go->getType()->name == "Life" )
-                    {
-                        if( !death && !finished ) setLife( life+25.0 );
-                        if( id==0 ) CA_RES->effectGoodyLife->play();
-                    }
-                    else if (go->getType ()->name == "Bullets")
-                    {
-                        setBullets( bullets+100 );
-                        if( id==0 ) CA_RES->effectGoodyBullets->play();
-                    }
-                    else if (go->getType ()->name == "Fogbomb") {
-                        setFogBombs( fogBombs+1 );
-                        if( id==0 ) CA_RES->effectGoodyFogbomb->play();
-                    }
-                    else if( go->getType()->name == "Money" )
-                    {
-                        money+=100;
-                        if( id==0 ) CA_RES->effectGoodyMoney->play();
-                    }
+                    go->getType()->catchGoodie(this);
                     go->reset();
                 }
             }
         }
-    }
 }
 
 /** Checks underlying function map.

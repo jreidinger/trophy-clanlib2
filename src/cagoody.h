@@ -6,6 +6,7 @@
 
 /** A goody (life, turbo, ...)
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class CAGoody {
 public:
@@ -47,7 +48,6 @@ public:
 
 private:
     //! Goody type
-
     CAGoodyType* goodyType;
     //! Is the goody currently active?
     bool active;

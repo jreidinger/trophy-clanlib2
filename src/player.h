@@ -13,6 +13,7 @@
     @author Andrew Mustun
     @author Matthieu Lecesne
 */
+// TODO: id is uncesssary (in local game), it is only use to konw witch is the player
 class Player 
 {
 public:
@@ -71,7 +72,7 @@ public:
 
     //! Returns turbo load left.
     float  getTurbo() const { return turbo; }
-    void   setTurbo( float tb );
+    void   setTurbo( const float tb );
 
     //! Returns true if this player is currently on a bridge, false otherwise.
     bool   isUp() const { return up; }

@@ -27,7 +27,7 @@ CAGoody::reset() {
 void
 CAGoody::display( int offsetX, int offsetY ) {
     if( active ) {
-        goodyType->surface->draw( x-8 + offsetX, y-8 + offsetY );
+        goodyType->draw( x + offsetX, y + offsetY );
     }
 }
 
@@ -49,7 +49,7 @@ CAGoody::advance() {
     if( active ) {
         if( birthday==0 ) {
             birthday = CL_System::get_time();
-        } else if( birthday + goodyType->life < CL_System::get_time() ) {
+        } else if( birthday + goodyType->getLife() < CL_System::get_time() ) {
             reset();
         }
     }
