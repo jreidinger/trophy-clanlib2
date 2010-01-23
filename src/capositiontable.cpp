@@ -60,7 +60,7 @@ CAPositionTable::playerFinishedRace( Player* player )
         {
             player->setRacePoints( points );
         }
-        player->addMoney((float)CA_PRIZE/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
+        player->addRaceMoney((float)CA_PRIZE/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
         raceRankIndex++;
     }
 }

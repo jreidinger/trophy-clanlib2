@@ -61,7 +61,7 @@ void CAGoodyTypeDerived<FogBombs>::action(Player* pl)
 template<>
 void CAGoodyTypeDerived<Money>::action(Player* pl)
 {
-    pl->addMoney(100); // TODO : add Race Money
+    pl->addRaceMoney(100);
 }
 
 template class CAGoodyTypeDerived<Turbo>;

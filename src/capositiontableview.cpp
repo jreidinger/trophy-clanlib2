@@ -84,7 +84,7 @@ CAPositionTableView::buildScreen() {
             // Money:
             //
             std::ostringstream ossMoney;
-            ossMoney << "$" << CA_APP->m_RacePlayer[pl]->getMoney();
+            ossMoney << "$" << CA_APP->m_RacePlayer[pl]->getRaceMoney();
             label->setText( ossMoney.str() );
             label->move( left + 420, y );
             label->display();

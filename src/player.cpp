@@ -89,6 +89,7 @@ Player::resetForRace() {
     racePoints  = 0;
     raceRank    = 0;
     raceTime    = 0;
+    m_raceMoney = 0;
 
     turbo       = m_Pcar.maxTurbo;    // Current turbo load (in pixel!)
     turboActive = 0;
@@ -693,7 +694,7 @@ Player::shoot()
     \param amount How hard was the hit?
 */
 void
-Player::hit( float amount ) {
+Player::hit( const float amount ) {
     if( !death && !finished ) {
         life -= amount/100.0*(100.0-m_Pcar.getArmor()->getArmor());
         if( life<0.1 ) {

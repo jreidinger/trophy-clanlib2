@@ -326,7 +326,6 @@ CATrophy::initGoodies()
     
     // Create goody instances:
     //
-    // TODO: maybe use fly weight pattern
     for( unsigned int gt=0; gt<goodyType.size(); gt++ )
     {
         std::vector<CAGoody*> vecGoody;
@@ -343,12 +342,13 @@ CATrophy::initGoodies()
 void
 CATrophy::deinitGoodies() 
 {
-    for( unsigned int gt=0; gt<goody.size(); gt++ ) { // TODO: should use goody.size()
-        for( unsigned int gi=0; gi<goody[gt].size(); gi++ ) {
-            if( goody[gt][gi] ) delete goody[gt][gi];
-            goody[gt][gi] = 0;
-        }
-    }
+    for( unsigned int gt=0; gt<goody.size(); gt++ )
+        for( unsigned int gi=0; gi<goody[gt].size(); gi++ )
+           if( goody[gt][gi] )
+           {
+               delete goody[gt][gi];
+               goody[gt][gi] = 0;
+           }
 }
 
 /** Initializes the players.

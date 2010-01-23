@@ -13,7 +13,7 @@
     @author Andrew Mustun
     @author Matthieu Lecesne
 */
-// TODO: id is uncesssary (in local game), it is only use to konw witch is the player
+// TODO: id is uncesssary (in local game), it is only use to know witch is the player
 class Player 
 {
 public:
@@ -139,9 +139,14 @@ public:
     int    getMoney() const { return money; }
     //! Give Money to player
     void  addMoney(const int value) { money+= value;}
-    //! Take Money from player return true if the player had enough money
+     //! Take Money from player return true if the player had enough money
     bool spendMoney(const int value);
 
+    //! Returns the money that the player has won in the race
+    int    getRaceMoney() const { return m_raceMoney; }
+    //! Give Race Money to player
+    void  addRaceMoney(const int value) { m_raceMoney+= value;}
+ 
     virtual void pilot() = 0;
 
     void   advance();
@@ -153,7 +158,7 @@ public:
     void   calcEdges();
 
     void   shoot();
-    void   hit( float amount );
+    void   hit( const float amount );
     void   kill();
 
     virtual void  display( const int offsetX, const int offsetY );
@@ -260,6 +265,8 @@ private:
     bool   turboActive;
     //! Money  (0-?)
     int    money;
+    //! Race money
+    int  m_raceMoney;
     //! Munition left (100-0)
     int    bullets;
     //! Fogbombs (0-3)

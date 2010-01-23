@@ -184,6 +184,7 @@ CAChampionshipScreen::on_key_released (const CL_InputEvent &key)
             if (m_displayMode == DISPLAY_CHAMPIONSHIP)
             for (unsigned int pl=0; pl < m_player.size(); pl++)
             {
+                m_player[pl]->addMoney( m_player[pl]->getRaceMoney() );
                 m_player[pl]->setTotalPoints( m_player[pl]->getTotalPoints() + m_player[pl]->getRacePoints() );
                 // players points have changed so we sort the player list again
                 std::sort(m_player.begin(), m_player.end(), RankPredicate());
