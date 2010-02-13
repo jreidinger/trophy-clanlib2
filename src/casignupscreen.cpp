@@ -70,7 +70,6 @@ CASignUpScreen::CASignUpScreen(std::vector<Player*> player)
             }
             while ( it != m_RacePlayer.end() || m_Player[rn] == CA_APP->player[0]);
             m_RacePlayer[race].push_back(m_Player[rn]);
-            m_Player[rn]->resetForRace();
             std::ostringstream oss;
             oss << rn+1 << ") " <<  m_Player[rn]->getName();
             m_StringRacePlayer[race].push_back(oss.str());

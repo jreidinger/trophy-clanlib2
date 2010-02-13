@@ -1,0 +1,411 @@
+#include "track.h"
+#include "utils/trophymath.h"
+#include "caresources.h"
+#include <ClanLib/core.h>
+#include <ClanLib/display.h>
+#include <fstream>
+
+Track::Track(const std::string& trackName, const bool debug):
+    m_nbRoutePoints(0),
+    m_functionMap(0),
+    m_visualMap(0),
+    m_bridge(0),
+    m_blocked(false),
+    m_rp_number(0)
+{
+   // Base path of track files:
+    std::string trackPath = std::string("tracks/") + trackName + "/";
+
+    // Load visual map:
+    //
+    std::string vmapPath = trackPath + "vmap.tga";
+    if( m_visualMap != NULL ) delete m_visualMap;
+    try
+    {
+        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
+    }
+    catch(CL_Error err)
+    {
+        trackPath = std::string("../resources/tracks/") + trackName + "/";
+        vmapPath = trackPath + "vmap.tga";
+        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
+    }
+
+   // loading.setProgress( 15 ); TODO
+
+    // Load functional map:
+    //
+    std::string fmapPath = trackPath + "fmap.tga";
+    if( m_functionMap != NULL ) delete m_functionMap;
+    // We need to load a surface and then create the pixelbuffer if we don't want to loose the information
+    // about the color. Don't know if it is a bug of ClanLib or the normal behavior.
+    m_functionMap = new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() );
+    // TODO : is it OK if we never unlock it ? functionMap is not meant to be drawn
+    m_functionMap->lock();
+
+   // loading.setProgress( 30 ); TODO
+
+
+    // Read config file for this track:
+    //
+    std::string configFilePath = trackPath + "config.tck";
+
+    if(debug) printf( "%s\n", configFilePath.c_str() );
+
+    std::ifstream tckFile (configFilePath.c_str());
+    if ( tckFile )
+    {
+        std::string line;                 // The line converted to a string
+        std::string name;                 // Name of the value (Author)
+        std::string value;                // Value (Andrew Mustun)
+        int xv=0, yv=0, zv=0;           // Coordinates for following objects
+        int iv=0;                       // Index for followint object (route point)
+        while (std::getline(tckFile, line))
+        {
+            if (line.size()!=0)
+            if (line[0]!='#')
+            {
+                int i = std::string( line ).find_first_of( " =" );
+                name = line.substr( 0, i );
+                i = std::string( line ).find ('"', i) + 1;
+                int j = std::string( line ).find ('"', i);
+                value = line.substr( i, j-i );
+
+                std::istringstream iss(value);
+                // General track info:
+                //
+                if( name=="Author" )         iss >> m_author;
+                else if( name=="Version")    iss >> m_version;
+                else if( name=="Name"   )    iss >> m_name;
+
+                // Coordinates of next object / route point:
+                //
+                else if( name=="x" )         iss >> xv;
+                else if( name=="y" )         iss >> yv;
+                else if( name=="z" )         iss >> zv;
+                else if( name=="i" )         iss >> iv;
+
+                // Start angle:
+                //
+                else if( name=="startAngle" ) iss >> m_startAngle;
+
+                // Route points:
+                //
+                else if( name=="RP" ) {
+                    int pi;
+                    iss >> pi;
+                    if (pi<CA_MAXROUTEPOINTS && iv<CA_RACEMAXPLAYERS) {
+                        m_rp[iv][pi][0] = xv;
+                        m_rp[iv][pi][1] = yv;
+                        if (pi+1>m_nbRoutePoints) m_nbRoutePoints = pi+1;
+                    }
+                }
+
+                // Objects:
+                //
+                else if( name=="Object" && value=="bridge") {
+                    std::string bridgePath = trackPath + value + ".tga";
+                    m_bridge = new CL_Surface(CL_TargaProvider(bridgePath));
+                    m_bridgePos[0] = xv;
+                    m_bridgePos[1] = yv;
+                }
+            }
+        }
+        tckFile.close();
+    }
+}
+
+Track::~Track()
+{
+    if( m_visualMap!=NULL ) delete m_visualMap;
+    if( m_functionMap != NULL ) delete m_functionMap;
+    if( m_bridge != NULL ) delete m_bridge;
+}
+
+/*void Track::init(const std::string& trackName, const bool debug)
+{
+    // Base path of track files:
+    std::string trackPath = std::string("tracks/") + trackName + "/";
+
+    // Load visual map:
+    //
+    std::string vmapPath = trackPath + "vmap.tga";
+    if( m_visualMap != NULL ) delete m_visualMap;
+    try
+    {
+        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
+    }
+    catch(CL_Error err)
+    {
+        trackPath = std::string("../resources/tracks/") + trackName + "/";
+        vmapPath = trackPath + "vmap.tga";
+        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
+    }
+
+   // loading.setProgress( 15 ); TODO
+
+    // Load functional map:
+    //
+    std::string fmapPath = trackPath + "fmap.tga";
+    if( m_functionMap != NULL ) delete m_functionMap;
+    // We need to load a surface and then create the pixelbuffer if we don't want to loose the information
+    // about the color. Don't know if it is a bug of ClanLib or the normal behavior.
+    m_functionMap = new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() );
+    // TODO : is it OK if we never unlock it ? functionMap is not meant to be drawn
+    m_functionMap->lock();
+
+   // loading.setProgress( 30 ); TODO
+
+
+    // Read config file for this track:
+    //
+    std::string configFilePath = trackPath + "config.tck";
+    //  CL_String( "tracks/" ).append( trackName ).append( "/config.tck" );
+
+    if(debug) printf( "%s\n", configFilePath.c_str() );
+
+    std::ifstream tckFile (configFilePath.c_str());
+    if ( tckFile )
+    {
+        std::string line;                 // The line converted to a string
+        std::string name;                 // Name of the value (Author)
+        std::string value;                // Value (Andrew Mustun)
+        int xv=0, yv=0, zv=0;           // Coordinates for following objects
+        int iv=0;                       // Index for followint object (route point)
+        while (std::getline(tckFile, line))
+        {
+            if (line.size()!=0)
+            if (line[0]!='#')
+            {
+                int i = std::string( line ).find_first_of( " =" );
+                name = line.substr( 0, i );
+                i = std::string( line ).find ('"', i) + 1;
+                int j = std::string( line ).find ('"', i);
+                value = line.substr( i, j-i );
+
+                std::istringstream iss(value);
+                // General track info:
+                //
+                if( name=="Author" )         iss >> m_author;
+                else if( name=="Version")    iss >> m_version;
+                else if( name=="Name"   )    iss >> m_name;
+
+                // Coordinates of next object / route point:
+                //
+                else if( name=="x" )         iss >> xv;
+                else if( name=="y" )         iss >> yv;
+                else if( name=="z" )         iss >> zv;
+                else if( name=="i" )         iss >> iv;
+
+                // Start angle:
+                //
+                else if( name=="startAngle" ) iss >> m_startAngle;
+
+                // Route points:
+                //
+                else if( name=="RP" ) {
+                    int pi;
+                    iss >> pi;
+                    if (pi<CA_MAXROUTEPOINTS && iv<CA_RACEMAXPLAYERS) {
+                        m_rp[iv][pi][0] = xv;
+                        m_rp[iv][pi][1] = yv;
+                        if (pi+1>m_nbRoutePoints) m_nbRoutePoints = pi+1;
+                    }
+                }
+
+                // Objects:
+                //
+                else if( name=="Object" && value=="bridge") {
+                    std::string bridgePath = trackPath + value + ".tga";
+                    m_bridge = new CL_Surface(CL_TargaProvider(bridgePath));
+                    m_bridgePos[0] = xv;
+                    m_bridgePos[1] = yv;
+                }
+            }
+        }
+        tckFile.close();
+    }
+}
+
+void Track::deinit()
+{
+    if( m_visualMap!=0 ) delete m_visualMap;
+    m_visualMap = 0;
+
+    if( m_functionMap != NULL ) 
+    {
+        delete m_functionMap;
+        m_functionMap = NULL;
+    }
+
+    if( m_bridge!=0 ) delete m_bridge;
+    m_bridge = 0;
+}
+*/
+
+void Track::handleTrackCreation(const int offsetX, const int offsetY)
+{
+    if( CL_Mouse::get_keycode(CL_MOUSE_LEFT) ) 
+    {
+        if( !m_blocked ) 
+        {
+            m_blocked = true;
+            FILE* fp = fopen( "trackdata.txt", "at" );
+            if( fp ) 
+            {
+                fprintf( fp, "x = \"%d\"\n", CL_Mouse::get_x()-offsetX );
+                fprintf( fp, "y = \"%d\"\n", CL_Mouse::get_y()-offsetY );
+                fprintf( fp, "RP = \"%d\"\n\n", m_rp_number++ );
+                fclose( fp );
+                CL_Color fmap_pix = m_functionMap->get_pixel(CL_Mouse::get_x()-offsetX, CL_Mouse::get_y()-offsetY);
+                CL_PixelBuffer pixbuf = m_visualMap->get_pixeldata();
+                pixbuf.lock();
+                CL_Color vmap_pix = pixbuf.get_pixel(CL_Mouse::get_x()-offsetX, CL_Mouse::get_y()-offsetY);
+                pixbuf.unlock();
+                std::cout << "vmap (r, g, b, a) = (" << vmap_pix.get_red() << ", " << vmap_pix.get_green() << ", " << vmap_pix.get_blue() << ", " << vmap_pix.get_alpha() << ")" << std::endl;
+                std::cout << "fmap (r, g, b, a) = (" << fmap_pix.get_red() << ", " << fmap_pix.get_green() << ", " << fmap_pix.get_blue() << ", " << fmap_pix.get_alpha() << ")" << std::endl;
+            }
+        }
+    } 
+    else 
+    {
+        m_blocked = false;
+    }
+}
+
+
+/** Checks if the given coordinate is on the map and returns true if so.
+*/
+bool Track::checkCoordinate( const int x, const int y ) const
+{
+    return ( x>=0 && y>=0 && x<(int)m_visualMap->get_width() && y<(int)m_visualMap->get_height() );
+}
+
+/** Displays the race map.
+*/
+void Track::displayMap(const int offsetX, const int offsetY) const
+{
+    m_visualMap->draw (offsetX,offsetY);
+}
+
+
+void Track::scroll(int& offsetX, int& offsetY, const int posX, const int posY, const int width, const int height, const int panelWidth)
+{
+    const int maxOffsetX = panelWidth;
+    const int minOffsetX = -(m_visualMap->get_width()-(width-panelWidth)) + panelWidth;
+    const int maxOffsetY = 0;
+    const int minOffsetY = -(m_visualMap->get_height()-height);
+
+    offsetX = - ((int)(posX) - (width-panelWidth)/2) + panelWidth;
+    offsetY = - ((int)(posY) - height/2);
+    if( offsetX>maxOffsetX ) offsetX = maxOffsetX;
+    if( offsetX<minOffsetX ) offsetX = minOffsetX;
+    if( offsetY>maxOffsetY ) offsetY = maxOffsetY;
+    if( offsetY<minOffsetY ) offsetY = minOffsetY;
+}
+
+/** Gets the speed limit for a coordinate of the map
+*/
+int Track::getSpeedLimit( const int x, const int y ) const
+{
+    if( checkCoordinate( x,y ) ) 
+    {
+        CL_Color tmp = m_functionMap->get_pixel( x,y );
+        unsigned int g = tmp.get_green();
+        return ((g)&0xF0)>>4;
+    }
+
+    return 0;
+}
+
+/** Gets the lap part for a coordinate of the map
+*/
+int Track::getLapPart( const int x, const int y ) const
+{
+    if( checkCoordinate( x,y ) ) 
+    {
+        CL_Color tmp = m_functionMap->get_pixel( x,y );
+        unsigned int b = tmp.get_blue();
+        return ((b)&0x1F);
+    }
+
+    return 0;
+}
+
+/** Gets the level for a coordinate of the map.
+    \return 0: Level on the point is down
+            1: Level on the point is up
+            2: Level on the point is not defined
+*/
+int Track::getLevel( const int x, const int y ) const
+{
+    if( checkCoordinate( x,y ) ) 
+    {
+        CL_Color tmp = m_functionMap->get_pixel( x,y );
+        unsigned int g = tmp.get_green();
+        if( (g&0x02)!=0 ) return 1;
+        if( (g&0x01)!=0 ) return 0;
+    }
+
+    return 2;
+}
+
+/** Displays track points.
+*/
+void Track::displayTrackPoints(const int& offsetX, const int& offsetY) const
+{
+    char str[16];
+    for( int r=0; r<m_nbRoutePoints; ++r )
+    {
+        for( int t=0; t<CA_RACEMAXPLAYERS; ++t )
+        {
+            sprintf( str, "%d/%d", r, t );
+            CA_RES->misc_cross->draw (m_rp[t][r][0]+offsetX-8, m_rp[t][r][1]+offsetY-8);
+            CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
+            CA_RES->font_normal_11_white->draw( m_rp[t][r][0]+offsetX, m_rp[t][r][1]+offsetY+5, str );
+        }
+    }
+}
+
+/** Displays the bridge if there is any.
+*/
+void Track::displayBridge(const int& offsetX, const int& offsetY) const
+{
+    if( m_bridge!=0 )
+    {
+        m_bridge->draw (m_bridgePos[0]+offsetX, m_bridgePos[1]+offsetY);
+    }
+}
+
+
+void Track::getNextRoutePoint(int& routeNumber, int& routePoint, float& nx, float& ny) const
+{
+    // Choose new route by shuffle:
+    //
+    if( routePoint >= m_nbRoutePoints ) 
+    {
+        routePoint=0;
+        routeNumber = TrophyMath::getRandomNumber( 0, CA_RACEMAXPLAYERS-1 );
+    }
+
+    // Next coordinate to locate
+    //
+    nx = m_rp[routeNumber][routePoint][0];
+    ny = m_rp[routeNumber][routePoint][1];
+}
+
+
+CL_Color Track::getFunctionalPixel(int x, int y) const
+{
+    return m_functionMap->get_pixel(x, y);
+}
+
+int Track::getWidth() const
+{
+     return m_visualMap->get_width();
+}
+
+int Track::getHeight() const
+{
+     return m_visualMap->get_height();
+}

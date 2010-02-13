@@ -9,6 +9,8 @@
 #include "utils/trophymath.h"
 #include "cartype.h"
 
+class Track;
+
 /** Covers all data and methods for a single player.
     @author Andrew Mustun
     @author Matthieu Lecesne
@@ -27,9 +29,8 @@ public:
     virtual ~Player();
 
     void   reset();
-    virtual void   resetForRace();
+    virtual void   resetForRace(int routeNumber, Track* currentTrack);
 
-    void   initPlayer( int routeNumber );
     void   renderSprites( HSVColor col );
 
     //! Returns ID of this player.
@@ -176,10 +177,6 @@ public:
     float  getPosition();
     //! Returns current lap number.
     int    getLapNumber() const { return lapNumber; }
-    //! Returns current route number. Routes are programmed ways for computer players.
-    int    getRouteNumber() const { return routeNumber; }
-     //! set current route number. Routes are programmed ways for computer players.
-    void   setRouteNumber( int rn ) { routeNumber = rn; }
 
     void   addHitPoint( int x, int y );
     void   resetHitPoints();
@@ -189,6 +186,8 @@ public:
 protected:
     //! Returns the new direction of this player in degrees (0=right, 90=bottom (!)).
     float  getNewDirection() const { return newDirection; }
+
+    Track* getCurrentTrack() {return m_currentTrack;}
 
 private:
     virtual float getCheckAwayAngle() = 0;
@@ -253,10 +252,6 @@ private:
     //! Current velocity in y
     float vy;
 
-
-    //! Route number
-    int    routeNumber;
-
     //! Life   (0-100)
     float  life;
     //! Turbo  (counts down to 0, 0 = no more turbo left)
@@ -297,6 +292,8 @@ private:
     int    hitPoint[CA_MAXHITPOINTS][2];
     //! current index for the hitPoint array.
     int    hitPointCounter;
+    // ! The track where the player is assigned
+    Track* m_currentTrack;
 
 
 public:

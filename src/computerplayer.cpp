@@ -1,17 +1,16 @@
 #include "computerplayer.h"
 #include "caresources.h"
 #include "catrophy.h"
+#include "track.h"
 
 ComputerPlayer::ComputerPlayer(int id, const std::string& name, int carNumber):
 Player(id, name, carNumber, Computer)
-{
-    routePoint    = 1;
-}
+{}
 
 ComputerPlayer::~ComputerPlayer()
 {}
 
-void ComputerPlayer::display( const int offsetX, const int offsetY )
+void ComputerPlayer::display(  int offsetX, const int offsetY )
 {
     Player::display(offsetX, offsetY);
     if( CA_APP->trackInfo )
@@ -36,19 +35,10 @@ void ComputerPlayer::OnRaceOver()
 */
 void ComputerPlayer::pilot()
 {
-    // Choose new route by shuffle:
-    //
-    if( routePoint >= CA_APP->track.routePoints ) 
-    {
-        routePoint=0;
-        setRouteNumber( TrophyMath::getRandomNumber( 0, CA_RACEMAXPLAYERS-1 ));
-    }
+    float nx, ny;
+    // TODO: should have a direct access to track instead of trophy
+    getCurrentTrack()->getNextRoutePoint(m_routeNumber, m_routePoint, nx, ny);
 
-    // Next coordinate to locate
-    //
-    float nx = CA_APP->track.rp[getRouteNumber()][routePoint][0];
-    float ny = CA_APP->track.rp[getRouteNumber()][routePoint][1];
- 
     // For --trackinfo option
     //
     nxTemp = nx;
@@ -83,7 +73,7 @@ void ComputerPlayer::pilot()
     // TODO : clean these constants all over the code (original = 120)!
     // This constant is the distance where the computer take the next route Point
     if (dist < 120.0) {
-        ++routePoint;
+        ++m_routePoint;
     }
     
 
@@ -183,10 +173,11 @@ void ComputerPlayer::pilot()
 /** Reset things before a new race starts.
 */
 void
-ComputerPlayer::resetForRace()
+ComputerPlayer::resetForRace(const int routeNumber, Track* currentTrack)
 {
-   Player::resetForRace();
-   routePoint = 1;
+    Player::resetForRace(routeNumber, currentTrack);
+    m_routeNumber = routeNumber;
+    m_routePoint = 1;
 }
 
 

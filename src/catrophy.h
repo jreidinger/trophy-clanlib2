@@ -69,8 +69,7 @@ public:
     void initPanel();
     void deinitPanel();
     void initTrackList();
-    void initTrack( const std::string& trackName );
-    void deinitTrack();
+    void initRace( const std::string& trackName );
 
     void reconfigure();
     void resetGoodies();
@@ -117,7 +116,6 @@ public:
     // Display / view methods:
     //
     void buildScreen();
-    void displayMap();
     void displayPlayers( bool up );
     void displayGoodies( bool up );
     void displayBridge();
@@ -125,14 +123,13 @@ public:
     void displayDustClowds( bool up );
     void displayCheckFlag();
     void displayStartingLights();
-    void displayTrackPoints();
     void fadeScreen( bool in, CAScreen* screen, bool whole=true );
     void scroll();
 
     // Persistance:
     //
-    void saveGame();
-    void loadGame();
+    void saveGame(); // TODO
+    void loadGame(); // TODO
 
 public:
     //! Loading screen
@@ -157,7 +154,7 @@ public:
     //! Debug mode (command line argument --debug)
     bool debug;
     //! Show trackinfo (crosses and numbers on track points) (command line argument --trackinfo)
-    bool trackInfo;
+    bool trackInfo; // TODO: should be in track
 
     //! Frames per second we can do at maximum
     float framesPerSec;
@@ -169,10 +166,8 @@ public:
     //! Array of car types.
     std::vector<CarType> carType;
     //! Array of goodyTypes.
-    //CAGoodyType* goodyType[CA_NUMGOODYTYPES]; // TODO : vector
      std::vector<CAGoodyType*> goodyType;
     //! The goody instances. CA_NUMGOODIES of each type.
-    //CAGoody* goody[5][CA_NUMGOODIES]; // TODO : vector
     std::vector<std::vector<CAGoody*> > goody;
 
     //! Chosen difficulty (easy, medium, hard)
@@ -180,15 +175,16 @@ public:
 
     // Track:
     //! Current track data
-    Track track;
+    Track* m_track;
+    std::string m_trackName;
     //! Track directory names list
     std::vector<std::string> trackList;
     //! List of three race prices
     //StringList priceList;
-    //! Offset of the background map in x.
-    int offsetX;
+    //! Offset of the background map in x. 
+    int offsetX; // TODO : check if we could put in track
     //! Offset of the background map in y.
-    int offsetY;
+    int offsetY; // TODO : check if we could put in track
 
     //! Panel. Created and destroyed in this class.
     CAPanel* panel;

@@ -5,6 +5,7 @@
 #include "catrophy.h"
 #include "utils/trophymath.h"
 #include "capositiontable.h"
+#include "track.h"
 
 /** Constructor.
     \param id     Id of this player (for network) or -1 for no id
@@ -61,14 +62,16 @@ Player::reset() {
     money         = 1000;                 // Initial money for each player
     totalPoints   = 0;
     totalRank     = 0;
-
-    resetForRace();
+    resetForRace(0, NULL); // we set player no tracks
 }
 
 /** Reset things before a new race starts.
+     \param routeNumber The initial route number for this player
+     \currentTrack The track where the race is
 */
-void
-Player::resetForRace() {
+void Player::resetForRace( int routeNumber, Track* currentTrack)
+{
+    m_currentTrack = currentTrack;
     active = true;
 
     setFrame( 0 );
@@ -93,18 +96,27 @@ Player::resetForRace() {
 
     turbo       = m_Pcar.maxTurbo;    // Current turbo load (in pixel!)
     turboActive = 0;
-    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed(); // TODO: chack if cMaxSpeed is increase after an upgrade
+    cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed(); // TODO: check if cMaxSpeed is increase after an upgrade
     cAcceleration = m_Pcar.getMotor()->getAcceleration(); // TODO: idem
 
     resetHitPoints();
-
-    routeNumber   = 0;
 
     lapNumber     = 0;
     lapParts      = 1;
     lastLapPart   = 0;
     finished      = false;
     death         = false;
+
+    // Put the player on the start grid at the right angle
+    if (m_currentTrack != NULL)
+    {
+        float nx=0; float ny=0;
+        int routePoint = 0; // At start the route point is always 0
+        m_currentTrack->getNextRoutePoint(routeNumber, routePoint, nx, ny);
+        move( nx, ny );
+        setDirection( m_currentTrack->getStartAngle() );
+    }
+    
 }
 
 /** Sets a new color for this player.
@@ -146,18 +158,6 @@ Player::setCarNumber( const int carNumber,const bool render ) {
     }
 }
 
-/** Init a computer player. This method moves the player to the start
-    point and gives the right direction.
-    \param routeNumber The initial route number for this player
-*/
-void
-Player::initPlayer( int routeNumber )
-{
-    //reset();
-    this->routeNumber = routeNumber;
-    move( CA_APP->track.rp[routeNumber][0][0], CA_APP->track.rp[routeNumber][0][1] );
-    setDirection( CA_APP->track.startAngle );
-}
 
 /** Renders the sprites for this player. The car image gets
     rotated and the color adjusted to 'color'.
@@ -335,8 +335,8 @@ Player::advance()
 
         // Moving out of map?
         //
-        if( nx < 0 || nx >= CA_APP->track.visualMap->get_width() ) vx *= -1;
-        if( ny < 0 || ny >= CA_APP->track.visualMap->get_height() ) vy *= -1;
+        if( nx < 0 || nx >= m_currentTrack->getWidth() ) vx *= -1;
+        if( ny < 0 || ny >= m_currentTrack->getHeight() ) vy *= -1;
 
         // Unload turbo:
         //
@@ -472,11 +472,11 @@ Player::checkFunctionMap()
 
         // Car edge is out of map:
         //
-        if( !CA_APP->checkCoordinate( px,py ) ) continue;
+        if( !m_currentTrack->checkCoordinate( px,py ) ) continue;
 
         // Get the function pixel under this edge:
         //
-        CL_Color tmp = CA_APP->track.functionMap->get_pixel( edge[i][0],edge[i][1] );
+        CL_Color tmp = m_currentTrack->getFunctionalPixel( edge[i][0],edge[i][1] );
         g = tmp.get_green();
 
         // Calculate speed reduction:
@@ -532,7 +532,7 @@ Player::checkFunctionMap()
 
     if( !CA_APP->checkCoordinate( px,py ) ) return;
 
-    CL_Color tmp = CA_APP->track.functionMap->get_pixel( px,py );
+    CL_Color tmp = m_currentTrack->getFunctionalPixel( px,py );
     r = tmp.get_red();
     g = tmp.get_green();
     b = tmp.get_blue();

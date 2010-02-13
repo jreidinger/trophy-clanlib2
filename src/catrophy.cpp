@@ -187,10 +187,6 @@ CATrophy::main( int argc, char** argv )
         // initPanel();
         initTrackList();
 
-        track.visualMap = 0;
-        track.functionMap = 0;
-        track.bridge = 0;
-        track.file = "";
 
         loading.end();
 
@@ -200,7 +196,7 @@ CATrophy::main( int argc, char** argv )
 
         // Deinit everything:
         //
-        deinitTrack();
+        delete m_track;
         // deinitPanel();
         // deinitNetwork();
         deinitPlayers();
@@ -245,32 +241,11 @@ CATrophy::initCarTypes()
 {
     if(debug) std::cout << "initCarTypes begin" << std::endl;
 
-    for( int i=0; i<CA_NUMCARTYPES; ++i ) 
-    {
-        if(debug) std::cout << "  car # " << i << std::endl;
-
-        std::string mainPath = "cars/";
-        std::string path;
-        switch( i ) 
-        {
-        case 0:
-            mainPath += "vw/";
-            break;
-        case 1:
-            mainPath += "jeep/";
-            break;
-        case 2:
-            mainPath += "z3/";
-            break;
-        case 3:
-            mainPath += "flash2/";
-            break;
-        default:
-            break;
-        }
-
-        carType.push_back(CarType(mainPath, CA_RES->resources, carUp, debug));
-    }
+    std::string mainPath = "cars/";
+    carType.push_back(CarType(mainPath+"vw/", CA_RES->resources, carUp, debug));
+    carType.push_back(CarType(mainPath+"jeep/", CA_RES->resources, carUp, debug));
+    carType.push_back(CarType(mainPath+"z3/", CA_RES->resources, carUp, debug));
+    carType.push_back(CarType(mainPath+"flash2/", CA_RES->resources, carUp, debug));   
 
     if(debug) std::cout << "initCarTypes end" << std::endl;
 }
@@ -489,143 +464,30 @@ CATrophy::initTrackList()
 /** Initializes track with given name.
 */
 void
-CATrophy::initTrack( const std::string& trackName ) 
+CATrophy::initRace( const std::string& trackName ) 
 {
     loading.begin();
 
     if(debug) std::cout << "Init track begin" << std::endl;
 
-    // Base path of track files:
-    //
-    std::string trackPath = std::string("tracks/") + trackName + "/";
-
-    // Load visual map:
-    //
-    std::string vmapPath = trackPath + "vmap.tga";
-    if( track.visualMap != NULL ) delete track.visualMap;
-    try
-    {
-        track.visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
-    }
-    catch(CL_Error err)
-    {
-        trackPath = std::string("../resources/tracks/") + trackName + "/";
-        vmapPath = trackPath + "vmap.tga";
-        track.visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
-    }
-
-    loading.setProgress( 15 );
-
-    // Load functional map:
-    //
-    std::string fmapPath = trackPath + "fmap.tga";
-    if( track.functionMap != NULL ) delete track.functionMap;
-    // We need to load a surface and then create the pixelbuffer if we don't want to loose the information
-    // about the color. Don't know if it is a bug of ClanLib or the normal behavior.
-    track.functionMap = new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() );
-    // TODO : is it OK if we never unlock it ? functionMap is not meant to be drawn
-    track.functionMap->lock();
-
-    loading.setProgress( 30 );
-
-    // Reset bridge:
-    //
-    if( track.bridge!=0 ) {
-        delete track.bridge;
-        track.bridge = 0;
-    }
-
-    // Read config file for this track:
-    //
-    std::string configFilePath = trackPath + "config.tck";
-    //  CL_String( "tracks/" ).append( trackName ).append( "/config.tck" );
-
-    if(debug) printf( "%s\n", configFilePath.c_str() );
-
-    track.routePoints = 0;
-
-
-    std::ifstream tckFile (configFilePath.c_str());
-    if ( tckFile )
-    {
-        std::string line;                 // The line converted to a string
-        std::string name;                 // Name of the value (Author)
-        std::string value;                // Value (Andrew Mustun)
-        int xv=0, yv=0, zv=0;           // Coordinates for following objects
-        int iv=0;                       // Index for followint object (route point)
-        while (std::getline(tckFile, line))
-        {
-            if (line.size()!=0)
-            if (line[0]!='#')
-            {
-                int i = std::string( line ).find_first_of( " =" );
-                name = line.substr( 0, i );
-                i = std::string( line ).find ('"', i) + 1;
-                int j = std::string( line ).find ('"', i);
-                value = line.substr( i, j-i );
-
-                std::istringstream iss(value);
-                // General track info:
-                //
-                if( name=="Author" )         iss >> track.author;
-                else if( name=="Version")    iss >> track.version;
-                else if( name=="Name"   )    iss >> track.name;
-
-                // Coordinates of next object / route point:
-                //
-                else if( name=="x" )         iss >> xv;
-                else if( name=="y" )         iss >> yv;
-                else if( name=="z" )         iss >> zv;
-                else if( name=="i" )         iss >> iv;
-
-                // Start angle:
-                //
-                else if( name=="startAngle" ) iss >> track.startAngle;
-
-                // Route points:
-                //
-                else if( name=="RP" ) {
-                    int pi;
-                    iss >> pi;
-                    if (pi<CA_MAXROUTEPOINTS && iv<CA_RACEMAXPLAYERS) {
-                        track.rp[iv][pi][0] = xv;
-                        track.rp[iv][pi][1] = yv;
-                        if (pi+1>track.routePoints) track.routePoints = pi+1;
-                    }
-                }
-
-                // Objects:
-                //
-                else if( name=="Object" && value=="bridge") {
-                    std::string bridgePath = trackPath + value + ".tga";
-                    track.bridge = new CL_Surface(CL_TargaProvider(bridgePath));
-                    track.bridgePos[0] = xv;
-                    track.bridgePos[1] = yv;
-                }
-            }
-        }
-        tckFile.close();
-    }
+    m_track = new Track(trackName, debug);
 
     loading.setProgress( 40 );
 
-    
-    for( int pl=0; pl<CA_RACEMAXPLAYERS; pl++ ) {
+    // TODO: use this technique to other random number
+    std::vector<int> possiblesRn;
+    for( int i=0; i<CA_RACEMAXPLAYERS; i++ )
+    {
+         possiblesRn.push_back(i);
+    }
+
+    for( int pl=0; pl<CA_RACEMAXPLAYERS; pl++ )
+    {
         int rn;
-        bool done;
-        do {
-            done = true;
-            rn = TrophyMath::getRandomNumber( 0, CA_RACEMAXPLAYERS-1 );
-            for( int pl2=0; pl2<pl; ++pl2 )
-            {
-                if( m_RacePlayer[pl2]->getRouteNumber() == rn )
-                    done=false;
-            }
-        } while( !done );
-
-        m_RacePlayer[pl]->resetForRace();
-        m_RacePlayer[pl]->initPlayer( rn );
-
+        int pos = TrophyMath::getRandomNumber( 0, possiblesRn.size() -1);
+        rn = possiblesRn[pos];
+        possiblesRn.erase(possiblesRn.begin()+pos);
+        m_RacePlayer[pl]->resetForRace( rn, m_track);
         loading.setProgress( 50.0 + 50.0/CA_MAXPLAYERS*pl );
     }
 
@@ -650,23 +512,6 @@ CATrophy::initTrack( const std::string& trackName )
     CAPositionTable::getPositionTable()->resetRace();
 
     if(debug) std::cout << "Init track end" << std::endl;
-}
-
-/** Deinitializes and deletes current track.
-*/
-void
-CATrophy::deinitTrack() {
-    if( track.visualMap!=0 ) delete track.visualMap;
-    track.visualMap = 0;
-
-    if( track.functionMap != NULL ) 
-    {
-        delete track.functionMap;
-        track.functionMap = NULL;
-    }
-
-    if( track.bridge!=0 ) delete track.bridge;
-    track.bridge = 0;
 }
 
 /** Reconfigures parameters. Called by the configure menu.
@@ -1067,7 +912,7 @@ CATrophy::startNewGame()
                 if( trackNumber != -1 ) 
                 {
                     CAPositionTable::getPositionTable()->setRaceLevel(raceLevel);
-                    track.file = trackList[trackNumber];
+                    m_trackName = trackList[trackNumber];
                     run(); // This is where the race start
                     signUpScreen.addVirtualPoints();
                     goon = runPositionTable( true );
@@ -1149,9 +994,6 @@ CATrophy::run()
 
     int  gameStartTime;  // Race started
     int  goodyTime;         // Last goody placed at...
-
-    bool blocked = false;   // mouse blocked?
-    int  rp = 0;            // rounting point
     int  rhythm = 0;        // Rhythm for networking.
     // Keep up Server on 0, 2, ...
     // Keep up Client on 1, 3, ...
@@ -1161,7 +1003,7 @@ CATrophy::run()
 
     // Init track and choose player for race
     //
-    initTrack( track.file );
+    initRace( m_trackName );
 
     // Init the panel
     //
@@ -1248,34 +1090,10 @@ CATrophy::run()
 
         // Mouse clicks for track creation:
         //
-        if( debug && trackInfo ) 
+       
+       if( debug && trackInfo ) // TODO: trackInfo should be in Track
         {
-            if( CL_Mouse::get_keycode(CL_MOUSE_LEFT) ) 
-            {
-                if( !blocked ) 
-                {
-                    blocked = true;
-                    FILE* fp = fopen( "trackdata.txt", "at" );
-                    if( fp ) 
-                    {
-                        fprintf( fp, "x = \"%d\"\n", CL_Mouse::get_x()-offsetX );
-                        fprintf( fp, "y = \"%d\"\n", CL_Mouse::get_y()-offsetY );
-                        fprintf( fp, "RP = \"%d\"\n\n", rp++ );
-                        fclose( fp );
-                        CL_Color fmap_pix = track.functionMap->get_pixel(CL_Mouse::get_x()-offsetX, CL_Mouse::get_y()-offsetY);
-                        CL_PixelBuffer pixbuf = track.visualMap->get_pixeldata();
-                        pixbuf.lock();
-                        CL_Color vmap_pix = pixbuf.get_pixel(CL_Mouse::get_x()-offsetX, CL_Mouse::get_y()-offsetY);
-                        pixbuf.unlock();
-                        std::cout << "vmap (r, g, b, a) = (" << vmap_pix.get_red() << ", " << vmap_pix.get_green() << ", " << vmap_pix.get_blue() << ", " << vmap_pix.get_alpha() << ")" << std::endl;
-                        std::cout << "fmap (r, g, b, a) = (" << fmap_pix.get_red() << ", " << fmap_pix.get_green() << ", " << fmap_pix.get_blue() << ", " << fmap_pix.get_alpha() << ")" << std::endl;
-                    }
-                }
-            } 
-            else 
-            {
-                blocked = false;
-            }
+             m_track->handleTrackCreation(offsetX, offsetY);
         }
 
         // Scroll to center player 0:
@@ -1372,9 +1190,9 @@ void
 CATrophy::placeGoody() {
     int x[4];    // 4 edge-points of new goody
     int y[2];
-
-    int sx = TrophyMath::getRandomNumber( 8, track.visualMap->get_width()-8 );
-    int sy = TrophyMath::getRandomNumber( 8, track.visualMap->get_height()-8 );
+    
+    int sx = TrophyMath::getRandomNumber( 8, m_track->getWidth()-8 );
+    int sy = TrophyMath::getRandomNumber( 8, m_track->getHeight()-8 );
     int gt = TrophyMath::getRandomNumber( 0, goodyType.size()-1 );
     int level = TrophyMath::getRandomNumber( 0, 1 );
     bool validPlace = true;
@@ -1458,14 +1276,7 @@ CATrophy::setRanks() {
 int
 CATrophy::getSpeedLimit( int x, int y ) 
 {
-    if( checkCoordinate( x,y ) ) 
-    {
-        CL_Color tmp = track.functionMap->get_pixel( x,y );
-        unsigned int g = tmp.get_green();
-        return ((g)&0xF0)>>4;
-    }
-
-    return 0;
+    return m_track->getSpeedLimit(x,y);
 }
 
 /** Gets the lap part for a coordinate of the map
@@ -1473,14 +1284,7 @@ CATrophy::getSpeedLimit( int x, int y )
 int
 CATrophy::getLapPart( int x, int y ) 
 {
-    if( checkCoordinate( x,y ) ) 
-    {
-        CL_Color tmp = track.functionMap->get_pixel( x,y );
-        unsigned int b = tmp.get_blue();
-        return ((b)&0x1F);
-    }
-
-    return 0;
+    return m_track->getLapPart(x,y);
 }
 
 /** Gets the level for a coordinate of the map.
@@ -1491,15 +1295,7 @@ CATrophy::getLapPart( int x, int y )
 int
 CATrophy::getLevel( int x, int y ) 
 {
-    if( checkCoordinate( x,y ) ) 
-    {
-        CL_Color tmp = track.functionMap->get_pixel( x,y );
-        unsigned int g = tmp.get_green();
-        if( (g&0x02)!=0 ) return 1;
-        if( (g&0x01)!=0 ) return 0;
-    }
-
-    return 2;
+    return m_track->getLevel(x, y);
 }
 
 /** Checks if the gifen coordinate is on the map and returns true if so.
@@ -1507,10 +1303,7 @@ CATrophy::getLevel( int x, int y )
 bool
 CATrophy::checkCoordinate( int x, int y ) 
 {
-    // TODO get_width and get_height won't return the right value if the track size isn't a power of 2
-    // when functionMap is a PixelBuffer
-    //return ( x>=0 && y>=0 && x<(int)track.functionMap->get_width() && y<(int)track.functionMap->get_height() );
-    return ( x>=0 && y>=0 && x<(int)track.visualMap->get_width() && y<(int)track.visualMap->get_height() );
+    return m_track->checkCoordinate(x,y);
 }
 
 /** Drops a fog bomb on the given place. This function
@@ -1611,7 +1404,7 @@ CATrophy::buildScreen()
     //
     CL_Display::set_cliprect(crField);
 
-    displayMap();
+    m_track->displayMap(offsetX,offsetY); 
 
     // Things under bridge:
     displayGoodies( false );
@@ -1621,7 +1414,7 @@ CATrophy::buildScreen()
     displayFogBombs( false, false );
 
     // Bridge:
-    displayBridge();
+    m_track->displayBridge(offsetX, offsetY);
 
     // Things on bridge:
     displayGoodies( true );
@@ -1632,9 +1425,8 @@ CATrophy::buildScreen()
 
     // Display tracks for debugging:
     //
-    if( trackInfo ) {
-        displayTrackPoints();
-    }
+    if( trackInfo ) 
+        m_track->displayTrackPoints(offsetX, offsetY);
 
     displayStartingLights();
     displayCheckFlag();
@@ -1646,13 +1438,6 @@ CATrophy::buildScreen()
     CL_Display::set_cliprect(crAll);
 }
 
-/** Displays the race map.
-*/
-void
-CATrophy::displayMap()
-{
-    track.visualMap->draw (offsetX,offsetY);
-}
 
 /** Displays the goodies.
 */
@@ -1665,14 +1450,6 @@ CATrophy::displayGoodies( bool up ) {
     }
 }
 
-/** Displays the bridge if there is any.
-*/
-void
-CATrophy::displayBridge() {
-    if( track.bridge!=0 ) {
-        track.bridge->draw (track.bridgePos[0]+offsetX, track.bridgePos[1]+offsetY);
-    }
-}
 
 /** Displays players.
     \param up true: Players on bridges / false: Players under bridges
@@ -1790,20 +1567,6 @@ CATrophy::displayStartingLights() {
     }
 }
 
-/** Displays track points.
-*/
-void
-CATrophy::displayTrackPoints() {
-    char str[16];
-    for( int r=0; r<track.routePoints; ++r ) {
-        for( int t=0; t<CA_RACEMAXPLAYERS; ++t ) {
-            sprintf( str, "%d/%d", r, t );
-            CA_RES->misc_cross->draw (track.rp[t][r][0]+offsetX-8, track.rp[t][r][1]+offsetY-8);
-            CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( track.rp[t][r][0]+offsetX, track.rp[t][r][1]+offsetY+5, str );
-        }
-    }
-}
 
 /** Fades the screen in (true) or out (false).
     \param in Fade in (true) or out (false)
@@ -1844,19 +1607,9 @@ CATrophy::fadeScreen( bool in, CAScreen* screen, bool whole ) {
 
 /** Scrolls the map to center player 0.
 */
-void
-CATrophy::scroll() {
-    int maxOffsetX = panelWidth;
-    int minOffsetX = -(track.visualMap->get_width()-(width-panelWidth)) + panelWidth;
-    int maxOffsetY = 0;
-    int minOffsetY = -(track.visualMap->get_height()-height);
-
-    offsetX = - ((int)(player[0]->getX()) - (width-panelWidth)/2) + panelWidth;
-    offsetY = - ((int)(player[0]->getY()) - height/2);
-    if( offsetX>maxOffsetX ) offsetX = maxOffsetX;
-    if( offsetX<minOffsetX ) offsetX = minOffsetX;
-    if( offsetY>maxOffsetY ) offsetY = maxOffsetY;
-    if( offsetY<minOffsetY ) offsetY = minOffsetY;
+void CATrophy::scroll()
+{
+    m_track->scroll(offsetX, offsetY, (int)(player[0]->getX()), (int)(player[0]->getY()), width, height, panelWidth);
 }
 
 // EOF

@@ -188,6 +188,7 @@ CAChampionshipScreen::on_key_released (const CL_InputEvent &key)
                 m_player[pl]->setTotalPoints( m_player[pl]->getTotalPoints() + m_player[pl]->getRacePoints() );
                 // players points have changed so we sort the player list again
                 std::sort(m_player.begin(), m_player.end(), RankPredicate());
+                m_player[pl]->resetForRace(0, NULL); // Player doesn't belong to a race for now
             }
         }
         else
