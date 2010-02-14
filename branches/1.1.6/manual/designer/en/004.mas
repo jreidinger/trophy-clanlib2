@@ -1,0 +1,51 @@
+<!--
+[variables]
+{
+  $page_title = "Creating The Visual Map"
+  $page_title_english = "Creating The Visual Map"
+  $file_prev = "003.html"
+  $file_next = "005.html"
+  $real_page_number = "4"
+  $page_number = "4"
+}
+-->
+
+<_header1>
+$page_title
+</_header1>
+
+<_pg>
+You're basically completely free in the building of the visual map.
+The visual map is what the user sees if he/she plays the game.
+It has no effect about where one can drive, how fast one can drive
+nor where bridges or tunnels are. It doesn't define where the track
+goes neither.
+</_pg>
+
+<_header2>
+The Road
+</_header2>
+
+<_pg>
+I recommend to make the road about 150 pixels wide. I found it to 
+be the easiest to create the road using the "Select regions using 
+Bezier curves" - tool. Just define the center of the road using 
+this tool. Then choose "Select" -> "Border" from the right mouse 
+button menu. Type "150" pixels in the dialog window. This creates
+a selection for your road.
+</_pg>
+
+<_header2>
+Surfaces
+</_header2>
+
+<_pg>
+It's quite difficult to create attractive, realistic surfaces. 
+You might want to scan in some natural surfaces and use them 
+for your visual map. 
+</_pg>
+
+<_pg>
+<_image src="img/vmap.gif" 
+        description="A sample for a visual map.">
+</_pg>

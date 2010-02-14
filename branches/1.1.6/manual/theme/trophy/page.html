@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <TITLE>$project_name - $page_title</TITLE>
+  <META name="GENERATOR" content="ManStyle">
+  <META name="AUTHOR" content="$author">
+  <LINK rel=stylesheet type="text/css" href="styles.css">
+</HEAD>
+<BODY text="$doc_text_color"
+      link="$doc_link_color" vlink="$doc_vlink_color" alink="$doc_alink_color" 
+      bgcolor="$doc_bg_color" background="$doc_bg_image">
+
+<TABLE width=$doc_total_width border=0 cellpadding=0 cellspacing=0>
+  <TR>
+    <TD width=$doc_left_border>
+      <IMG src="img/space.gif" width=$doc_left_border height=1 border=0>
+    </TD>
+    <TD width=$doc_margin_width>
+      <IMG src="img/space.gif" width=$doc_margin_width height=1 border=0>
+    </TD>
+    <TD width=$doc_spacer_width>
+      <IMG src="img/space.gif" width=$doc_spacer_width height=1 border=0>
+    </TD>
+    <TD width=$doc_body_width>
+      <IMG src="img/space.gif" width=$doc_body_width height=1 border=0><BR>
+      <_pageNumber>&nbsp;$page_number&nbsp;</_pageNumber>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top></TD>
+    <TD></TD>
+    <TD align=center>
+      <TABLE width=$doc_body_width border=0 cellpadding=0 cellspacing=0>
+        <TR>
+          <TD width=$doc_body_width align=center valign=top class="navigator">
+            <_navigator>
+            <IMG src="img/toolbar_left.png" border=0><A href="$file_contents" alt="$text_contents"><IMG src="img/toolbar_cont.png" border=0></A><IF condition="$real_page_number!=$page_first"><A href="$file_first" alt="$text_first"><IMG src="img/toolbar_first.png" border=0></A></IF><IF condition="$real_page_number!=$page_first"><A href="$file_prev" alt="$text_previous"><IMG src="img/toolbar_prev.png" border=0></A></IF><A href="$file_home" alt="$text_home"><IMG src="img/toolbar_home.png" border=0></A><IF condition="$real_page_number!=$page_last"><A href="$file_next" alt="$text_next"><IMG src="img/toolbar_next.png" border=0></A></IF><IF condition="$real_page_number!=$page_last"><A href="$file_last" alt="$text_last"><IMG src="img/toolbar_last.png" border=0></A></IF><IMG src="img/toolbar_right.png" border=0>
+            </_navigator>
+          </TD>
+        </TR>
+        <TR>
+          <TD align=center valign=top>
+            <_pageHeader>$manual_description - <B>&laquo;$project_name&raquo;</B></_pageHeader>
+          </TD>
+        </TR>
+        <TR>
+          <TD align=center valign=top>
+            &nbsp;
+          </TD>
+        </TR>
+      </TABLE>
+    </TD>
+  </TR>
+
+<!-- paragraph_start -->
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      $margin
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      $paragraph
+    </TD>
+  </TR>
+<!-- paragraph_stop -->
+
+  <TR>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD valign=top>
+       <_navigatorSmall>
+       [&nbsp;
+       <A href="$file_contents">$text_contents</A>&nbsp;&nbsp;|&nbsp;
+       <IF condition="$real_page_number!=$page_first"><A href="$file_first">$text_first</A>&nbsp;&nbsp;|&nbsp;
+       <A href="$file_prev">$text_previous</A>&nbsp;&nbsp;|&nbsp;</IF>
+       <A href="$file_home">$text_home</A>&nbsp;
+       <IF condition="$real_page_number!=$page_last">&nbsp;|&nbsp;<A href="$file_next">$text_next</A>&nbsp;&nbsp;|&nbsp;
+       <A href="$file_last">$text_last</A>&nbsp;</IF>
+       ]<BR>
+       [&nbsp; $page_links &nbsp;]
+       <BR>
+       $copyright_information<BR>
+       $product_info
+       </_navigatorSmall>
+    </TD>
+  </TR>
+
+</TABLE>
+
+<P>
+  <BR><BR>
+</P>
+
+</BODY>
+</HTML>

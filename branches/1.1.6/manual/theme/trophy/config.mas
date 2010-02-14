@@ -1,0 +1,476 @@
+/**
+ * ManStyle Themes Config for Theme "tec"
+ * Author: Andreas Mustun
+ */
+
+
+/** 
+ * User defined variables:
+ */
+[variables]
+{
+  /* Options */
+  $opt_use_img_borders     = "yes"
+  $opt_use_img_margins     = "no"
+  $opt_screen_resolution   = "95"
+  
+  /* Colors */
+  $color_bright            = "#dae6ec"
+  $color_medium            = "#12568c"
+  $color_dark              = "#023a64"
+  
+  /* Document settings */
+  $doc_bg_image            = "img/tile.jpeg"
+  $doc_bg_color            = "#ffffff"
+  $doc_text_color          = "#000000"
+  $doc_link_color          = "$color_medium"
+  $doc_vlink_color         = "$color_dark"
+  $doc_alink_color         = "#000000"
+  $doc_navigator_color     = "#000000"
+  
+  $doc_total_width         = "615"
+  $doc_left_border         = "30"
+  $doc_margin_width        = "105"
+  $doc_spacer_width        = "20"
+  $doc_body_width          = "460"
+  
+  /* Separator between list entries: */
+  $page_links_separator    = "&nbsp;|&nbsp;"
+  $page_first              = "0"
+  
+  /* Page template */
+  $page_template           = "page.html"
+  $image_template          = "image.html"
+  
+  /* Headers */
+  $header_format_1         = "level_1&nbsp;&nbsp;     title_anchor"
+  $header_format_2         = "level_1.level_2&nbsp;   title_anchor"
+  $header_format_3         = "level_1.level_2.level_3 title_anchor"
+  $header_format_4         = "title_anchor"
+  $header_format_5         = "title_anchor"
+  $header_format_6         = "title_anchor"
+  $header_format_7         = "title_anchor"
+  $header_format_8         = "title_anchor"
+  $header_format_9         = "title_anchor"
+  
+  /* Contents */
+  $contents_depth          = "3"
+  $contents_format_1       = "level_1&nbsp;&nbsp;     title_link"
+  $contents_format_2       = "level_1.level_2&nbsp;   title_link"
+  $contents_format_3       = "level_1.level_2.level_3 title_link">
+  $contents_format_4       = "title_link">
+  $contents_format_5       = "title_link">
+  
+  /* Misc */
+  $date_format             = "DD/MM/YYYY"
+}
+
+
+/**
+ * Styles
+ */
+[styles]
+{
+  <default>
+  {
+    font-family:"Arial","Helvetica","Geneva";
+    font-size:10pt;
+  }
+  
+  <pg>
+  {
+    text-indent:4mm;
+    margin-left:0.5cm;
+    margin-right:0.5cm;
+    margin-top:0.2cm;
+    margin-bottom:0.3cm;
+  }
+  
+  <pgni>
+  {
+    margin-left:0.5cm;
+    margin-right:0.5cm;
+    margin-top:0.2cm;
+    margin-bottom:0.3cm;
+  }
+
+  <overview>
+  {
+    font-family:"Times",serif;
+    font-style:italic;
+    font-size:12pt;
+    margin-top:0.2cm;
+    margin-bottom:0.6cm;
+    margin-left:0.5cm;
+    margin-right:0.5cm;
+  }
+
+  <code>
+  {
+    font-family:"Courier New","Courier";
+    font-size:10pt;
+    margin-top:0.2cm;
+    margin-bottom:0.6cm;
+    margin-left:0.5cm;
+    margin-right:0.5cm;
+    text-align:left;
+  }
+  
+  <blockIndentLeft>
+  {
+    margin-left:0.5cm;
+    margin-right:0cm;
+    margin-top:0cm;
+    margin-bottom:0cm;
+  }
+  
+  <blockIndentRight>
+  {
+    margin-left:0cm;
+    margin-right:0.5cm;
+    margin-top:0cm;
+    margin-bottom:0cm;
+  }
+
+  <logo>
+  {
+    margin-top:2cm;
+    margin-bottom:0cm;
+    margin-left:0cm;
+    margin-right:0cm;
+    text-align:center;
+  }
+
+  <slogan>
+  {
+    margin-top:0cm;
+    margin-bottom:0cm;
+    margin-left:0cm;
+    font-family:"Times",serif;
+    font-style:italic;
+    text-align:center;
+  }
+
+  <organizationName>
+  {
+    margin-top:0.5cm;
+    margin-bottom:0cm;
+    margin-left:0cm;
+    font-size:16pt;
+    font-weight:bold;
+    text-align:center;
+  }
+
+  <manualDescription>
+  {
+    margin-top:2cm;
+    margin-bottom:0cm;
+    margin-left:0cm;
+    font-size:16pt;
+    font-weight:bold;
+    text-align:center;
+    border-bottom-width:2px;
+    border-color:black;
+  }
+
+  <projectName>
+  {
+    margin-top:0cm;
+    margin-bottom:0cm;
+    margin-left:0cm;
+    font-size:26pt;
+    font-weight:bold;
+    text-align:center;
+  }
+
+  <projectVersion>
+  {
+    margin-top:0cm;
+    margin-bottom:2.5cm;
+    margin-left:0cm;
+    font-size:8pt;
+    text-align:center;
+  }
+
+  <docInfo>
+  {
+    margin-top:0cm;
+    margin-bottom:0cm;
+    margin-left:0cm;
+    text-align:center;
+  }
+
+  <header1>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:$color_medium;
+    margin-left:0mm;
+    margin-top:0.5cm;
+    margin-bottom:0.6cm;
+    font-size:30px;
+    font-weight:bold;
+    font-style:italic;
+    width:455;
+    border-bottom-width:2px;
+    border-color:$color_medium;
+  }
+
+  <header2>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.2cm;
+    margin-bottom:0cm;
+    margin-left:0.5cm;
+    font-size:20px;
+    font-weight:bold;
+  }
+
+  <header3>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.2cm;
+    margin-bottom:0cm;
+    margin-left:0.5cm;
+    font-size:16px;
+    font-weight:bold;
+  }
+
+  <header4>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.2cm;
+    margin-bottom:0cm;
+    margin-left:0.5cm;
+    font-size:13px;
+    font-weight:bold;
+  }
+  
+  <header5>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.2cm;
+    margin-bottom:0cm;
+    margin-left:0.5cm;
+    font-size:12px;
+    font-weight:bold;
+  }
+  
+  <contentsHeader>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:$color_medium;
+    margin-left:0mm;
+    margin-top:0.5cm;
+    margin-bottom:0.6cm;
+    font-size:30px;
+    font-weight:bold;
+    font-style:italic;
+    width:455;
+    border-bottom-width:2px;
+    border-color:$color_medium;
+  }
+
+  <contents1>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.5cm;
+    margin-bottom:0cm;
+    margin-left:0.5cm;
+    font-size:20px;
+    font-weight:bold;
+    text-decoration:none;
+  }
+
+  <contents2>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.3cm;
+    margin-bottom:0cm;
+    margin-left:1cm;
+    font-size:16px;
+    font-weight:bold;
+    text-decoration:none;
+  }
+
+  <contents3>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.3cm;
+    margin-bottom:0cm;
+    margin-left:1.5cm;
+    font-size:13px;
+    font-weight:bold;
+    text-decoration:none;
+  }
+  
+  <contents4>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.3cm;
+    margin-bottom:0cm;
+    margin-left:2.0cm;
+    font-size:12px;
+    font-weight:bold;
+    text-decoration:none;
+  }
+  
+  <contents5>
+  {
+    font-family:"ITC Avant Garde Gothic","Arial","Helvetica","Geneva";
+    color:#777777;
+    margin-top:0.3cm;
+    margin-bottom:0cm;
+    margin-left:2.5cm;
+    font-size:10px;
+    font-weight:bold;
+    text-decoration:none;
+  }
+
+  <marginBold>
+  {
+    font-style:italic;
+    font-weight:bold;
+    font-size:10pt;
+    margin-top:0.2cm;
+    margin-left:0cm;
+    margin-right:0cm;
+    text-align:right;
+  }
+
+  <margin>
+  {
+    font-style:italic;
+    font-size:10pt;
+    margin-top:0.2cm;
+    margin-left:0cm;
+    margin-right:0cm;
+    text-align:right;
+  }
+  
+  <pageNumber>
+  {
+    margin-left:0cm;
+    margin-top:0cm;
+    margin-bottom:0cm;
+    text-align:center;
+  }
+  
+  <pageHeader>
+  {
+    margin-left:0cm;
+    margin-top:0cm;
+    margin-bottom:0cm;
+    text-align:center;
+    width:455;
+    border-bottom-width:1px;
+    border-color:#000000;
+  }
+  
+  <pageHeaderWide>
+  {
+    margin-left:0cm;
+    margin-top:0cm;
+    margin-bottom:0cm;
+    text-align:center;
+    width:2000;
+    border-bottom-width:1px;
+    border-color:#000000;
+  }
+  
+  <navigator>
+  {
+    margin-left:0cm;
+    margin-right:0cm;
+    margin-top:0cm;
+    margin-bottom:0.0cm;
+    text-align:center;
+    width:455;
+    border-top-width:2px;
+    border-bottom-width:2px;
+    border-color:#000000;
+  }
+  
+  <navigatorWide>
+  {
+    margin-left:0cm;
+    margin-right:0cm;
+    margin-top:0cm;
+    margin-bottom:0cm;
+    text-align:center;
+    width:2000;
+    border-top-width:2px;
+    border-bottom-width:2px;
+    border-color:#000000;
+  }
+  
+  <navigatorSmall>
+  {
+    font-size:8pt;
+    margin-left:0cm;
+    margin-right:0cm;
+    margin-top:1cm;
+    margin-bottom:0.0cm;
+    text-align:center;
+    width:455;
+    border-top-width:1px;
+    border-color:$color_medium;
+  }
+  
+  <navigatorSmallWide>
+  {
+    font-size:8pt;
+    margin-left:0cm;
+    margin-right:0cm;
+    margin-top:1cm;
+    margin-bottom:0.0cm;
+    text-align:center;
+    width:2000;
+    border-top-width:1px;
+    border-color:$color_medium;
+  }
+   
+}
+
+
+/**
+ * NativeStyles
+ */
+[nativeStyles]
+{
+A:link {
+  text-decoration:none;
+}
+
+OL,UL,BLOCKQUOTE {
+  font-family:"Arial","Helvetica","Geneva";
+  font-size:10pt;
+  text-align:justify;
+  margin-right:0.5cm;
+  margin-top:0cm;
+}
+
+TD.navigator {
+  background-color:$doc_navigator_color;
+}
+
+TD.tableHeader {
+  background-color:$color_bright;
+  font-family:"Arial","Helvetica","Geneva";
+  font-size:10pt;
+  font-weight:bold;
+  text-align:center;
+}
+}
+
+
+/**
+ * EOF
+ */

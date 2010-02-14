@@ -1,0 +1,199 @@
+<!--
+[variables]
+{
+  $page_title = "The Track Configuration File"
+  $page_title_english = "The Track Configuration File"
+  $file_prev = "011.html"
+  $file_next = ""
+  $real_page_number = "12"
+  $page_number = "12"
+}
+-->
+
+<_header1>
+$page_title
+</_header1>
+
+<_pg>
+Each track in $pn has it's own configuration file
+called 'config.tck'. This file stores general information
+about the track like it's name, it's author as well 
+as the position of the bridge created in the last
+section and last but not least the paths for the 
+computer players.
+</_pg>
+
+<_pg>
+Open your favorite text editor and type the following 
+lines to it (replace the '<your name>' by your name,
+'<your track name>' by your track name and the '<bridge 
+position x/y>' with the bridge position you've noted
+in the last section):
+</_pg>
+
+<_code>
+# Track info<br>
+<br>
+Author = "&lt;your name&gt;"<br>
+Version = "1.0.0"<br>
+Name = "&lt;your track name&gt;"<br>
+<br>
+<br>
+# Objects<br>
+<br>
+x = "&lt;bridge position x&gt;"<br>
+y = "&lt;bridge position y&gt;"<br>
+Object = "bridge"<br>
+<br>
+<br>
+startAngle = "0"<br>
+<br>
+<br>
+i = "0"<br>
+<br>
+i = "1"<br>
+<br>
+i = "2"<br>
+<br>
+i = "3"<br>
+<br>
+i = "4"<br>
+<br>
+i = "5"<br>
+<br>
+#EOF
+</_code>
+
+<_pg>
+The parameter 'startAngle' defines the start angle of the
+players which is the same for all players. Please note that
+90 is down while 270 is up.
+</_pg>
+
+<_pg>
+As you can imagine, there's still something missing in the
+configuration file: the paths for the computer players.
+</_pg>
+
+<_header2>
+Paths For Computer Players
+</_header2>
+
+<_pg>
+A path for a computer player is defined by a number of
+reference points which lead the player from the start point
+(RP 0) to the last point of a lap (RP n). 
+</_pg>
+
+<_pg>
+To make it easier to create paths for the computer players,
+there's a function in $pn which makes it possible to record 
+coordinates into a file by clicking them in the right order.
+</_pg>
+
+<_pg>
+Open a console and change to the path where you've installed
+$pn. Start $pn with the following parameters:
+</_pg>
+
+<_code>
+trophy --debug --trackinfo
+</_code>
+
+<_pg>
+Start a new game and select your track. If it's not there,
+please check if the directory name of your track matches 
+the name provided in the 'resources.scr' file (case
+sensitive!).
+</_pg>
+
+<_pg>
+Once started you'll soon realize, that the computer player
+don't behave like they should. All cars are located in the 
+top left corner of the screen and probably can't even move
+if they are on a forbidden area. If it's impossible to reach
+the road, you need to give a reasonable start point for all 
+players in the 'config.tck' file. For example if your track 
+starts somewhere at the position 325/234, you can adjust the
+'config.tck' file to this:
+</_pg>
+
+<_code>
+# Track info<br>
+<br>
+Author = "Andrew Mustun"<br>
+Version = "1.0.0"<br>
+Name = "Mars"<br>
+<br>
+<br>
+# Objects<br>
+<br>
+x = "256"<br>
+y = "482"<br>
+Object = "bridge"<br>
+<br>
+<br>
+<br>
+startAngle = "0"<br>
+<br>
+<br>
+i = "0"<br>
+<br>
+x = "325"<br>
+y = "234"<br>
+RP = "0"<br>
+<br>
+<br>
+i = "1"<br>
+<br>
+x = "325"<br>
+y = "234"<br>
+RP = "0"<br>
+<br>
+<br>
+i = "2"<br>
+<br>
+x = "325"<br>
+y = "234"<br>
+RP = "0"<br>
+<br>
+...<br>
+<br>
+<br>
+#EOF
+</_code>
+
+<_pg>
+It doesn't matter for the moment if all players are on the
+same place - essential is that you can drive around to 
+record the final reference points.
+</_pg>
+
+<_pg>
+To do so, simply start up $pn with the options described
+above and then click one point after another. The first 
+point has to be behind the start line. The total number of
+points must be below 32 and it must be equal for all 6
+recorded paths.
+</_pg>
+
+<_pg>
+You can only record one track at once. It's anyway a good idea 
+to check the recorded tracks before doing another. Due to the
+behavior of the computer players, it's not always exactly
+predictable where the cars will drive.
+</_pg>
+
+<_pg>
+If you open the file 'trackdata.txt', it contains the list
+of recorded reference points in the format like it is 
+expected to be in the 'config.tck' file. Copy this list and
+paste it after the track path id in the 'config.tck' file.
+The following paragraph shows an example 'config.tck' file.
+</_pg>
+
+<_code>
+<_system unixcommand="cat config.tck" 
+         doscommand="type config.tck"
+         type="text">
+</_code>

@@ -1,0 +1,128 @@
+<!--
+[variables]
+{
+  $page_title = "Saving The Track"
+  $page_title_english = "Saving The Track"
+  $file_prev = "009.html"
+  $file_next = "011.html"
+  $real_page_number = "10"
+  $page_number = "10"
+}
+-->
+
+<_header1>
+$page_title
+</_header1>
+
+<_pg>
+While doing art works, it's strongly recommended to save the 
+whole track frequently. Please use the Gimp format ".xcf" for
+doing so. xcf saves your work as you've made it. It saves all 
+layers and selections.
+</_pg>
+
+<_pg>
+Before you can use your track with $pn, you must save two or 
+three different files: The visual map, the function map and 
+the bridges if your track contains bridges.
+</_pg>
+
+<_header2>
+Path
+</_header2>
+
+<_pg>
+You must save all these files into the same directory. The path
+is '<$pn directory>/resources/tracks/<Your track name>'. E.g.
+'/home/andrew/trophy/resources/tracks/Mars/'. This path is from 
+now on referred as the 'track path'.
+</_pg>
+
+<_header2>
+The Visual Map
+</_header2>
+
+<_pg>
+To save the visual map, simple delete all layers except the 
+'vmap' layer. Then save the image as 'vmap.tga'. Place this 
+file into you track path.
+</_pg>
+
+<_header2>
+The Function Map
+</_header2>
+
+<_pg>
+Load the original xcf file again.
+</_pg>
+
+<_pg>
+Before saving the function map, please assure, that the
+mode of the layers 'fields', 'low_level_collision', 
+'high_level_collision' and 'lift' is 'Addition'
+('Layers & Channels' box). The mode of the layer 'fmap'
+which is the lowest layer of the function map must be
+'Normal'. Delete now the layer 'vmap' and merge the 
+remaining layers to one layer. To do so, right-click on
+a layer name in the 'Layers & Channels' box and choose
+'Merge Visible Layers'. Save now the drawing as 'fmap.tga'
+into the track path.
+</_pg>
+
+<_header2>
+The Bridges
+</_header2>
+
+<_pg>
+Bridges are a special part of the visual map. However, as
+they have to be drawn between the players under and those
+on the bridge, bridges must reside in a separate file.
+</_pg>
+
+<_pg>
+Load your 'vmap.tga' file. Crop the image to the minimum 
+size which still contains all bridges. <b>Note that you need
+to know the top left position of the crop area later.</b>
+It's a good idea to note it somewhere.
+</_pg>
+
+<_pg>
+<_image src="img/bridge_crop.gif" 
+        description="Crop the image to the smallest area
+        which still contains all bridges.">
+</_pg>
+
+<_pg>
+In the cropped image, erase all parts which don't belong to 
+a bridge.
+</_pg>
+
+<_pg>
+<_image src="img/bridge_erase.gif" 
+        description="Erase parts around bridges.">
+</_pg>
+
+<_pg>
+Save this image to your track path with the name 'bridge.tga'.
+</_pg>
+
+<_header2>
+Thumbnail file
+</_header2>
+
+<_pg>
+$pn shows a thumbnail preview of each track in the track 
+selection page. Therefore you must provide a thumbnail file 
+in your track path. 
+</_pg>
+
+<_pg>
+Load the 'vmap' of your track. Scale it to the size of 
+150x92. If your track has another size ratio, it's up
+to you if you want to leave parts of the thumbnail black 
+or slightly change the image ratio.
+</_pg>
+
+<_pg>
+Save the image as 'thumb.tga' to your track path.
+</_pg>

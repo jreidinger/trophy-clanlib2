@@ -1,0 +1,849 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <TITLE>Trophy - The Track Configuration File</TITLE>
+  <META name="GENERATOR" content="ManStyle">
+  <META name="AUTHOR" content="Andrew Mustun">
+  <LINK rel=stylesheet type="text/css" href="styles.css">
+</HEAD>
+<BODY text="#000000"
+      link="#12568c" vlink="#023a64" alink="#000000" 
+      bgcolor="#ffffff" background="img/tile.jpeg">
+
+<TABLE width=615 border=0 cellpadding=0 cellspacing=0>
+  <TR>
+    <TD width=30>
+      <IMG src="img/space.gif" width=30 height=1 border=0>
+    </TD>
+    <TD width=105>
+      <IMG src="img/space.gif" width=105 height=1 border=0>
+    </TD>
+    <TD width=20>
+      <IMG src="img/space.gif" width=20 height=1 border=0>
+    </TD>
+    <TD width=460>
+      <IMG src="img/space.gif" width=460 height=1 border=0><BR>
+      <P class="pageNumber">&nbsp;12&nbsp;</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top></TD>
+    <TD></TD>
+    <TD align=center>
+      <TABLE width=460 border=0 cellpadding=0 cellspacing=0>
+        <TR>
+          <TD width=460 align=center valign=top class="navigator">
+            <P class="navigator"><IMG src="img/000000.gif" height=2 width=460><BR>
+            <IMG src="img/toolbar_left.png" border=0><A href="001.html" alt="Contents"><IMG src="img/toolbar_cont.png" border=0></A><A href="index.html" alt="First Page"><IMG src="img/toolbar_first.png" border=0></A><A href="011.html" alt="Previous Page"><IMG src="img/toolbar_prev.png" border=0></A><A href="index.html" alt="Home"><IMG src="img/toolbar_home.png" border=0></A><IMG src="img/toolbar_right.png" border=0>
+            <BR><IMG src="img/000000.gif" height=2 width=460></P>
+          </TD>
+        </TR>
+        <TR>
+          <TD align=center valign=top>
+            <P class="pageHeader">Designer Manual for - <B>&laquo;Trophy&raquo;</B><BR><IMG src="img/000000.gif" height=1 width=460></P>
+          </TD>
+        </TR>
+        <TR>
+          <TD align=center valign=top>
+            &nbsp;
+          </TD>
+        </TR>
+      </TABLE>
+    </TD>
+  </TR>
+
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="header1">7&nbsp;&nbsp; <A name="7"></A>The Track Configuration File<BR><IMG src="img/12568c.gif" height=2 width=460></P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Each track in Trophy has it's own configuration file called 'config.tck'. This file stores general information about the track like it's name, it's author as well as the position of the bridge created in the last section and last but not least the paths for the computer players.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Open your favorite text editor and type the following lines to it (replace the '<your name>' by your name, '<your track name>' by your track name and the '<bridge position x/y>' with the bridge position you've noted in the last section):</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="code"># Track info<br> <br> Author = "&lt;your name&gt;"<br> Version = "1.0.0"<br> Name = "&lt;your track name&gt;"<br> <br> <br> # Objects<br> <br> x = "&lt;bridge position x&gt;"<br> y = "&lt;bridge position y&gt;"<br> Object = "bridge"<br> <br> <br> startAngle = "0"<br> <br> <br> i = "0"<br> <br> i = "1"<br> <br> i = "2"<br> <br> i = "3"<br> <br> i = "4"<br> <br> i = "5"<br> <br> #EOF</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">The parameter 'startAngle' defines the start angle of the players which is the same for all players. Please note that 90 is down while 270 is up.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">As you can imagine, there's still something missing in the configuration file: the paths for the computer players.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="header2">7.1&nbsp; <A name="7_1"></A>Paths For Computer Players</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">A path for a computer player is defined by a number of reference points which lead the player from the start point (RP 0) to the last point of a lap (RP n). </P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">To make it easier to create paths for the computer players, there's a function in Trophy which makes it possible to record coordinates into a file by clicking them in the right order.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Open a console and change to the path where you've installed Trophy. Start Trophy with the following parameters:</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="code">trophy --debug --trackinfo</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Start a new game and select your track. If it's not there, please check if the directory name of your track matches the name provided in the 'resources.scr' file (case sensitive!).</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">Once started you'll soon realize, that the computer player don't behave like they should. All cars are located in the top left corner of the screen and probably can't even move if they are on a forbidden area. If it's impossible to reach the road, you need to give a reasonable start point for all players in the 'config.tck' file. For example if your track starts somewhere at the position 325/234, you can adjust the 'config.tck' file to this:</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="code"># Track info<br> <br> Author = "Andrew Mustun"<br> Version = "1.0.0"<br> Name = "Mars"<br> <br> <br> # Objects<br> <br> x = "256"<br> y = "482"<br> Object = "bridge"<br> <br> <br> <br> startAngle = "0"<br> <br> <br> i = "0"<br> <br> x = "325"<br> y = "234"<br> RP = "0"<br> <br> <br> i = "1"<br> <br> x = "325"<br> y = "234"<br> RP = "0"<br> <br> <br> i = "2"<br> <br> x = "325"<br> y = "234"<br> RP = "0"<br> <br> ...<br> <br> <br> #EOF</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">It doesn't matter for the moment if all players are on the same place - essential is that you can drive around to record the final reference points.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">To do so, simply start up Trophy with the options described above and then click one point after another. The first point has to be behind the start line. The total number of points must be below 32 and it must be equal for all 6 recorded paths.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">You can only record one track at once. It's anyway a good idea to check the recorded tracks before doing another. Due to the behavior of the computer players, it's not always exactly predictable where the cars will drive.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="pg">If you open the file 'trackdata.txt', it contains the list of recorded reference points in the format like it is expected to be in the 'config.tck' file. Copy this list and paste it after the track path id in the 'config.tck' file. The following paragraph shows an example 'config.tck' file.</P>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD></TD>
+    <TD valign=top>
+      <P class="margin"></P>
+    </TD>
+    <TD></TD>
+    <TD valign=top>
+      <P class="code">
+&#35;&nbsp;Track&nbsp;info<BR>
+<BR>
+Author&nbsp;&#61;&nbsp;&#34;Andrew&nbsp;Mustun&#34;<BR>
+Version&nbsp;&#61;&nbsp;&#34;1&#46;0&#46;0&#34;<BR>
+Name&nbsp;&#61;&nbsp;&#34;Zurich&#34;<BR>
+<BR>
+<BR>
+&#35;&nbsp;Objects<BR>
+<BR>
+&#35;x&nbsp;&#61;&nbsp;&#34;256&#34;<BR>
+&#35;y&nbsp;&#61;&nbsp;&#34;482&#34;<BR>
+&#35;Object&nbsp;&#61;&nbsp;&#34;bridge&#34;<BR>
+<BR>
+<BR>
+startAngle&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;675&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;75&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;994&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;88&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1463&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;198&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1418&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;545&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1268&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;889&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1017&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;888&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;883&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;459&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;607&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;385&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;506&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;574&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;657&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;791&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;380&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;897&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;130&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;803&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;145&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;671&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;278&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;544&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;148&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;387&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;103&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;254&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;171&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;107&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;456&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;95&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;675&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;120&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;990&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;135&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1437&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;199&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1393&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;537&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1234&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;917&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1033&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;866&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;845&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;473&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;630&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;428&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;492&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;509&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;634&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;777&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;384&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;879&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;112&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;817&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;142&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;694&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;286&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;551&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;163&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;371&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;81&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;253&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;176&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;138&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;454&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;126&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;675&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;165&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;997&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;169&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1470&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;162&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1451&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;511&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1271&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;940&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;983&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;852&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;823&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;426&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;670&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;376&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;475&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;529&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;676&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;733&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;360&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;894&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;106&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;894&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;177&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;654&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;277&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;551&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;114&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;364&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;122&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;219&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;221&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;120&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;496&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;147&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;610&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;75&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;970&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;108&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1444&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;167&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1455&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;580&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1238&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;887&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1013&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;846&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;855&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;405&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;635&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;369&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;519&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;546&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;640&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;845&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;379&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;937&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;84&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;822&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;196&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;631&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;258&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;515&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;109&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;406&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;130&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;246&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;193&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;86&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;478&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;77&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;610&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;120&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1031&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;129&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1411&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;176&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1420&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;513&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1296&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;851&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1075&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;871&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;825&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;463&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;653&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;410&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;497&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;451&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;629&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;756&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;393&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;923&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;149&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;876&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;121&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;685&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;261&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;548&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;148&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;347&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;86&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;211&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;216&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;150&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;504&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;118&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;610&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;165&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1031&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;129&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1461&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;176&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1420&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;513&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1296&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;851&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1075&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;871&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;825&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;463&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;653&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;410&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;497&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;451&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;629&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;756&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;393&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;923&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;149&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;876&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;121&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;685&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;261&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;548&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;148&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;347&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;86&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;211&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;216&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;150&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;504&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;118&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+<BR>
+i&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;610&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;167&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;0&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1033&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;160&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;1&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1435&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;137&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;2&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1392&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;575&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;3&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1306&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;887&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;4&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;1048&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;847&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;5&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;816&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;392&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;6&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;603&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;415&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;7&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;531&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;525&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;8&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;631&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;806&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;9&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;357&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;873&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;10&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;148&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;850&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;11&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;142&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;704&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;12&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;264&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;543&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;13&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;157&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;412&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;14&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;116&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;288&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;15&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;145&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;103&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;16&#34;<BR>
+<BR>
+x&nbsp;&#61;&nbsp;&#34;440&#34;<BR>
+y&nbsp;&#61;&nbsp;&#34;154&#34;<BR>
+RP&nbsp;&#61;&nbsp;&#34;17&#34;<BR>
+<BR>
+<BR>
+&#35;EOF<BR>
+
+</P>
+    </TD>
+  </TR>
+
+
+  <TR>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD valign=top>
+       <P class="navigatorSmall"><IMG src="img/12568c.gif" height=1 width=460><BR>
+       [&nbsp;
+       <A href="001.html">Contents</A>&nbsp;&nbsp;|&nbsp;
+       <A href="index.html">First Page</A>&nbsp;&nbsp;|&nbsp;
+       <A href="011.html">Previous Page</A>&nbsp;&nbsp;|&nbsp;
+       <A href="index.html">Home</A>&nbsp;
+       
+       ]<BR>
+       [&nbsp; <A href="001.html">1</A>&nbsp;|&nbsp;<A href="002.html">2</A>&nbsp;|&nbsp;<A href="003.html">3</A>&nbsp;|&nbsp;<A href="004.html">4</A>&nbsp;|&nbsp;<A href="005.html">5</A>&nbsp;|&nbsp;<A href="006.html">6</A>&nbsp;|&nbsp;<A href="007.html">7</A>&nbsp;|&nbsp;<A href="008.html">8</A>&nbsp;|&nbsp;<A href="009.html">9</A>&nbsp;|&nbsp;<A href="010.html">10</A>&nbsp;|&nbsp;<A href="011.html">11</A>&nbsp;|&nbsp;<A href="012.html">12</A> &nbsp;]
+       <BR>
+       <B>Copyright &copy; by</B> Andrew Mustun 2000. All rights reserved.<BR>
+       This Manual was created with <A HREF="http://manstyle.sourceforge.net">ManStyle</A>.
+       </P>
+    </TD>
+  </TR>
+
+</TABLE>
+
+<P>
+  <BR><BR>
+</P>
+
+</BODY>
+</HTML>
