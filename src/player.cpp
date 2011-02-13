@@ -69,7 +69,7 @@ Player::reset() {
      \param routeNumber The initial route number for this player
      \currentTrack The track where the race is
 */
-void Player::resetForRace( int routeNumber, Track* currentTrack)
+void Player::resetForRace( const unsigned int routeNumber, const Track* currentTrack)
 {
     m_currentTrack = currentTrack;
     active = true;
@@ -106,13 +106,15 @@ void Player::resetForRace( int routeNumber, Track* currentTrack)
     lastLapPart   = 0;
     finished      = false;
     death         = false;
+	lapped        = false;
 
     // Put the player on the start grid at the right angle
     if (m_currentTrack != NULL)
     {
         float nx=0; float ny=0;
-        int routePoint = 0; // At start the route point is always 0
-        m_currentTrack->getNextRoutePoint(routeNumber, routePoint, nx, ny);
+        unsigned int routePoint = 0; // At start the route point is always 0
+		unsigned int TempRouteNumber = routeNumber; // to keep routeNumber const
+        m_currentTrack->getNextRoutePoint(TempRouteNumber, routePoint, nx, ny);
         move( nx, ny );
         setDirection( m_currentTrack->getStartAngle() );
     }
@@ -565,7 +567,7 @@ Player::checkFunctionMap()
 
     // Lap part:
     //
-    if( lapPart!=0 && !finished && !death ) 
+    if( lapPart!=0 && !finished && !death && !lapped ) 
     {
         // We pass another lap part:
         //
@@ -591,6 +593,13 @@ Player::checkFunctionMap()
                     raceTime = CA_APP->getTime();
                     CAPositionTable::getPositionTable()->playerFinishedRace( this );
                 }
+				else if (CAPositionTable::getPositionTable()->isPossibleWin()==false)
+				{
+					lapped = true;
+					raceTime = 0;
+                    // Player is definitely lapped so we don't allow him finish
+					CAPositionTable::getPositionTable()->playerFinishedLapped(this);
+				}
             }
             lapParts=1;
         }
@@ -695,7 +704,7 @@ Player::shoot()
 */
 void
 Player::hit( const float amount ) {
-    if( !death && !finished ) {
+    if( !death && !finished && !lapped) {
         life -= amount/100.0*(100.0-m_Pcar.getArmor()->getArmor());
         if( life<0.1 ) {
             kill();
@@ -734,7 +743,7 @@ Player::display( const int offsetX, const int offsetY )
 
     // Display gun fire:
     //
-    if( !death && !finished && shootMode && bullets>0 ) 
+    if( !death && !finished && !lapped && shootMode && bullets>0 ) 
     {
         int gunX, gunY;
         gunX = (int)(x + cos( newDirection/ARAD ) * 18) - CA_RES->misc_gunfire->get_width()/2;

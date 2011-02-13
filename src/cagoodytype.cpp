@@ -43,7 +43,7 @@ void CAGoodyTypeDerived<Turbo>::action(Player* pl)
 template<>
 void CAGoodyTypeDerived<Life>::action(Player* pl)
 {
-    if( !pl->isDeath() && !pl->hasFinished() ) pl->setLife( pl->getLife()+25.0 );
+    if( !pl->isDeath() && !pl->hasFinished() && !pl->isLapped()) pl->setLife( pl->getLife()+25.0 );
 }
 
 template<>

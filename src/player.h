@@ -15,7 +15,7 @@ class Track;
     @author Andrew Mustun
     @author Matthieu Lecesne
 */
-// TODO: id is uncesssary (in local game), it is only use to know witch is the player
+// TODO: id is uncesssary (in local game), it is only use to know who is the player
 class Player 
 {
 public:
@@ -29,7 +29,7 @@ public:
     virtual ~Player();
 
     void   reset();
-    virtual void   resetForRace(int routeNumber, Track* currentTrack);
+    virtual void   resetForRace(const unsigned int routeNumber, const Track* currentTrack);
 
     void   renderSprites( HSVColor col );
 
@@ -44,7 +44,7 @@ public:
     void   setName( const std::string& n ) { name=n; }
 
     //! Returns the color of this player.
-    HSVColor  getColor() const { return color; }
+    HSVColor getColor() const { return color; }
     void     setColor( HSVColor c, bool render=true );
 
     
@@ -93,6 +93,9 @@ public:
 
     //! Returns true if this player died.
     bool   isDeath() const { return death; }
+	
+    //! Returns true if this player is lapped
+	bool   isLapped() const { return lapped; }
 
     //! Returns the life this player has. (0-100)
     float  getLife() const { return life; }
@@ -187,7 +190,7 @@ protected:
     //! Returns the new direction of this player in degrees (0=right, 90=bottom (!)).
     float  getNewDirection() const { return newDirection; }
 
-    Track* getCurrentTrack() {return m_currentTrack;}
+    const Track* getCurrentTrack() {return m_currentTrack;}
 
 private:
     virtual float getCheckAwayAngle() = 0;
@@ -277,6 +280,8 @@ private:
     bool   finished;
     //! Died before finishing the race
     bool   death;
+	//! lapped before finishing the race
+	bool   lapped;
     //! Total race time of last race in milliseconds
     int    raceTime;
     //! Current rank of this player in current race
@@ -293,10 +298,10 @@ private:
     //! current index for the hitPoint array.
     int    hitPointCounter;
     // ! The track where the player is assigned
-    Track* m_currentTrack;
+    const Track* m_currentTrack;
 
 
-public:
+protected:
     //! speed mode. Accelerate, Decelerate, Constant
     Speed      speedMode;
     //! direction mode. Left, Right, Straight

@@ -36,48 +36,61 @@ CAPositionTable::~CAPositionTable() {}
 */
 void
 CAPositionTable::resetRace() {
-    for( int i=0; i<CA_RACEMAXPLAYERS; ++i ) {
-        raceRankList[i] = 0;
-    }
-    raceRankIndex = 0;
-    raceRankIndexBottom = CA_RACEMAXPLAYERS-1;
+     m_raceRankList.clear();
+     m_diedPlayers.clear();
+     m_lappedPlayers.clear();
 }
 
 
+bool CAPositionTable::isPossibleWin() const
+{
+    if (m_raceRankList.size()==0)
+		return true;
+	else
+		return false;
+}
 
+	
 /** Registers a player in the current lap rank list.
     The first player who calls this function is the lap winner.
 */
 void
 CAPositionTable::playerFinishedRace( Player* player )
 {
-    if( raceRankIndex<CA_RACEMAXPLAYERS )
-    {
-        raceRankList[raceRankIndex] = player;
-        player->setRaceRank( raceRankIndex+1 );
-        int points = ((CA_RACEMAXPLAYERS+1)-player->getRaceRank()) * (m_raceLevel +1);
-        if( points>0 )
-        {
-            player->setRacePoints( points );
-        }
-        player->addRaceMoney((float)CA_PRIZE/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
-        raceRankIndex++;
-    }
+	m_raceRankList.push_back(player);
+	player->setRaceRank( m_raceRankList.size() );
+	int points = ((CA_RACEMAXPLAYERS+1)-player->getRaceRank()) * (m_raceLevel +1);
+	if( points>0 )
+	{
+		player->setRacePoints( points );
+	}
+	player->addRaceMoney((float)CA_PRIZE/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
 }
 
+
+/** Registers a player in the current lap rank list if he finish the race lapped
+    No point or money for lapped player
+*/
+void
+CAPositionTable::playerFinishedLapped( Player* player )
+{
+	player->setRaceRank(CA_RACEMAXPLAYERS-m_diedPlayers.size()-m_lappedPlayers.size());
+    m_lappedPlayers.push_back(player);
+}
 
 
 /** Registers a player in the current lap rank list if he died.
     The first player who calls this function is the lap looser.
 */
 void
-CAPositionTable::playerDied( Player* player ) {
-    if( raceRankIndexBottom>=0 ) {
-        raceRankList[raceRankIndexBottom] = player;
-        player->setRaceRank( raceRankIndexBottom+1 );
-        raceRankIndexBottom--;
-    }
+CAPositionTable::playerDied( Player* player )
+{
+    player->setRaceRank(CA_RACEMAXPLAYERS-m_diedPlayers.size());
+    m_diedPlayers.push_back(player);
+
 }
+
+
 
 
 // EOF

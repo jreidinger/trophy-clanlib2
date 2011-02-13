@@ -6,7 +6,6 @@
 #include <fstream>
 
 Track::Track(const std::string& trackName, const bool debug):
-    m_nbRoutePoints(0),
     m_functionMap(0),
     m_visualMap(0),
     m_bridge(0),
@@ -19,16 +18,15 @@ Track::Track(const std::string& trackName, const bool debug):
     // Load visual map:
     //
     std::string vmapPath = trackPath + "vmap.tga";
-    if( m_visualMap != NULL ) delete m_visualMap;
     try
     {
-        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
+        m_visualMap.reset(new CL_Surface(CL_ProviderFactory::load(vmapPath)));
     }
     catch(CL_Error err)
     {
         trackPath = std::string("../resources/tracks/") + trackName + "/";
         vmapPath = trackPath + "vmap.tga";
-        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
+        m_visualMap.reset(new CL_Surface(CL_ProviderFactory::load(vmapPath)));
     }
 
    // loading.setProgress( 15 ); TODO
@@ -36,10 +34,9 @@ Track::Track(const std::string& trackName, const bool debug):
     // Load functional map:
     //
     std::string fmapPath = trackPath + "fmap.tga";
-    if( m_functionMap != NULL ) delete m_functionMap;
     // We need to load a surface and then create the pixelbuffer if we don't want to loose the information
     // about the color. Don't know if it is a bug of ClanLib or the normal behavior.
-    m_functionMap = new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() );
+    m_functionMap.reset(new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() ));
     // TODO : is it OK if we never unlock it ? functionMap is not meant to be drawn
     m_functionMap->lock();
 
@@ -58,8 +55,8 @@ Track::Track(const std::string& trackName, const bool debug):
         std::string line;                 // The line converted to a string
         std::string name;                 // Name of the value (Author)
         std::string value;                // Value (Andrew Mustun)
-        int xv=0, yv=0, zv=0;           // Coordinates for following objects
-        int iv=0;                       // Index for followint object (route point)
+        unsigned int xv=0, yv=0, zv=0;           // Coordinates for following objects
+        unsigned int iv=0;                       // Index for following object (route point)
         while (std::getline(tckFile, line))
         {
             if (line.size()!=0)
@@ -91,21 +88,24 @@ Track::Track(const std::string& trackName, const bool debug):
 
                 // Route points:
                 //
-                else if( name=="RP" ) {
+                else if( name=="RP" )
+                {
                     int pi;
-                    iss >> pi;
-                    if (pi<CA_MAXROUTEPOINTS && iv<CA_RACEMAXPLAYERS) {
-                        m_rp[iv][pi][0] = xv;
-                        m_rp[iv][pi][1] = yv;
-                        if (pi+1>m_nbRoutePoints) m_nbRoutePoints = pi+1;
+                    iss >> pi; // TODO : sort RP
+                    while (m_rp.size() <= iv)
+                    {
+                        m_rp.push_back(std::vector<RP>());
                     }
+
+                    RP rp(xv, yv);
+                    m_rp[iv].push_back(rp);
                 }
 
                 // Objects:
                 //
                 else if( name=="Object" && value=="bridge") {
                     std::string bridgePath = trackPath + value + ".tga";
-                    m_bridge = new CL_Surface(CL_TargaProvider(bridgePath));
+                    m_bridge.reset(new CL_Surface(CL_TargaProvider(bridgePath)));
                     m_bridgePos[0] = xv;
                     m_bridgePos[1] = yv;
                 }
@@ -114,134 +114,6 @@ Track::Track(const std::string& trackName, const bool debug):
         tckFile.close();
     }
 }
-
-Track::~Track()
-{
-    if( m_visualMap!=NULL ) delete m_visualMap;
-    if( m_functionMap != NULL ) delete m_functionMap;
-    if( m_bridge != NULL ) delete m_bridge;
-}
-
-/*void Track::init(const std::string& trackName, const bool debug)
-{
-    // Base path of track files:
-    std::string trackPath = std::string("tracks/") + trackName + "/";
-
-    // Load visual map:
-    //
-    std::string vmapPath = trackPath + "vmap.tga";
-    if( m_visualMap != NULL ) delete m_visualMap;
-    try
-    {
-        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
-    }
-    catch(CL_Error err)
-    {
-        trackPath = std::string("../resources/tracks/") + trackName + "/";
-        vmapPath = trackPath + "vmap.tga";
-        m_visualMap = new CL_Surface(CL_ProviderFactory::load(vmapPath));
-    }
-
-   // loading.setProgress( 15 ); TODO
-
-    // Load functional map:
-    //
-    std::string fmapPath = trackPath + "fmap.tga";
-    if( m_functionMap != NULL ) delete m_functionMap;
-    // We need to load a surface and then create the pixelbuffer if we don't want to loose the information
-    // about the color. Don't know if it is a bug of ClanLib or the normal behavior.
-    m_functionMap = new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() );
-    // TODO : is it OK if we never unlock it ? functionMap is not meant to be drawn
-    m_functionMap->lock();
-
-   // loading.setProgress( 30 ); TODO
-
-
-    // Read config file for this track:
-    //
-    std::string configFilePath = trackPath + "config.tck";
-    //  CL_String( "tracks/" ).append( trackName ).append( "/config.tck" );
-
-    if(debug) printf( "%s\n", configFilePath.c_str() );
-
-    std::ifstream tckFile (configFilePath.c_str());
-    if ( tckFile )
-    {
-        std::string line;                 // The line converted to a string
-        std::string name;                 // Name of the value (Author)
-        std::string value;                // Value (Andrew Mustun)
-        int xv=0, yv=0, zv=0;           // Coordinates for following objects
-        int iv=0;                       // Index for followint object (route point)
-        while (std::getline(tckFile, line))
-        {
-            if (line.size()!=0)
-            if (line[0]!='#')
-            {
-                int i = std::string( line ).find_first_of( " =" );
-                name = line.substr( 0, i );
-                i = std::string( line ).find ('"', i) + 1;
-                int j = std::string( line ).find ('"', i);
-                value = line.substr( i, j-i );
-
-                std::istringstream iss(value);
-                // General track info:
-                //
-                if( name=="Author" )         iss >> m_author;
-                else if( name=="Version")    iss >> m_version;
-                else if( name=="Name"   )    iss >> m_name;
-
-                // Coordinates of next object / route point:
-                //
-                else if( name=="x" )         iss >> xv;
-                else if( name=="y" )         iss >> yv;
-                else if( name=="z" )         iss >> zv;
-                else if( name=="i" )         iss >> iv;
-
-                // Start angle:
-                //
-                else if( name=="startAngle" ) iss >> m_startAngle;
-
-                // Route points:
-                //
-                else if( name=="RP" ) {
-                    int pi;
-                    iss >> pi;
-                    if (pi<CA_MAXROUTEPOINTS && iv<CA_RACEMAXPLAYERS) {
-                        m_rp[iv][pi][0] = xv;
-                        m_rp[iv][pi][1] = yv;
-                        if (pi+1>m_nbRoutePoints) m_nbRoutePoints = pi+1;
-                    }
-                }
-
-                // Objects:
-                //
-                else if( name=="Object" && value=="bridge") {
-                    std::string bridgePath = trackPath + value + ".tga";
-                    m_bridge = new CL_Surface(CL_TargaProvider(bridgePath));
-                    m_bridgePos[0] = xv;
-                    m_bridgePos[1] = yv;
-                }
-            }
-        }
-        tckFile.close();
-    }
-}
-
-void Track::deinit()
-{
-    if( m_visualMap!=0 ) delete m_visualMap;
-    m_visualMap = 0;
-
-    if( m_functionMap != NULL ) 
-    {
-        delete m_functionMap;
-        m_functionMap = NULL;
-    }
-
-    if( m_bridge!=0 ) delete m_bridge;
-    m_bridge = 0;
-}
-*/
 
 void Track::handleTrackCreation(const int offsetX, const int offsetY)
 {
@@ -355,14 +227,14 @@ int Track::getLevel( const int x, const int y ) const
 void Track::displayTrackPoints(const int& offsetX, const int& offsetY) const
 {
     char str[16];
-    for( int r=0; r<m_nbRoutePoints; ++r )
+    for( unsigned int t=0; t<m_rp.size(); ++t )
     {
-        for( int t=0; t<CA_RACEMAXPLAYERS; ++t )
+        for( unsigned int r=0; r<m_rp[t].size(); ++r )
         {
             sprintf( str, "%d/%d", r, t );
-            CA_RES->misc_cross->draw (m_rp[t][r][0]+offsetX-8, m_rp[t][r][1]+offsetY-8);
+            CA_RES->misc_cross->draw (m_rp[t][r].getX()+offsetX-8, m_rp[t][r].getY()+offsetY-8);
             CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( m_rp[t][r][0]+offsetX, m_rp[t][r][1]+offsetY+5, str );
+            CA_RES->font_normal_11_white->draw( m_rp[t][r].getX()+offsetX, m_rp[t][r].getY()+offsetY+5, str );
         }
     }
 }
@@ -371,27 +243,27 @@ void Track::displayTrackPoints(const int& offsetX, const int& offsetY) const
 */
 void Track::displayBridge(const int& offsetX, const int& offsetY) const
 {
-    if( m_bridge!=0 )
+    if( m_bridge.get() != NULL )
     {
         m_bridge->draw (m_bridgePos[0]+offsetX, m_bridgePos[1]+offsetY);
     }
 }
 
 
-void Track::getNextRoutePoint(int& routeNumber, int& routePoint, float& nx, float& ny) const
+void Track::getNextRoutePoint(unsigned int& routeNumber, unsigned int& routePoint, float& nx, float& ny) const
 {
     // Choose new route by shuffle:
     //
-    if( routePoint >= m_nbRoutePoints ) 
+    if( routePoint >= m_rp[routeNumber].size() ) 
     {
         routePoint=0;
-        routeNumber = TrophyMath::getRandomNumber( 0, CA_RACEMAXPLAYERS-1 );
+        routeNumber = TrophyMath::getRandomNumber( 0, m_rp.size()-1 );
     }
 
     // Next coordinate to locate
     //
-    nx = m_rp[routeNumber][routePoint][0];
-    ny = m_rp[routeNumber][routePoint][1];
+    nx = m_rp[routeNumber][routePoint].getX();
+    ny = m_rp[routeNumber][routePoint].getY();
 }
 
 

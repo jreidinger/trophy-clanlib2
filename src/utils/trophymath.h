@@ -35,8 +35,6 @@
 #define CA_SHOOTINGRANGE 200      // Shooting range in pixel
 #define CA_MAXHITPOINTS    5      // Max number of hit points for one screen and one player
 
-#define CA_MAXROUTEPOINTS 32      // Max number of route points for computer players
-
 #define CA_NUMLAPS         5      // Number of laps to do for each race
 
 #define CA_NUMSLOTS       10      // Number of slots for saving games.

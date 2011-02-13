@@ -668,7 +668,6 @@ CATrophy::runMenu()
         mainMenu->addMenuLabel( "Start Racing" );
         //mainMenu->addMenuLabel( "Multiplayer Race" );
         mainMenu->addMenuLabel( "Configure" );
-        mainMenu->addMenuLabel( "See Hall Of Fame" );
         mainMenu->addMenuLabel( "Credits" );
         mainMenu->addMenuLabel( "Exit To System" );
 
@@ -687,7 +686,6 @@ CATrophy::runMenu()
                 raceMenu->addMenuLabel( "Start A New Game" );
                 //raceMenu->addMenuLabel( "Load Game" );
                 //raceMenu->addMenuLabel( "Save Game" );
-                raceMenu->addMenuLabel( "See Statistics" );
                 // TODO : Previous Menu ? End Current Game ? Which one is best ?
                 //  - Previous Menu seems more logic, but it doesn't make it very clear that you lose your game (maybe when there will be save/load ?)
                 //  - End Current Game doesn't tell us that we're going back to the main menu
@@ -704,19 +702,14 @@ CATrophy::runMenu()
                     startNewGame();
                     break;
 
-                case 1:  // See Statistics
-
-                    runPositionTable( true );
-                    break;
-
-                case 2:  // End current Game (if the number change, raceMenuSelection comparison should also change)
+					case 1:  // End urrent Game (if the number change, raceMenuSelection comparison should also change)
 
                     break;
-
+					
                 default:
                     break;
                 }
-            } while( raceMenuSelection != 2 );
+            } while( raceMenuSelection != 1 );
             break;
 
             // Multiplayer:
@@ -772,23 +765,16 @@ CATrophy::runMenu()
             break;
 
 
-            // See Hall Of Fame:
-            //
-        case 2:
-            runPositionTable( false );
-            break;
-
-
             // Credits:
             //
-        case 3:
+        case 2:
             runCreditsScreen();
             break;
 
 
             // Exit:
             //
-        case 4:
+        case 3:
             done=true;
             break;
         }
@@ -800,15 +786,17 @@ CATrophy::runMenu()
     \return true on success (User pressed Enter or Space) otherwise false (User pressed ESC)
 */
 bool
-CATrophy::runPositionTable( bool race ) {
-    CAPositionTableView positionTableView( race );
+CATrophy::runPositionTable()
+{
+    CAPositionTableView positionTableView;
     return positionTableView.run();
 }
 
 /** Called by CATrophy::runMenu() to start the credits screen in an std::endless loop.
 */
 void
-CATrophy::runCreditsScreen() {
+CATrophy::runCreditsScreen()
+{
     CACredits credits;
     credits.run();
 }
@@ -895,7 +883,7 @@ CATrophy::startNewGame()
         if( dif >= 0 ) 
         {
             difficulty = Difficulty (dif);
-            bool goon=true;
+            bool goOn=true;
 
             // Choose track:
             //
@@ -915,7 +903,7 @@ CATrophy::startNewGame()
                     m_trackName = trackList[trackNumber];
                     run(); // This is where the race start
                     signUpScreen.addVirtualPoints();
-                    goon = runPositionTable( true );
+                    goOn = runPositionTable();
                     {
                         CAChampionshipScreen myChampionShip(player, signUpScreen.getAllRunningPlayers(), CA_RES->menu_bg, CA_RES->gui_button, CA_RES->gui_button_green,  CA_RES->gui_button_blue, CA_RES->gui_button_red, CA_RES->font_normal_11_white);
                         myChampionShip.run();
@@ -925,7 +913,7 @@ CATrophy::startNewGame()
                         myShop.run();
                     }
                 }
-            } while( trackNumber!=-1 && goon );
+            } while( trackNumber!=-1 && goOn );
         }
     }
 
@@ -1046,7 +1034,7 @@ CATrophy::run()
                 {       // Check if first player has finished
                     firstPlayerFinished = true;
                 }
-                else if( c==0 && m_RacePlayer[c]->getLife()>0.0 )
+                else if( c==0 && !m_RacePlayer[c]->isDeath() && !m_RacePlayer[c]->isLapped() )
                 {  // Check if race is over...
                     raceOver=false;
                 }
@@ -1155,8 +1143,11 @@ CATrophy::run()
         {
             if( !m_RacePlayer[c]->hasFinished() &&
                     !m_RacePlayer[c]->isDeath() &&
+                    !m_RacePlayer[c]->isLapped() &&
                     m_RacePlayer[c]->getRaceRank()==rank )
             {
+				std::cout << m_RacePlayer[c]->getName() << std::endl;
+				std::cout << m_RacePlayer[c]->getRaceRank() << std::endl; 
                 CAPositionTable::getPositionTable()->playerFinishedRace( m_RacePlayer[c] );
                 break;
             }
@@ -1239,9 +1230,10 @@ CATrophy::setRanks() {
     // Clear ranks for players in the race and adjust first available rank
     //
     for( pl=0; pl<CA_RACEMAXPLAYERS; ++pl ) {
-        if( !m_RacePlayer[pl]->isDeath() ) {
+        if( !m_RacePlayer[pl]->isDeath() && !m_RacePlayer[pl]->isLapped()) {
             if( m_RacePlayer[pl]->hasFinished() ) {
-                if( m_RacePlayer[pl]->getRaceRank()>=rank ) rank = m_RacePlayer[pl]->getRaceRank()+1;
+                if( m_RacePlayer[pl]->getRaceRank()>=rank )
+					rank = m_RacePlayer[pl]->getRaceRank()+1;
             } else {
                 m_RacePlayer[pl]->setRaceRank(0);
             }
@@ -1262,7 +1254,7 @@ CATrophy::setRanks() {
         }
 
         if( nextRank!=-1 ) {
-            if( !m_RacePlayer[nextRank]->hasFinished() && !m_RacePlayer[nextRank]->isDeath() ) {
+            if( !m_RacePlayer[nextRank]->hasFinished() && !m_RacePlayer[nextRank]->isDeath() && !m_RacePlayer[nextRank]->isLapped() ) {
                 m_RacePlayer[nextRank]->setRaceRank( rank );
             }
         }
@@ -1442,12 +1434,11 @@ CATrophy::buildScreen()
 /** Displays the goodies.
 */
 void
-CATrophy::displayGoodies( bool up ) {
-    for( unsigned int gt=0; gt<goody.size(); gt++ ) {
-        for( unsigned int gi=0; gi<goody[gt].size(); gi++ ) {
+CATrophy::displayGoodies( bool up ) 
+{
+    for( unsigned int gt=0; gt<goody.size(); gt++ )
+        for( unsigned int gi=0; gi<goody[gt].size(); gi++ )
             if( goody[gt][gi]->isUp()==up ) goody[gt][gi]->display( offsetX, offsetY );
-        }
-    }
 }
 
 

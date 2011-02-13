@@ -13,20 +13,21 @@ public:
     ComputerPlayer(int id, const std::string& name, int carNumber);
     ~ComputerPlayer();
     void pilot();
-    void resetForRace(int routeNumber, Track* currentTrack);
-    void display( int offsetX, int offsetY );
+    void resetForRace(const unsigned int routeNumber, const Track* currentTrack);
+    void display( const int offsetX, const int offsetY );
     void OnRaceOver();
 private:
     float getCheckAwayAngle();
     //! Index of next route point to drive to
-    int    m_routePoint;
+    unsigned int    m_routePoint;
     //! routeNumber to know which pre-determined path to follow
-    int    m_routeNumber;
+    unsigned int    m_routeNumber;
 
     //! x coordinate of next route points (only for --trackinfo option)
     float nxTemp;
     //! y coordinate of next route points (only for --trackinfo option)
     float nyTemp;
+    
 };
 
 #endif

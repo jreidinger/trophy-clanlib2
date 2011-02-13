@@ -2,7 +2,7 @@
 #define GUIBOX_H
 
 #include "cawidget.h"
-/** A class utily for displain a white box
+/** A class utily for displaying a white box
    @author Matthieu Lecesne
 */
 

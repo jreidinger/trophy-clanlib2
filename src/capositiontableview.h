@@ -10,15 +10,13 @@
   */
 class CAPositionTableView : public CADialog {
 public:
-    CAPositionTableView( bool rank );
+    CAPositionTableView();
     ~CAPositionTableView();
 
     virtual void buildScreen();
     virtual void on_key_released (const CL_InputEvent &key);
 
 private:
-    //! Race or total results
-    bool race;
     //! Label for table output
     CALabel* label;
 };

@@ -80,7 +80,7 @@ public:
     // Control / actions:
     //
     void runMenu();
-    bool runPositionTable( bool race );
+    bool runPositionTable();
     void runCreditsScreen();
     void runServerInfo( bool success );
     void runClientInfo( bool success );

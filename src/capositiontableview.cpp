@@ -10,10 +10,9 @@
 /** Constructor.
     \param race true: lap results / false: total results
 */
-CAPositionTableView::CAPositionTableView( bool race )
+CAPositionTableView::CAPositionTableView()
         : CADialog() {
     resize( 600, 340 );
-    this->race = race;
     label = new CALabel( "", CAWidget::Left, CA_RES->font_normal_11_white );
 }
 
@@ -41,15 +40,9 @@ CAPositionTableView::buildScreen() {
 
     for( pl=0; pl<CA_RACEMAXPLAYERS; ++pl ) {
 
-        if(race) {
-            rank = CA_APP->m_RacePlayer[pl]->getRaceRank();
-            points = CA_APP->m_RacePlayer[pl]->getRacePoints();
-            TrophyMath::timeToString( timeStr, CA_APP->m_RacePlayer[pl]->getRaceTime() );
-        } else {
-            rank = CA_APP->m_RacePlayer[pl]->getTotalRank();
-            points = CA_APP->m_RacePlayer[pl]->getTotalPoints();
-        }
-
+		rank = CA_APP->m_RacePlayer[pl]->getRaceRank();
+		points = CA_APP->m_RacePlayer[pl]->getRacePoints();
+		TrophyMath::timeToString( timeStr, CA_APP->m_RacePlayer[pl]->getRaceTime() );
 
         if( rank!=0 )
         {

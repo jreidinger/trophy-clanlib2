@@ -4,13 +4,17 @@
 #include "track.h"
 
 ComputerPlayer::ComputerPlayer(int id, const std::string& name, int carNumber):
-Player(id, name, carNumber, Computer)
+Player(id, name, carNumber, Computer),
+m_routePoint(0),
+m_routeNumber(0),
+nxTemp(0.0),
+nyTemp(0.0)
 {}
 
 ComputerPlayer::~ComputerPlayer()
 {}
 
-void ComputerPlayer::display(  int offsetX, const int offsetY )
+void ComputerPlayer::display(  const int offsetX, const int offsetY )
 {
     Player::display(offsetX, offsetY);
     if( CA_APP->trackInfo )
@@ -36,7 +40,6 @@ void ComputerPlayer::OnRaceOver()
 void ComputerPlayer::pilot()
 {
     float nx, ny;
-    // TODO: should have a direct access to track instead of trophy
     getCurrentTrack()->getNextRoutePoint(m_routeNumber, m_routePoint, nx, ny);
 
     // For --trackinfo option
@@ -50,7 +53,7 @@ void ComputerPlayer::pilot()
     float diff = TrophyMath::getAngleDiff( getDirection(), b );
     float dist = TrophyMath::getDistance( getX(),getY(), nx,ny );
 
-    bool retard = false;
+    const bool retard = false; // TODO: useless code (retard is always false)
 
     // Steer:
     //
@@ -80,11 +83,13 @@ void ComputerPlayer::pilot()
 
     // Speed:
     //
-    if( !isDeath() && !hasFinished() && !retard ) speedMode=Accelerate;
-    else                                   speedMode=Constant;
+    if( !isDeath() && !hasFinished() && !isLapped() && !retard )
+		speedMode=Accelerate;
+    else // TODO: useless code (retard is always false)
+		speedMode=Constant;
 
 
-    if( !isDeath() && !hasFinished() ) 
+    if( !isDeath() && !hasFinished() && !isLapped() ) 
     {
         // Decide wheter to activate turbo or not:
         //
@@ -96,7 +101,7 @@ void ComputerPlayer::pilot()
             switch( CA_APP->difficulty )
             {
             case CATrophy::Easy:
-                turboLaunchDistance = 600;
+                turboLaunchDistance = 600; // TODO : useless : unreachable code
                 break;
             case CATrophy::Medium:
                 turboLaunchDistance = 200;
@@ -173,7 +178,7 @@ void ComputerPlayer::pilot()
 /** Reset things before a new race starts.
 */
 void
-ComputerPlayer::resetForRace(const int routeNumber, Track* currentTrack)
+ComputerPlayer::resetForRace(const unsigned int routeNumber, const Track* currentTrack)
 {
     Player::resetForRace(routeNumber, currentTrack);
     m_routeNumber = routeNumber;

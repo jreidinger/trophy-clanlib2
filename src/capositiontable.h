@@ -23,7 +23,9 @@ public:
     void resetRace();
     void playerFinishedRace( Player* player );
     void playerDied( Player* player );
+	void playerFinishedLapped(Player* player);
     void setRaceLevel(const RaceLevel rl) {m_raceLevel = rl;}
+	bool isPossibleWin() const;
 
 private:
     CAPositionTable();
@@ -37,11 +39,9 @@ private:
         successfully finished the current race.
         raceRankList[0] is the first.
     */
-    Player* raceRankList[CA_RACEMAXPLAYERS];
-    //! Index of next rank.
-    int raceRankIndex;
-    //! Index of next rank from bottom
-    int raceRankIndexBottom;
+    std::vector<Player*> m_raceRankList;
+    std::vector<Player*> m_diedPlayers;
+    std::vector<Player*> m_lappedPlayers;
     // Difficulty of actual race
     RaceLevel m_raceLevel;
 

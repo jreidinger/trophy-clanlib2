@@ -29,7 +29,7 @@ void HumanPlayer::pilot()
     // We're death and can't drive anymore:
     //
     using namespace ConfigureKey;
-    if( isDeath() || hasFinished() ) {
+    if( isDeath() || hasFinished()  || isLapped()) {
         speedMode = Constant;
     }
 
@@ -90,7 +90,7 @@ void HumanPlayer::pilot()
     //
     if (CL_Keyboard::get_keycode(m_keyMap[SHOOT]))
     {
-        if( !hasFinished() && !isDeath() && CA_APP->allowShooting && getBullets()>0 ) {
+        if( !hasFinished() && !isDeath() && !isLapped() && CA_APP->allowShooting && getBullets()>0 ) {
             CA_RES->effectShoot->play( 2 );
             shoot();
         }
@@ -103,7 +103,7 @@ void HumanPlayer::pilot()
     static bool blockKeyF = false;
     if (CL_Keyboard::get_keycode(m_keyMap[BOMB]))
     {
-        if( !hasFinished() && !isDeath() && CA_APP->allowShooting && !blockKeyF && getFogBombs()!=0 ) {
+        if( !hasFinished() && !isDeath() && !isLapped() && CA_APP->allowShooting && !blockKeyF && getFogBombs()!=0 ) {
             CA_APP->dropFogBomb( int(getX()), int(getY()), isUp() );
             useFogBomb();
             blockKeyF = true;
