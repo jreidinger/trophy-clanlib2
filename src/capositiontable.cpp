@@ -85,7 +85,7 @@ CAPositionTable::playerFinishedLapped( Player* player )
 void
 CAPositionTable::playerDied( Player* player )
 {
-    player->setRaceRank(CA_RACEMAXPLAYERS-m_diedPlayers.size());
+    player->setRaceRank(CA_RACEMAXPLAYERS-m_diedPlayers.size()-m_lappedPlayers.size());
     m_diedPlayers.push_back(player);
 
 }

@@ -597,6 +597,7 @@ Player::checkFunctionMap()
 				{
 					lapped = true;
 					raceTime = 0;
+					m_raceMoney = 0;
                     // Player is definitely lapped so we don't allow him finish
 					CAPositionTable::getPositionTable()->playerFinishedLapped(this);
 				}
@@ -719,6 +720,7 @@ Player::kill() {
     if( !death ) {
         life=0.0;
         death=true;
+        m_raceMoney = 0;
         CAPositionTable::getPositionTable()->playerDied( this );
     }
 }
@@ -754,7 +756,7 @@ Player::display( const int offsetX, const int offsetY )
 
     // Display car fire if we're death or if we are almost dead:
     // TODO: differentate death and almost dead
-    if( death || life <10) 
+    if( death ) 
     {
         CA_RES->misc_carfire->set_frame((int)floor(explFrame));
         CA_RES->misc_carfire->draw ( (int)(x+offsetX - CA_RES->misc_carfire->get_width()/2),
