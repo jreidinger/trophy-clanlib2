@@ -64,7 +64,14 @@ CAPositionTable::playerFinishedRace( Player* player )
 	{
 		player->setRacePoints( points );
 	}
-	player->addRaceMoney((float)CA_PRIZE/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
+	float priceMoney;
+	if (m_raceLevel == Easy)
+		priceMoney = CA_PRIZE;
+	else if (m_raceLevel == Medium)
+		priceMoney = CA_PRIZE_MEDIUM;
+	else
+		priceMoney = CA_PRIZE_HARD;
+	player->addRaceMoney((float)priceMoney/CA_RACEMAXPLAYERS*(CA_RACEMAXPLAYERS-player->getRaceRank()+1));
 }
 
 

@@ -1011,9 +1011,11 @@ CATrophy::run()
 
     // Loop until 'Escape' pressed or race is over:
     //
-    while( CL_Keyboard::get_keycode(CL_KEY_ESCAPE) == false &&
+	bool isEscapePressed = false;
+    while( !isEscapePressed &&
             (!raceOver || CL_System::get_time()-raceOverTime<3000) ) 
     {
+		// TODO: handle escape key (human player should be considered as dead)
         measureFrameTime( true );
 
         if( CL_Keyboard::get_keycode(CL_KEY_P) )
@@ -1127,12 +1129,17 @@ CATrophy::run()
         CL_System::keep_alive();      // VERY VITAL for the system!
 
         measureFrameTime( false );
+		isEscapePressed = CL_Keyboard::get_keycode(CL_KEY_ESCAPE);
     }
 
     if( debug ) std::cout << "Stop game loop" << std::endl;
 
     waitForSilence();
 
+	if (isEscapePressed)
+	{
+		m_RacePlayer[0]->kill();
+	}
     // Finish all players manually
     //
     for( int rank=1; rank<=CA_RACEMAXPLAYERS; ++rank )
@@ -1153,6 +1160,7 @@ CATrophy::run()
             }
         }
     }
+
 
     // Show race over dialog:
     //

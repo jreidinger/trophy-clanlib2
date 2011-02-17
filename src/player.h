@@ -19,13 +19,11 @@ class Track;
 class Player 
 {
 public:
-    enum ControlMode { Keyboard, Computer, Network };
     enum Direction   { Left, Right, Straight };
     enum Speed       { Accelerate, Decelerate, Constant };
 
     Player( int id, const std::string& name,
-            int carNumber,
-            ControlMode controlMode=Keyboard );
+            int carNumber);
     virtual ~Player();
 
     void   reset();
@@ -56,11 +54,6 @@ public:
 
     //! Returns pointers to player car
     CarType* getCar() { return &m_Pcar; }
-
-    //! Returns control mode of this player (Keyboard, Computer, Network)
-    ControlMode getControlMode() const { return controlMode; }
-    //! Sets a new control mode for this player.
-    void setControlMode( ControlMode cm ) { controlMode = cm; }
 
     //! Returns the direction of this player in degrees (0=right, 90=bottom (!)).
     float  getDirection() const { return direction; }
@@ -213,11 +206,6 @@ private:
     int         carNumber;
     //! Rendered sprites for this player (rotated and color-cycled)
     CL_Surface* sprite[CA_FPR];
-
-    /** Is this sprite moved by keyboard or controlled
-        over network or by the computer
-        */
-    ControlMode controlMode;
 
     //! current speed in pixel per second
     float  speed;

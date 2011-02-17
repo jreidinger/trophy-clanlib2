@@ -4,7 +4,7 @@
 #include "track.h"
 
 ComputerPlayer::ComputerPlayer(int id, const std::string& name, int carNumber):
-Player(id, name, carNumber, Computer),
+Player(id, name, carNumber),
 m_routePoint(0),
 m_routeNumber(0),
 nxTemp(0.0),

@@ -15,8 +15,7 @@
                   the computer (Computer) or a net player (Network)
 */
 Player::Player( int id, const std::string& name,
-                    int carNumber,
-                    ControlMode controlMode )
+                    int carNumber)
 : m_Pcar(CA_APP->carType[carNumber])
 {
     for( int i=0; i<CA_FPR; ++i )
@@ -26,7 +25,6 @@ Player::Player( int id, const std::string& name,
 
     this->id = id;
     this->name = name;
-    this->controlMode = controlMode;
     this->carNumber = carNumber;
     
     cMaxSpeed = m_Pcar.getMotor()->getMaxSpeed(); // TODO: chack if cMaxSpeed is increase after an upgrade
@@ -296,7 +294,7 @@ Player::advance()
     }
 
 
-    if( controlMode!=Network && active )  {
+    if( active )  {
 
         // Check collisions with other players / goodies
         //
@@ -495,9 +493,7 @@ Player::checkFunctionMap()
             {
                 // Check car away (computer players check away stronger):
                 //
-                /*float cangle=2.5;
-                if( controlMode==Computer ) cangle=7.5;*/
-                float cangle = getCheckAwayAngle();
+                const float cangle = getCheckAwayAngle();
                 switch(i) 
                 {
                     default:

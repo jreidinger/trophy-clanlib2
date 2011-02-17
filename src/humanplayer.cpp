@@ -5,7 +5,7 @@
 /** Constructor
 */
 HumanPlayer::HumanPlayer( int id, const std::string& name, int carNumber )
-: Player(id, name, carNumber, Keyboard)
+: Player(id, name, carNumber)
 {
     // default key
     using namespace ConfigureKey;
