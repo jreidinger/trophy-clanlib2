@@ -166,17 +166,11 @@ CAChampionshipScreen::on_key_released (const CL_InputEvent &key)
 {
     switch( key.id ) 
     {
-        // Cancel (ESC):
-        //
-    case CL_KEY_ESCAPE:
-        cancel = true;
-        done = true;
-        break;
-
         // Activate:
         //
     case CL_KEY_ENTER:
     case CL_KEY_SPACE:
+    case CL_KEY_ESCAPE:
         if (m_displayMode != DISPLAY_CHAMPIONSHIP)
         {
             int displayInt = int(m_displayMode) + 1;

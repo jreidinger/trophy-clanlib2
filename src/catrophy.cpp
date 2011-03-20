@@ -30,6 +30,7 @@
 #include "camenu.h"
 #include "casignupscreen.h"
 #include "cachampionshipscreen.h"
+#include "caslotselectiondialog.h"
 #include "shopscreen.h"
 
 // Global instance of the application needed by the ClanLib main():
@@ -71,6 +72,10 @@ CATrophy::main( int argc, char** argv )
         serverPort = 18805;
         difficulty = Medium;
         m_ConfigureKey = NULL;
+        m_isGameStarted = false;
+        m_nbTurns = 0;
+        m_gameLoopState = 0;
+        
 
         // Proccess parameters:
         //
@@ -187,6 +192,23 @@ CATrophy::main( int argc, char** argv )
         // initPanel();
         initTrackList();
 
+        // Create user data if needed
+#ifndef WIN32
+        m_homedir = std::string(getenv("HOME"));
+#else
+        m_homedir = std::string(getenv("APPDATA")); // For windows
+#endif
+        m_homedir = m_homedir + "/.trophy/";
+            
+        CL_DirectoryScanner checker;
+        if (checker.scan(m_homedir))
+            std::cout << m_homedir << " exists" << std::endl;
+        else
+        {
+            std::cout << m_homedir << " doesn't exist" << std::endl;
+            CL_Directory::create(m_homedir);
+        }
+            
 
         loading.end();
 
@@ -336,7 +358,6 @@ CATrophy::initPlayers()
 {
     if(debug) std::cout << "initPlayers begin" << std::endl;
 
-    int ct=0;
     for(int pl=0; pl<CA_MAXPLAYERS; ++pl)
     {
         if (pl == 0)
@@ -348,47 +369,10 @@ CATrophy::initPlayers()
         else
             player.push_back ( new ComputerPlayer( pl, "", 0));
 
-        if( pl!=0 ) {
-            int sat = TrophyMath::getRandomNumber( -90, 20 );
-            int val = TrophyMath::getRandomNumber( -60, 0 );
-            player[pl]->setColor( HSVColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
-        }
-        ++ct;
-        if( ct>=CA_NUMCARTYPES ) ct=0;
 
         loading.setProgress( 60.0 + 40.0/CA_MAXPLAYERS*pl );
     }
-    player[0]->setName( "Andrew" );
-    if( CA_MAXPLAYERS>1 ) player[1]->setName( "Greenhorn" );
-    if( CA_MAXPLAYERS>2 ) player[2]->setName( "Dark Rider" );
-    if( CA_MAXPLAYERS>3 ) player[3]->setName( "Speedy Joe" );
-    if( CA_MAXPLAYERS>4 ) player[4]->setName( "Sunnyboy" );
-    if( CA_MAXPLAYERS>5 ) player[5]->setName( "Jane" );
-    if( CA_MAXPLAYERS>6 ) player[6]->setName( "Player 6" );
-    if( CA_MAXPLAYERS>7 ) player[7]->setName( "Player 7" );
-    if( CA_MAXPLAYERS>8 ) player[8]->setName( "Player 8" );
-    if( CA_MAXPLAYERS>9 ) player[9]->setName( "Player 9" );
-    if( CA_MAXPLAYERS>10 ) player[10]->setName( "Player 10" );
-    if( CA_MAXPLAYERS>11 ) player[11]->setName( "Player 11" );
-    if( CA_MAXPLAYERS>12 ) player[12]->setName( "Player 12" );
-    if( CA_MAXPLAYERS>13 ) player[13]->setName( "Player 13" );
-    if( CA_MAXPLAYERS>14 ) player[14]->setName( "Player 14" );
-    if( CA_MAXPLAYERS>15 ) player[15]->setName( "Player 15" );
-    if( CA_MAXPLAYERS>16 ) player[16]->setName( "Player 16" );
-    if( CA_MAXPLAYERS>17 ) player[17]->setName( "Player 17" );
-    if( CA_MAXPLAYERS>18 ) player[18]->setName( "Player 18" );
-    if( CA_MAXPLAYERS>19 ) player[19]->setName( "Player 19" );
-    if( CA_MAXPLAYERS>20 ) player[20]->setName( "Player 20" );
-    if( CA_MAXPLAYERS>21 ) player[21]->setName( "Player 21" );
-    if( CA_MAXPLAYERS>22 ) player[22]->setName( "Player 22" );
-    if( CA_MAXPLAYERS>23 ) player[23]->setName( "Player 23" );
-    if( CA_MAXPLAYERS>24 ) player[24]->setName( "Player 24" );
-    if( CA_MAXPLAYERS>25 ) player[25]->setName( "Player 25" );
-    if( CA_MAXPLAYERS>26 ) player[26]->setName( "Player 26" );
-    if( CA_MAXPLAYERS>27 ) player[27]->setName( "Player 27" );
-    if( CA_MAXPLAYERS>28 ) player[28]->setName( "Player 28" );
-    if( CA_MAXPLAYERS>29 ) player[29]->setName( "Player 29" );
-    if( CA_MAXPLAYERS>30 ) player[30]->setName( "Player 30" );
+
     if(debug) std::cout << "initPlayers end" << std::endl;
 }
 
@@ -474,7 +458,6 @@ CATrophy::initRace( const std::string& trackName )
 
     loading.setProgress( 40 );
 
-    // TODO: use this technique to other random number
     std::vector<int> possiblesRn;
     for( int i=0; i<CA_RACEMAXPLAYERS; i++ )
     {
@@ -618,6 +601,13 @@ CATrophy::resetPlayers()
     for( int pl=0; pl<CA_MAXPLAYERS; ++pl )
     {
         player[pl]->reset();
+		if( pl!=0 )
+		{
+			int sat = TrophyMath::getRandomNumber( -90, 20 );
+			int val = TrophyMath::getRandomNumber( -60, 0 );
+			player[pl]->setColor( HSVColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
+		}
+		
         player[pl]->setTotalPoints(pl*4+pl*3);
         if (pl > 3*CA_MAXPLAYERS/4)
         {
@@ -638,6 +628,37 @@ CATrophy::resetPlayers()
 
         player[0]->setCarNumber(0); // human player always start with the worst car
     }
+	player[0]->setName( "Andrew" );
+    if( CA_MAXPLAYERS>1 ) player[1]->setName( "Greenhorn" );
+    if( CA_MAXPLAYERS>2 ) player[2]->setName( "Dark Rider" );
+    if( CA_MAXPLAYERS>3 ) player[3]->setName( "Speedy Joe" );
+    if( CA_MAXPLAYERS>4 ) player[4]->setName( "Sunnyboy" );
+    if( CA_MAXPLAYERS>5 ) player[5]->setName( "Jane" );
+    if( CA_MAXPLAYERS>6 ) player[6]->setName( "Player 6" );
+    if( CA_MAXPLAYERS>7 ) player[7]->setName( "Player 7" );
+    if( CA_MAXPLAYERS>8 ) player[8]->setName( "Player 8" );
+    if( CA_MAXPLAYERS>9 ) player[9]->setName( "Player 9" );
+    if( CA_MAXPLAYERS>10 ) player[10]->setName( "Player 10" );
+    if( CA_MAXPLAYERS>11 ) player[11]->setName( "Crazy Slider" );
+    if( CA_MAXPLAYERS>12 ) player[12]->setName( "Player 12" );
+    if( CA_MAXPLAYERS>13 ) player[13]->setName( "Player 13" );
+    if( CA_MAXPLAYERS>14 ) player[14]->setName( "Player 14" );
+    if( CA_MAXPLAYERS>15 ) player[15]->setName( "Player 15" );
+    if( CA_MAXPLAYERS>16 ) player[16]->setName( "Player 16" );
+    if( CA_MAXPLAYERS>17 ) player[17]->setName( "Player 17" );
+    if( CA_MAXPLAYERS>18 ) player[18]->setName( "Player 18" );
+    if( CA_MAXPLAYERS>19 ) player[19]->setName( "Player 19" );
+    if( CA_MAXPLAYERS>20 ) player[20]->setName( "Player 20" );
+    if( CA_MAXPLAYERS>21 ) player[21]->setName( "Player 21" );
+    if( CA_MAXPLAYERS>22 ) player[22]->setName( "Player 22" );
+    if( CA_MAXPLAYERS>23 ) player[23]->setName( "Dark Ghost" );
+    if( CA_MAXPLAYERS>24 ) player[24]->setName( "Player 24" );
+    if( CA_MAXPLAYERS>25 ) player[25]->setName( "Player 25" );
+    if( CA_MAXPLAYERS>26 ) player[26]->setName( "Player 26" );
+    if( CA_MAXPLAYERS>27 ) player[27]->setName( "Player 27" );
+    if( CA_MAXPLAYERS>28 ) player[28]->setName( "Player 28" );
+    if( CA_MAXPLAYERS>29 ) player[29]->setName( "Bill Speed" );
+    if( CA_MAXPLAYERS>30 ) player[30]->setName( "Player 30" );
     if (m_cheatMoney)
     {
         player[0]->addMoney (74000);
@@ -680,36 +701,83 @@ CATrophy::runMenu()
             // Start Racing:
             //
         case 0:
-            do 
             {
-                raceMenu = new CAMenu( "Start Racing" );
-                raceMenu->addMenuLabel( "Start A New Game" );
-                //raceMenu->addMenuLabel( "Load Game" );
-                //raceMenu->addMenuLabel( "Save Game" );
-                // TODO : Previous Menu ? End Current Game ? Which one is best ?
-                //  - Previous Menu seems more logic, but it doesn't make it very clear that you lose your game (maybe when there will be save/load ?)
-                //  - End Current Game doesn't tell us that we're going back to the main menu
-                raceMenu->addMenuLabel( "End Current Game" );
-                //raceMenu->addMenuLabel( "Previous Menu" );
-                raceMenu->run();
-                raceMenuSelection = raceMenu->getSelection();
-                delete raceMenu;
-
-                switch( raceMenuSelection ) 
+                int nextCursor = 0;
+                do 
                 {
-                case 0:  // Start new game
+                    raceMenu = new CAMenu( "Start Racing" );
+                    if (m_isGameStarted)
+                        raceMenu->addMenuLabel( "Continue Current Game" );
+                    else
+                        raceMenu->addMenuLabel( "Start A New Game" );
+                    raceMenu->addMenuLabel( "Load Game" );
+                    raceMenu->addMenuLabel( "Save Game" );
+                    // TODO : Previous Menu ? End Current Game ? Which one is best ?
+                    //  - Previous Menu seems more logic, but it doesn't make it very clear that you lose your game (maybe when there will be save/load ?)
+                    //  - End Current Game doesn't tell us that we're going back to the main menu
+                    raceMenu->addMenuLabel( "End Current Game" );
+                    //raceMenu->addMenuLabel( "Previous Menu" );
+                        raceMenu->setCursor (nextCursor);
+                    raceMenu->run();
+                    raceMenuSelection = raceMenu->getSelection();
+                    delete raceMenu;
 
-                    startNewGame();
-                    break;
+                    switch( raceMenuSelection ) 
+                    {
+                        case 0:  // Start new game / Continue game
+                        {
+                            nextCursor = 0;
+                            if (m_isGameStarted)
+                                gameLoop();
+                            else
+                                startNewGame();
+                        }
+                        break;
 
-					case 1:  // End urrent Game (if the number change, raceMenuSelection comparison should also change)
+                        case 1:
+                        {
+                            nextCursor = 0;
+                            if (loadGame())
+                            {
+                                gameLoop();
+                            }
+                        }   
+                        break;
 
-                    break;
-					
-                default:
-                    break;
+                        case 2:
+                        {
+                            if (m_isGameStarted)
+                            {
+                                nextCursor = 0;
+                                if (saveGame())
+                                    gameLoop();
+                            }
+                            else
+                            {
+                                nextCursor = 2;
+                                if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+                            }
+                            
+                        }
+                        break;
+
+                        case 3:// End current Game (if the number change, raceMenuSelection comparison should also change)
+                        {
+                            nextCursor = 3;
+                            m_isGameStarted = false;
+                            m_currentTrackNumbers.clear();
+                        }    
+                        break;
+
+                        default:
+                        {
+                            nextCursor = 3;
+                        }
+                        break;
+                    }
                 }
-            } while( raceMenuSelection != 1 );
+                while( raceMenuSelection != 3 );
+            }
             break;
 
             // Multiplayer:
@@ -782,7 +850,6 @@ CATrophy::runMenu()
 }
 
 /** Called by CATrophy::runMenu() to start the position table in an endless loop.
-    \param race true: Show table for last race / false: Total results table
     \return true on success (User pressed Enter or Space) otherwise false (User pressed ESC)
 */
 bool
@@ -860,12 +927,6 @@ CATrophy::startNewGame()
 {
     if( debug ) std::cout << "startNewGame() begin" << std::endl;
 
-    CAMenu* difficultyMenu = new CAMenu( "Select Difficulty:" );
-    difficultyMenu->addMenuLabel( "Speed makes me dizzy" );
-    difficultyMenu->addMenuLabel( "I live to ride" );
-    difficultyMenu->addMenuLabel( "Petrol in my veins" );
-    difficultyMenu->setCursor( 1 );
-
     resetPlayers();
 
     // Player settings dialog:
@@ -873,51 +934,226 @@ CATrophy::startNewGame()
     CAPlayerSettingsDialog playerSettingsDialog;
     if( playerSettingsDialog.run()==1 ) 
     {
+        m_nbTurns = 0;
         player[0]->setName( playerSettingsDialog.getPlayerName() );
         player[0]->setColor( HSVColor( playerSettingsDialog.getPlayerHue(),0,0 ) );
 
         // Choose difficulty:
         //
+		CAMenu* difficultyMenu = new CAMenu( "Select Difficulty:" );
+		difficultyMenu->addMenuLabel( "Speed makes me dizzy" );
+		difficultyMenu->addMenuLabel( "I live to ride" );
+		difficultyMenu->addMenuLabel( "Petrol in my veins" );
+		difficultyMenu->setCursor( 1 );
+
         int dif = difficultyMenu->run();
         delete difficultyMenu;
         if( dif >= 0 ) 
         {
             difficulty = Difficulty (dif);
-            bool goOn=true;
+            gameLoop();
+        }
+    }
 
-            // Choose track:
-            //
+    if( debug ) std::cout << "startNewGame() end" << std::endl;
+}
+
+
+/** Starts a new game. Called by the menu.
+*/
+bool
+CATrophy::saveGame() 
+{
+    bool isOk = false;
+    if( debug ) std::cout << "saveGame() begin" << std::endl;
+    CASlotSelectionDialog slotDialog("Save Game", CA_RES->font_normal_14_white, m_homedir);
+    std::string saveFileName = slotDialog.display();
+    if (saveFileName == "")
+        return isOk; // TODO: handle this (or not)      
+    std::string saveFileString = m_homedir + saveFileName;
+    std::cout << "saving " << saveFileString << std::endl;
+    std::ofstream saveFile(saveFileString.c_str());
+    if (saveFile)
+    {
+        saveFile << VERSION << std::endl;
+        saveFile << difficulty << std::endl;
+        saveFile << m_nbTurns << std::endl;
+        for (unsigned int i=0; i<m_currentTrackNumbers.size(); ++i)
+            saveFile << m_currentTrackNumbers[i] << std::endl;
+        // TODO: This code should probably be in player.cpp
+        for( unsigned int c=0; c<CA_MAXPLAYERS; ++c )
+        {
+            saveFile << player[c]->getName() << std::endl;
+            saveFile << player[c]->getCarNumber() << std::endl;
+            saveFile << player[c]->getCar()->getMotor()->getCurrent() << std::endl;
+            saveFile << player[c]->getCar()->getTires()->getCurrent() << std::endl;
+            saveFile << player[c]->getCar()->getArmor()->getCurrent() << std::endl;
+            saveFile << player[c]->getColor().h << std::endl;
+            saveFile << player[c]->getColor().s << std::endl;
+            saveFile << player[c]->getColor().v << std::endl;
+            saveFile << player[c]->getMoney() << std::endl;
+            saveFile << player[c]->getTotalPoints() << std::endl;
+        }
+        isOk = true;
+        CAInfoDialog saveOKDlg( "Game Saved",
+                               "Press Enter to continue...",
+                               CAInfoDialog::Info,
+                               false, &slotDialog );
+        saveOKDlg.run();
+    }
+    if( debug ) std::cout << "saveGame() end" << std::endl;
+    return isOk;
+}
+
+/** Starts a new game. Called by the menu.
+*/
+bool
+CATrophy::loadGame() 
+{
+    if( debug ) std::cout << "LoadGame() begin" << std::endl;
+    bool isOk = false;
+
+    CASlotSelectionDialog slotDialog("load Game", CA_RES->font_normal_14_white, m_homedir);
+    std::string loadFileName = slotDialog.display();
+
+    if (loadFileName == "")
+    {
+        if (!slotDialog.canceled())
+            std::cerr << "Unable to load Game. File corrupted?" << std::endl; // TODO
+        return isOk; // TODO: handle this 
+    }
+    
+    std::string loadFileString = m_homedir + loadFileName;
+    std::cout << "loading " << loadFileString << std::endl;
+    
+    std::ifstream loadFile(loadFileString.c_str());
+    if (loadFile)
+    {
+        std::string version;
+        loadFile >> version;
+
+        int dif;
+        loadFile >> dif;
+        if (dif == 0)
+            difficulty = Easy;
+        else if (dif == 1)
+            difficulty = Medium;
+        else if (dif == 2)
+            difficulty = Hard;
+
+        loadFile >> m_nbTurns;
+
+        m_currentTrackNumbers.clear();
+        for (int i=0; i<3; ++i)
+        {
             int trackNumber;
-            do 
+            loadFile >> trackNumber;
+            m_currentTrackNumbers.push_back(trackNumber);
+        }
+
+        // TODO: This code should probably be in player.cpp
+        for( unsigned int c=0; c<CA_MAXPLAYERS; ++c )
+        {
+            std::string name;
+            std::getline( loadFile, name ); // end of line
+            std::getline( loadFile, name ); // name
+            int carNumber, currentMotor, currentTires, currentArmor, h, s, v, money, totalPoints;
+            loadFile >> carNumber >> currentMotor >> currentTires >> currentArmor >> h >> s >> v >> money >> totalPoints;
+            player[c]->setName(name);
+            player[c]->setCarNumber(carNumber);
+            player[c]->getCar()->getMotor()->setCurrent(currentMotor);
+            player[c]->getCar()->getTires()->setCurrent(currentTires);
+            player[c]->getCar()->getArmor()->setCurrent(currentArmor);
+            HSVColor color(h, s, v);
+            player[c]->setColor(color);
+            player[c]->setMoney(money);
+            player[c]->setTotalPoints(totalPoints);
+        }
+        isOk = true;
+        CAInfoDialog loadOKDlg( "Game Loaded",
+                               "Press Enter to continue...",
+                               CAInfoDialog::Info,
+                               false, &slotDialog );
+        loadOKDlg.run();
+    }
+    if( debug ) std::cout << "loadGame() end" << std::endl;
+    return isOk;
+}
+
+
+/** Main game Loop. Called by startNewGame and LoadGame
+*/
+void CATrophy::gameLoop()
+{
+    if( debug ) std::cout << "gameLoop() begin" << std::endl;
+    m_isGameStarted = true;
+    // Choose track:
+    //
+    int trackNumber = 1;
+
+    bool goOn = true;
+    std::vector<std::vector<Player*> > allRunningPlayers;
+
+    while (goOn)
+    {
+        if (m_gameLoopState == 0)
+        {
+            if (m_nbTurns == 0)
+                ++m_gameLoopState; // we don't use Shop at First Race
+            else
             {
-                RaceLevel raceLevel;
+                ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white, carUp);
+                myShop.run();
+                if (myShop.canceled())
+                {
+                    goOn = false;
+                }
+                else
+                ++m_gameLoopState;
+            }
+        }
+        if (m_gameLoopState == 1)
+        {
+            CASignUpScreen signUpScreen(player, m_currentTrackNumbers);
+            trackNumber = signUpScreen.run();
+            m_currentTrackNumbers = signUpScreen.getTrackNumbers();
+            if (signUpScreen.canceled())
+            {
+                if (m_nbTurns == 0)
+                    goOn = false;
+                else
+                    --m_gameLoopState;
                 
-                    CASignUpScreen signUpScreen(player);
-                    trackNumber = signUpScreen.run();
-                    raceLevel = RaceLevel(signUpScreen.getRaceLevel());
-                    m_RacePlayer = signUpScreen.getRacePlayers();
-                
+            }
+            else
+            {
+                RaceLevel raceLevel = RaceLevel(signUpScreen.getRaceLevel());
+                m_RacePlayer = signUpScreen.getRacePlayers();
+
                 if( trackNumber != -1 ) 
                 {
                     CAPositionTable::getPositionTable()->setRaceLevel(raceLevel);
                     m_trackName = trackList[trackNumber];
                     run(); // This is where the race start
+                    m_currentTrackNumbers.clear();
                     signUpScreen.addVirtualPoints();
-                    goOn = runPositionTable();
-                    {
-                        CAChampionshipScreen myChampionShip(player, signUpScreen.getAllRunningPlayers(), CA_RES->menu_bg, CA_RES->gui_button, CA_RES->gui_button_green,  CA_RES->gui_button_blue, CA_RES->gui_button_red, CA_RES->font_normal_11_white);
-                        myChampionShip.run();
-                    }
-                    {
-                        ShopScreen myShop(player[0], CA_RES->menu_bg, CA_RES->gui_button, CA_RES->font_normal_14_white, carUp);
-                        myShop.run();
-                    }
+                    allRunningPlayers = signUpScreen.getAllRunningPlayers();
+                    ++m_gameLoopState;
                 }
-            } while( trackNumber!=-1 && goOn );
+                else
+                    std::cerr << "Internal Error" << std::endl; // TODO: A voir, normallement cas impossible
+            }
         }
-    }
+        if (m_gameLoopState == 2)
+        {
+            CAChampionshipScreen myChampionShip(player, allRunningPlayers, CA_RES->menu_bg, CA_RES->gui_button, CA_RES->gui_button_green,  CA_RES->gui_button_blue, CA_RES->gui_button_red, CA_RES->font_normal_11_white);
+            myChampionShip.run();
+            ++m_gameLoopState;
+        }
 
-    if( debug ) std::cout << "startNewGame() end" << std::endl;
+        m_gameLoopState = m_gameLoopState%3;
+    }
+    if( debug ) std::cout << "gameLoop() end" << std::endl;
 }
 
 /** Starts a trophy server on this computer.
@@ -979,6 +1215,8 @@ int
 CATrophy::run() 
 {
     if(debug) std::cout << "Game Running" << std::endl;
+    m_nbTurns++;
+    std::cout << "Nb Tour:" << m_nbTurns << std::endl; // TODO: Sauvegarder
 
     int  gameStartTime;  // Race started
     int  goodyTime;         // Last goody placed at...

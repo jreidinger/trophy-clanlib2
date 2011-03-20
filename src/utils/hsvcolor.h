@@ -8,8 +8,9 @@
   the modification of red based surfaces.
   @author Andrew Mustun
   */
-struct HSVColor 
+class HSVColor 
 {
+    public:
     /** Constructor for a black color.
     */
     HSVColor() 
@@ -26,29 +27,11 @@ struct HSVColor
         this->v = v;
     }
 
-    /** Operator ==
-    */
-    inline bool operator==( HSVColor c ) 
-    {
-        return (this->h==c.h && this->s==c.s && this->v==c.v);
-    }
-
     /** Operator !=
     */
-    inline bool operator!=( HSVColor c ) 
+    inline bool operator!=( const HSVColor& c ) 
     {
-        //return (this->h!=c.h || this->s!=c.s || this->v!=c.v);
-        return !operator==( c );
-    }
-
-    /** Operator =
-    */
-    inline HSVColor operator=( HSVColor c ) 
-    {
-        h = c.h;
-        s = c.s;
-        v = c.v;
-        return *this;
+        return (this->h!=c.h || this->s!=c.s || this->v!=c.v);
     }
 
     //! Hue of this color

@@ -22,8 +22,11 @@ void CAGoodyType::draw(int x, int y) const
 
 void CAGoodyType::catchGoodie(Player* pl)
 {
-    action(pl);
-    if( pl->getId()==0) playSound();
+    if( !pl->isDeath() && !pl->hasFinished() && !pl->isLapped())
+    {
+        action(pl);
+        if( pl->getId()==0) playSound(); // TODO : Only sound of first player is played
+    }
 }
 
 
@@ -43,7 +46,7 @@ void CAGoodyTypeDerived<Turbo>::action(Player* pl)
 template<>
 void CAGoodyTypeDerived<Life>::action(Player* pl)
 {
-    if( !pl->isDeath() && !pl->hasFinished() && !pl->isLapped()) pl->setLife( pl->getLife()+25.0 );
+    pl->setLife( pl->getLife()+25.0 );
 }
 
 template<>

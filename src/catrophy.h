@@ -48,7 +48,7 @@ CATrophy* theApp();
 class CATrophy : public CL_ClanApplication,
     public CAScreen {
 public:
-    enum Difficulty { Easy, Medium, Hard };
+    enum Difficulty { Easy = 0, Medium, Hard };
 
     virtual int main( int argc, char** argv );
 
@@ -85,6 +85,7 @@ public:
     void runServerInfo( bool success );
     void runClientInfo( bool success );
     void startNewGame();
+    void gameLoop();
     void startServer();
 
     void chooseNetGame();
@@ -128,8 +129,8 @@ public:
 
     // Persistance:
     //
-    void saveGame(); // TODO
-    void loadGame(); // TODO
+    bool saveGame();
+    bool loadGame();
 
 public:
     //! Loading screen
@@ -246,6 +247,16 @@ private:
     CL_DisplayWindow *display_window;
 
     CAConfigureKey* m_ConfigureKey;
+
+    std::string m_homedir;
+
+    bool m_isGameStarted;
+
+    std::vector<int> m_currentTrackNumbers;
+
+    int m_nbTurns;
+
+    int m_gameLoopState;
 
     //! The server object
     // CANetServer* netServer;

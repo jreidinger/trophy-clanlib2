@@ -45,7 +45,7 @@ protected:
     //! Pointer to screen (if dialog is modal) or NULL if it's not modal.
     CAScreen* screen;
 
-private:
+protected:
     //! The white gui box
     GUIBox m_guiBox;
 

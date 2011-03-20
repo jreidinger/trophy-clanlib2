@@ -16,7 +16,7 @@ class CAImageView;
 */
 class CASignUpScreen : public CAScreen {
 public:
-    CASignUpScreen(std::vector<Player*> player);
+    CASignUpScreen(std::vector<Player*> player, std::vector<int> trackNumbers);
     ~CASignUpScreen();
 
     void reset();
@@ -37,6 +37,8 @@ public:
     std::vector<std::vector<Player*> > getAllRunningPlayers();
 
     void addVirtualPoints();
+
+    std::vector<int> getTrackNumbers() const;
     
 private:
     //! Cursor (selected race)
@@ -68,6 +70,8 @@ private:
     std::vector<std::vector<std::string> > m_StringRacePlayer;
     //! 3 Track directory chosen
     std::vector<std::string> m_trackList;
+    //! 3 Track number chosen
+    std::vector<int> m_trackNumbers;
 
 
 public:

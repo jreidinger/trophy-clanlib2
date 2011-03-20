@@ -29,8 +29,6 @@ public:
     void   reset();
     virtual void   resetForRace(const unsigned int routeNumber, const Track* currentTrack);
 
-    void   renderSprites( HSVColor col );
-
     //! Returns ID of this player.
     int    getId() const { return id; }
     //! Sets ID of this player.
@@ -122,11 +120,6 @@ public:
     //! Sets points for the last race.
     void   setRacePoints( int p ) { racePoints = p; }
 
-    //! Returns current rank of this player over all.
-    int    getTotalRank() const { return totalRank; }
-    //! Sets current rank of this player over all.
-    void   setTotalRank(int r) { totalRank = r; }
-
     //! Returns total points over all.
     int    getTotalPoints() const { return totalPoints; }
     //! Sets total points over all.
@@ -136,6 +129,8 @@ public:
     int    getMoney() const { return money; }
     //! Give Money to player
     void  addMoney(const int value) { money+= value;}
+    //! set Money to player
+    void setMoney(const int value) { money = value;}
      //! Take Money from player return true if the player had enough money
     bool spendMoney(const int value);
 
@@ -187,6 +182,7 @@ protected:
 
 private:
     virtual float getCheckAwayAngle() = 0;
+    void   renderSprites( HSVColor col );
     //! Player id
     int          id;
     //! Player nick name
@@ -276,8 +272,6 @@ private:
     int    raceRank;
     //! Points in current race
     int    racePoints;
-    //! Current rank in total ranking
-    int    totalRank;
     //! Total points of all races
     int    totalPoints;
 

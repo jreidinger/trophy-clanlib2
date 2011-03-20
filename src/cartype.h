@@ -20,6 +20,7 @@ class CarOption
         CarOption(CL_ResourceManager* resources, CACarUpgrades* carRes, int maxOpt, const std::string& pathPrice, const std::string& name);
         CL_Surface* getImage() const;
         int getCurrent() const { return m_current;}
+        void setCurrent(const int current) {m_current = current;} // Must only be use by loadGame
         int getMax() const { return m_maxOpt;}
         bool isMax() const { return m_current == m_maxOpt;}
         int getPrice () const;

@@ -224,8 +224,8 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
         case CL_KEY_ESCAPE:
         if (m_confirmMode == false)
         {
-            // TODO: should have a save menu on Escape
             done = true;
+            cancel = true;
         }
         else
         {

@@ -59,7 +59,6 @@ void
 Player::reset() {
     money         = 1000;                 // Initial money for each player
     totalPoints   = 0;
-    totalRank     = 0;
     resetForRace(0, NULL); // we set player no tracks
 }
 

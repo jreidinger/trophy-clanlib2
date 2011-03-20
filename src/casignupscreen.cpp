@@ -17,7 +17,7 @@ struct FindPlayer:public std::binary_function<std::vector<Player*>, Player*, boo
 
 /** Constructor.
 */
-CASignUpScreen::CASignUpScreen(std::vector<Player*> player)
+CASignUpScreen::CASignUpScreen(std::vector<Player*> player, std::vector<int> trackNumbers)
  : CAScreen(),
     m_Player(player)
 {
@@ -46,16 +46,22 @@ CASignUpScreen::CASignUpScreen(std::vector<Player*> player)
     int endRandom = m_Player.size() -1;
     for (int race=0; race<3; race++)
     {
-        std::vector<std::string>::const_iterator it = m_trackList.begin();
         int rn = 0;
-        do 
+        if (trackNumbers.size() == 3)
+            rn =  trackNumbers[race];
+        else
         {
-            rn = TrophyMath::getRandomNumber( 0, numTracks-1 );
-	        it = std::find(m_trackList.begin(), m_trackList.end(), CA_APP->trackList[rn]);
+            std::vector<std::string>::const_iterator it = m_trackList.begin();
+            do
+            {
+                rn = TrophyMath::getRandomNumber( 0, numTracks-1 );
+                it = std::find(m_trackList.begin(), m_trackList.end(), CA_APP->trackList[rn]);
+            }
+            while (it != m_trackList.end());
         }
-	    while (it != m_trackList.end());
         m_trackList.push_back(CA_APP->trackList[rn]);
-	//
+        m_trackNumbers.push_back(rn);
+
 	    m_RacePlayer.push_back(std::vector<Player*>());
 	    m_StringRacePlayer.push_back(std::vector<std::string>());
 
@@ -292,8 +298,15 @@ CASignUpScreen::on_key_released (const CL_InputEvent &key)
         // Cancel (ESC):
         //
     case CL_KEY_ESCAPE:
-        cancel = true;
-        done = true;
+        {
+            if (!m_selected)
+            {
+                cancel = true;
+                done = true;
+            }
+            else
+                if( CA_APP->sound ) CA_RES->effectHorn->play( 2 ); // do not allow to echap when the user has selected
+        }
         break;
 
         // Left:
@@ -345,6 +358,7 @@ CASignUpScreen::on_key_released (const CL_InputEvent &key)
                     oss << it - m_Player.begin() +1 << ") " <<  (*it)->getName();
                     m_StringRacePlayer[cursor][0] = oss.str();  
                     m_selected = true;
+                    help = "press Enter to continue";
             }
         }
         break;
@@ -357,6 +371,12 @@ CASignUpScreen::on_key_released (const CL_InputEvent &key)
 void
 CASignUpScreen::playSwitchSound() {
     if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+}
+
+std::vector<int>
+CASignUpScreen::getTrackNumbers() const
+{
+    return m_trackNumbers;
 }
 
 // EOF
