@@ -1,6 +1,6 @@
 bin_PROGRAMS = trophy
-trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositiontable.h casoundeffect.cpp \
-		 cagoody.h cainfodialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h shopscreen.h \
+trophy_SOURCES = cagoody.cpp cainfodialog.cpp caescapedialog.cpp camenu.h canetserver.cpp capositiontable.h casoundeffect.cpp \
+		 cagoody.h cainfodialog.h caescapedialog.h camenuinput.cpp canetserver.h capositiontableview.cpp casoundeffect.h shopscreen.h \
 		 cagoodytype.h cagoodytype.cpp calabel.cpp camenuinput.h capanel.cpp capositiontableview.h caconfigurekey.cpp shopscreen.cpp \
 		 cartype.h cartype.cpp caimagehueselector.cpp calabel.h camenuitem.cpp camenuselect.cpp capanel.h caresources.cpp caconfigurekey.h \
 		 utils/hsvcolor.h caimagehueselector.h calineedit.cpp camenuitem.h player.cpp caresources.h track.h track.cpp guibox.h guibox.cpp \

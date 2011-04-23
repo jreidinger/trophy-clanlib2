@@ -12,9 +12,9 @@
     \param screen pointer to screen shown in the background if this dialog is modal.
                   zero if this dialog is not modal (default).
 */
-CAInfoDialog::CAInfoDialog( const std::string title,
-                            const std::string text,
-                            InfoType type,
+CAInfoDialog::CAInfoDialog( const std::string& title,
+                            const std::string& text,
+                            const InfoType type,
                             bool modal,
                             CAScreen* screen )
         : CADialog( modal, screen ) {
@@ -49,15 +49,6 @@ CAInfoDialog::CAInfoDialog( const std::string title,
 
     if( CA_APP->debug ) std::cout << "CAInfoDialog() end" << std::endl;
 }
-
-
-
-/** Destructor.
-*/
-CAInfoDialog::~CAInfoDialog() {
-    //delete icon;
-}
-
 
 
 /** Builds the info dialog screen.

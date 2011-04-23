@@ -10,7 +10,7 @@
     \param screen pointer to screen shown in the background if this dialog is modal.
                   zero if this dialog is not modal (default).
 */
-CADialog::CADialog( bool modal, CAScreen* screen )
+CADialog::CADialog( const bool modal, CAScreen* screen )
         : CAScreen() {
     width = height = 0;
     left = top = right = bottom = 0;

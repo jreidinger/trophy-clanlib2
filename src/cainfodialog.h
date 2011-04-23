@@ -13,12 +13,11 @@ class CAInfoDialog : public CADialog  {
 public:
     enum InfoType { Info, Warning };
 
-    CAInfoDialog( const std::string title,
-                  const std::string text,
-                  InfoType type=Info,
+    CAInfoDialog( const std::string& title,
+                  const std::string& text,
+                  const InfoType type=Info,
                   bool modal=false,
                   CAScreen* screen=0 );
-    ~CAInfoDialog();
 
     virtual void buildScreen();
     virtual void on_key_released (const CL_InputEvent &key);
@@ -31,5 +30,6 @@ private:
     //! Type (Info, Warning).
     InfoType type;
 };
+
 
 #endif

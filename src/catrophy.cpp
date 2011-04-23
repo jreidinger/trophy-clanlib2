@@ -19,6 +19,7 @@
 #include "caconfigurekey.h"
 #include "caimagemanipulation.h"
 #include "cainfodialog.h"
+#include "caescapedialog.h"
 #include "capositiontable.h"
 #include "cagoody.h"
 #include "catrophy.h"
@@ -1253,7 +1254,6 @@ CATrophy::run()
     while( !isEscapePressed &&
             (!raceOver || CL_System::get_time()-raceOverTime<3000) ) 
     {
-		// TODO: handle escape key (human player should be considered as dead)
         measureFrameTime( true );
 
         if( CL_Keyboard::get_keycode(CL_KEY_P) )
@@ -1368,16 +1368,30 @@ CATrophy::run()
 
         measureFrameTime( false );
 		isEscapePressed = CL_Keyboard::get_keycode(CL_KEY_ESCAPE);
+
+        if (isEscapePressed)
+        {
+            CAEscapeDialog escapeDlg( "Quit Race?",
+                                     "Press Y to quit race",
+                                     CAInfoDialog::Info,
+                                     true, this );
+            escapeDlg.run();
+
+            if( escapeDlg.isMustQuit () )
+            {
+                m_RacePlayer[0]->kill();
+            }
+            else
+            {
+                isEscapePressed = false;
+            }
+        }
     }
 
     if( debug ) std::cout << "Stop game loop" << std::endl;
 
     waitForSilence();
 
-	if (isEscapePressed)
-	{
-		m_RacePlayer[0]->kill();
-	}
     // Finish all players manually
     //
     for( int rank=1; rank<=CA_RACEMAXPLAYERS; ++rank )

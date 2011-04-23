@@ -13,7 +13,7 @@
 */
 class CADialog : public CAScreen {
 public:
-    CADialog( bool modal=false, CAScreen* screen=0 );
+    CADialog( const bool modal=false, CAScreen* screen=0 );
     ~CADialog();
 
     virtual int run();
