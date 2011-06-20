@@ -599,36 +599,40 @@ CATrophy::resetDustClowds() {
 void
 CATrophy::resetPlayers()
 {
-    for( int pl=0; pl<CA_MAXPLAYERS; ++pl )
+    for( int pl=1; pl<CA_MAXPLAYERS; ++pl )
     {
         player[pl]->reset();
-		if( pl!=0 )
-		{
-			int sat = TrophyMath::getRandomNumber( -90, 20 );
-			int val = TrophyMath::getRandomNumber( -60, 0 );
-			player[pl]->setColor( HSVColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
-		}
+
+        int sat = TrophyMath::getRandomNumber( -90, 20 );
+        int val = TrophyMath::getRandomNumber( -60, 0 );
+        player[pl]->setColor( HSVColor((int)((float)pl/CA_MAXPLAYERS*360),sat,val) );
 		
         player[pl]->setTotalPoints(pl*4+pl*3);
         if (pl > 3*CA_MAXPLAYERS/4)
         {
             player[pl]->setCarNumber( 3 );
+            player[pl]->getCar()->getTires()->setCurrent(2); // Use value of original 1.1.5 version
+            
         }
         else if (pl > CA_MAXPLAYERS/2)
         {
              player[pl]->setCarNumber( 2 );
+             player[pl]->getCar()->getTires()->setCurrent(3); // Use value of original 1.1.5 version
         }
         else if (pl > CA_MAXPLAYERS/4)
         {
             player[pl]->setCarNumber( 1 );
+            player[pl]->getCar()->getTires()->setCurrent(4); // Use value of original 1.1.5 version
         }
         else
         {
             player[pl]->setCarNumber( 0 );
+            player[pl]->getCar()->getTires()->setCurrent(3); // Use value of original 1.1.5 version
         }
 
-        player[0]->setCarNumber(0); // human player always start with the worst car
     }
+    player[0]->reset();
+    player[0]->setCarNumber(0); // human player always start with the worst car
 	player[0]->setName( "Andrew" );
     if( CA_MAXPLAYERS>1 ) player[1]->setName( "Greenhorn" );
     if( CA_MAXPLAYERS>2 ) player[2]->setName( "Dark Rider" );
@@ -644,7 +648,7 @@ CATrophy::resetPlayers()
     if( CA_MAXPLAYERS>12 ) player[12]->setName( "Player 12" );
     if( CA_MAXPLAYERS>13 ) player[13]->setName( "Player 13" );
     if( CA_MAXPLAYERS>14 ) player[14]->setName( "Player 14" );
-    if( CA_MAXPLAYERS>15 ) player[15]->setName( "Player 15" );
+    if( CA_MAXPLAYERS>15 ) player[15]->setName( "Blaze Shaw" );
     if( CA_MAXPLAYERS>16 ) player[16]->setName( "Player 16" );
     if( CA_MAXPLAYERS>17 ) player[17]->setName( "Player 17" );
     if( CA_MAXPLAYERS>18 ) player[18]->setName( "Player 18" );
@@ -1137,6 +1141,7 @@ void CATrophy::gameLoop()
                     m_trackName = trackList[trackNumber];
                     run(); // This is where the race start
                     m_currentTrackNumbers.clear();
+                    runPositionTable();
                     signUpScreen.addVirtualPoints();
                     allRunningPlayers = signUpScreen.getAllRunningPlayers();
                     ++m_gameLoopState;
