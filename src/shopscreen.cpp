@@ -230,6 +230,7 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
         else
         {
             m_confirmMode = false;
+            m_isAbleToBuy = false;
         }
             // No cancel in this mode
             break;
