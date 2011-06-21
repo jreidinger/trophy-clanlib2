@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src/catrophy.cpp)
 
-AM_INIT_AUTOMAKE(trophy,1.1.6)
+AM_INIT_AUTOMAKE(trophy,1.1.7)
 
 
 

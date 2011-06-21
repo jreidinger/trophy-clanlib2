@@ -1,3 +1,5 @@
+1.1.7 Fix src/Makefile.am from 1.1.6
+
 1.1.6 Adapt makefiles for ClanLib 1.0
 
 1.1.5 Bugs fixes and code cleanup

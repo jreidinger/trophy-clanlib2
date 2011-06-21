@@ -12,7 +12,6 @@ trophy_SOURCES = cagoody.cpp cainfodialog.cpp camenu.h canetserver.cpp capositio
 		 caslotselectiondialog.cpp cafogbomb.h caimageview.h camenu.cpp canetclient.h capositiontable.cpp \
 		 caslotselectiondialog.h
 
-CLANLIB_MODULES = clanSignals-0.8 clanGL-0.8 clanCore-0.8 clanSound-0.8 clanDisplay-0.8 clanApp-0.8
 AM_LDFLAGS = `pkg-config --libs $(CLANLIB_MODULES)`
 INCLUDES = `pkg-config --cflags $(CLANLIB_MODULES)`
 AM_CPPFLAGS = -DPKGDATADIR=\"$(pkgdatadir)\"
