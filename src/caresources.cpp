@@ -10,13 +10,13 @@
 #include "caloadingscreen.h"
 #include "caimagemanipulation.h"
 
-CAResources* CAResources::theOneAndOnlyResource = NULL;
+CAResources CAResources::theOneAndOnlyResource = NULL;
 
 
 /** Gets the one and only Resources-Object.
     Creates a new one on first call.
  */
-CAResources*
+CAResources
 CAResources::getResources() {
     if(theOneAndOnlyResource == NULL) {
         theOneAndOnlyResource = new CAResources;
@@ -135,7 +135,7 @@ CAResources::~CAResources() {
 /** Load all resources.
 */
 void
-CAResources::load() {
+CAResources::load(CL_GraphicContext &gc) {
     // Try to load resource file (resources.dat):
     //
     chdir(PKGDATADIR);
@@ -148,7 +148,7 @@ CAResources::load() {
 
     // Just use the resource config file (resources.scr) if there's no compiled .dat:
     //
-    catch (CL_Error err) {
+    catch (CL_Exception err) {
         // TODO : Can we just forget the boolean ?
         //resources = new CL_ResourceManager( "resources.scr", false );
         resources = new CL_ResourceManager( "../resources/resources.xml" );
@@ -156,8 +156,8 @@ CAResources::load() {
 
     // Load info frame for showing loading status:
     //
-    gui_loading = new CL_Surface( "gui/loading", resources );
-    gui_progressbar = new CL_Surface( "gui/progressbar", resources );
+    gui_loading = new CL_Image(gc, "gui/loading", resources );
+    gui_progressbar = new CL_Image(gc, "gui/progressbar", resources );
 
     // Show progress:
     //
@@ -216,8 +216,8 @@ CAResources::load() {
 
     // Load generic sprites:
     //
-    misc_cross = new CL_Surface( "misc/cross", resources );
-    misc_flag = new CL_Surface( "misc/flag", resources );
+    misc_cross = new CL_Image(gc, "misc/cross", resources );
+    misc_flag = new CL_Image(gc, "misc/flag", resources );
     misc_light = new CL_Sprite( "misc/light", resources );
     misc_hitpoint = new CL_Sprite( "misc/hitpoint", resources );
     misc_gunfire = new CL_Sprite( "misc/gunfire", resources );
@@ -225,18 +225,16 @@ CAResources::load() {
     misc_checkflag = new CL_Sprite( "misc/checkflag", resources );
     misc_fog = new CL_Sprite( "misc/fog", resources );
     misc_dust = new CL_Sprite( "misc/dust", resources );
-    misc_info = new CL_Surface( "misc/info", resources );
-    misc_caution = new CL_Surface( "misc/caution", resources );
+    misc_info = new CL_Image(gc, "misc/info", resources );
+    misc_caution = new CL_Image(gc, "misc/caution", resources );
 
 
     // Load player effect sprites (dust, ...)
     //
 
-    //CL_Surface* tmp = new CL_Surface( "cars/dust", resources );
     for( int i=0; i<CA_FPR; ++i ) {
-        dust[i] = new CL_Surface( "cars/dust", resources );
+        dust[i] = new CL_Image(gc, "cars/dust", resources );
         dust[i]->rotate( (float)i/CA_FPR*360.0 );
-        //CAImageManipulation::rotate( tmp, (float)i/CA_FPR*360.0, true );
     }
 
 
@@ -244,55 +242,55 @@ CAResources::load() {
 
     // Load Goodies:
     //
-    goody_turbo = new CL_Surface( "goody/turbo", resources );
-    goody_life  = new CL_Surface( "goody/life", resources );
-    goody_money = new CL_Surface( "goody/money", resources );
-    goody_bullets = new CL_Surface( "goody/bullets", resources );
-    goody_fogbomb = new CL_Surface( "goody/fogbomb", resources );
+    goody_turbo = new CL_Image(gc, "goody/turbo", resources );
+    goody_life  = new CL_Image(gc, "goody/life", resources );
+    goody_money = new CL_Image(gc, "goody/money", resources );
+    goody_bullets = new CL_Image(gc, "goody/bullets", resources );
+    goody_fogbomb = new CL_Image(gc, "goody/fogbomb", resources );
 
     // Menu things:
     //
-    menu_bg = new CL_Surface( "menu/bg", resources );
+    menu_bg = new CL_Image(gc, "menu/bg", resources );
     menu_cursorani = new CL_Sprite( "menu/cursorani", resources );
-    menu_bar = new CL_Surface( "menu/bar", resources );
+    menu_bar = new CL_Image(gc, "menu/bar", resources );
 
     CA_APP->loading.setProgress( 40 );
 
     // Panel resources:
     //
-    panel_label = new CL_Surface( "panel/label", resources );
-    panel_button = new CL_Surface( "panel/button", resources );
-    panel_life = new CL_Surface( "panel/life", resources );
-    panel_infoview = new CL_Surface( "panel/infoview", resources );
+    panel_label = new CL_Image(gc, "panel/label", resources );
+    panel_button = new CL_Image(gc, "panel/button", resources );
+    panel_life = new CL_Image(gc, "panel/life", resources );
+    panel_infoview = new CL_Image(gc, "panel/infoview", resources );
     panel_speed = new CL_Sprite( "panel/speed", resources );
-    panel_turbolabel = new CL_Surface( "panel/turbolabel", resources );
+    panel_turbolabel = new CL_Image(gc, "panel/turbolabel", resources );
     panel_turbo = new CL_Sprite( "panel/turbo", resources );
     panel_ammo = new CL_Sprite( "panel/ammo", resources );
-    panel_death = new CL_Surface( "panel/death", resources );
+    panel_death = new CL_Image(gc, "panel/death", resources );
 
     CA_APP->loading.setProgress( 45 );
 
     // GUI resources:
     //
-    gui_edge1 = new CL_Surface( "gui/edge1", resources );
-    gui_edge2 = new CL_Surface( "gui/edge2", resources );
-    gui_edge3 = new CL_Surface( "gui/edge3", resources );
-    gui_edge4 = new CL_Surface( "gui/edge4", resources );
-    gui_border1 = new CL_Surface( "gui/border1", resources );
-    gui_border2 = new CL_Surface( "gui/border2", resources );
-    gui_border3 = new CL_Surface( "gui/border3", resources );
-    gui_border4 = new CL_Surface( "gui/border4", resources );
-    gui_button = new CL_Surface( "gui/button", resources );
-    gui_button_red = new CL_Surface("gui/button", resources );
+    gui_edge1 = new CL_Image(gc, "gui/edge1", resources );
+    gui_edge2 = new CL_Image( gc, "gui/edge2", resources );
+    gui_edge3 = new CL_Image( gc, "gui/edge3", resources );
+    gui_edge4 = new CL_Image( gc, "gui/edge4", resources );
+    gui_border1 = new CL_Image( gc, "gui/border1", resources );
+    gui_border2 = new CL_Image( gc, "gui/border2", resources );
+    gui_border3 = new CL_Image( gc, "gui/border3", resources );
+    gui_border4 = new CL_Image( gc, "gui/border4", resources );
+    gui_button = new CL_Image( gc, "gui/button", resources );
+    gui_button_red = new CL_Image( gc,"gui/button", resources );
     gui_button_red->set_color (1.0f, 0.0f, 0.0f);
-    gui_button_green = new CL_Surface("gui/button", resources );
+    gui_button_green = new CL_Image( gc,"gui/button", resources );
     gui_button_green->set_color (0.0f, 1.0f, 0.0f);
-    gui_button_blue = new CL_Surface("gui/button", resources );
+    gui_button_blue = new CL_Image( gc,"gui/button", resources );
     gui_button_blue->set_color (0.0f, 0.0f, 1.0f);
-    gui_arrow_l = new CL_Surface( "gui/arrow_l", resources );
-    gui_arrow_r = new CL_Surface( "gui/arrow_r", resources );
-    gui_arrow_t = new CL_Surface( "gui/arrow_t", resources );
-    gui_arrow_b = new CL_Surface( "gui/arrow_b", resources );
+    gui_arrow_l = new CL_Image( gc, "gui/arrow_l", resources );
+    gui_arrow_r = new CL_Image( gc, "gui/arrow_r", resources );
+    gui_arrow_t = new CL_Image( gc, "gui/arrow_t", resources );
+    gui_arrow_b = new CL_Image( gc, "gui/arrow_b", resources );
 
     CA_APP->loading.setProgress( 50 );
 }

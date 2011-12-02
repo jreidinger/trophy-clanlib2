@@ -26,7 +26,7 @@ private:
     //! Text list which contains the dialog text - one item is one line.
     std::vector<std::string> textList;
     //! Pointer to icon. Created and destroyed in this class.
-    CL_Surface* icon;
+    CL_Image* icon;
     //! Type (Info, Warning).
     InfoType type;
 };

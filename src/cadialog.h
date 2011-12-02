@@ -2,7 +2,6 @@
 #define CADIALOG_H
 
 #include <ClanLib/core.h>
-#include <ClanLib/signals.h>
 #include <ClanLib/display.h>
 #include "cascreen.h"
 #include "guibox.h"

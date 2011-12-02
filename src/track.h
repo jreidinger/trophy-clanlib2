@@ -76,11 +76,11 @@ public:
     //! Pointer to function map
     // TODO : check that PixelBuffer is really what we want. It could (and I think it does) introduce bugs
     // in AI because PixelBuffer height and width are power of 2
-    std::auto_ptr<CL_PixelBuffer>  m_functionMap;
+    CL_PixelBuffer  m_functionMap;
     //! Pointer to visual map
-    std::auto_ptr<CL_Surface> m_visualMap;
+    CL_Image m_visualMap;
     //! Pointer to bridge surface or NULL if there's no bridge
-    std::auto_ptr<CL_Surface> m_bridge;
+    CL_Image m_bridge;
     //! Bridge position
     int m_bridgePos[2];
 

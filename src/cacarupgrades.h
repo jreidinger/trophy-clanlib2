@@ -16,13 +16,13 @@ class CACarUpgrades
 public:
     CACarUpgrades();
     ~CACarUpgrades();
-    CL_Surface* getMotor(const int num) const { return motors[num];}
-    CL_Surface* getTires(const int num) const { return tires[num];}
-    CL_Surface* getArmor(const int num) const { return armors[num];}
+    CL_Image getMotor(const int num) const { return motors[num];}
+    CL_Image getTires(const int num) const { return tires[num];}
+    CL_Image getArmor(const int num) const { return armors[num];}
 private:
-    std::vector<CL_Surface*> motors;
-    std::vector<CL_Surface*> tires;
-    std::vector<CL_Surface*> armors;
+    std::vector<CL_Image> motors;
+    std::vector<CL_Image> tires;
+    std::vector<CL_Image> armors;
 
 };
 

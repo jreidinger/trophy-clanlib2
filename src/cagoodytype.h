@@ -14,7 +14,7 @@ class CASoundEffect;
 class CAGoodyType
 {
 public:
-    CAGoodyType (CL_Surface* surface, int life, CASoundEffect* soundEffect);
+    CAGoodyType (CL_Image* surface, int life, CASoundEffect* soundEffect);
     void catchGoodie(Player* pl);
     virtual void action(Player* pl) = 0;
     void playSound() const;
@@ -23,7 +23,7 @@ public:
 
 private:
     //! Pixmaps for this goody
-    CL_Surface* m_surface;
+    CL_Image* m_surface;
     //! Life time in milliseconds
     int m_life;
     //! The sound effect played when the layer catch the goody
@@ -44,7 +44,7 @@ template<TypeGoodie N>
 class CAGoodyTypeDerived : public CAGoodyType
 {
     public:
-    CAGoodyTypeDerived(CL_Surface* surface, int life, CASoundEffect* soundEffect);
+    CAGoodyTypeDerived(CL_Image* surface, int life, CASoundEffect* soundEffect);
     void action(Player* pl);
 };
 
