@@ -7,15 +7,12 @@
 */
 CAPlayerView::CAPlayerView( Player* player ) {
     this->player = player;
-    button = 0;
     renderButton();
 }
 
 /** Destructor.
 */
 CAPlayerView::~CAPlayerView() {
-    delete button;
-    button = 0;
 }
 
 /** Displays the player view in the panel area.

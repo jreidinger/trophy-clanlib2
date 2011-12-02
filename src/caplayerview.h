@@ -20,7 +20,7 @@ private:
 
     Player* player;
     //! The button in players color. Created and destroyed by this class.
-    CL_Surface* button;
+    CL_Image button;
     /** Current color of this button. Needed for detecting if we must
         re-render the button.
     */
