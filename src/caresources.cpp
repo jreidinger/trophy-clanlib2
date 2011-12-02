@@ -135,9 +135,10 @@ CAResources::~CAResources() {
 /** Load all resources.
 */
 void
-CAResources::load(CL_GraphicContext &gc) {
+CAResources::load() {
     // Try to load resource file (resources.dat):
     //
+    CL_GraphicalContext gc = *CA_APP->graphicalContext;
     chdir(PKGDATADIR);
 
     try {

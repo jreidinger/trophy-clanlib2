@@ -21,7 +21,7 @@ class CAResources {
 
 protected:
     CAResources();
-    void load(CL_GraphicContext &gc);
+    void load();
 
 private:
     static CAResources theOneAndOnlyResource;
@@ -29,7 +29,7 @@ private:
 public:
     enum AnimationMode { Forward, Backward, Revolving };
 
-    static CAResources getResources(CL_GraphicContext &gc);
+    static CAResources getResources();
     ~CAResources();
 
     /*

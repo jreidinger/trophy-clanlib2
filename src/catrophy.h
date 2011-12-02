@@ -45,12 +45,11 @@ CATrophy* theApp();
     @author Andrew Mustun
     @author Matthieu Lecesne
 */
-class CATrophy : public CL_ClanApplication,
-    public CAScreen {
+class CATrophy : public CAScreen {
 public:
     enum Difficulty { Easy = 0, Medium, Hard };
 
-    virtual int main( int argc, char** argv );
+    void start( const std::vector<CL_String> &args );
 
     // Configuration methods:
     //
@@ -237,6 +236,8 @@ public:
 
     //! Upgrades ressources manager
     CACarUpgrades *carUp;
+    //! new clanlib graphical context
+    CL_GraphicContext* graphicContext;
 
 private:
     //! Current time in milliseconds since race start

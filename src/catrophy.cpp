@@ -37,21 +37,21 @@
 
 // Global instance of the application needed by the ClanLib main():
 //
-CATrophy application;
+CATrophy* application;
 
 
 /** Global function to access the application instance.
 */
 CATrophy*
 theApp() {
-    return &application;
+    return application;
 }
 
 /** The main function.
     Called by ClanLib main().
 */
 int
-CATrophy::main( int argc, char** argv ) 
+CATrophy::main( std::vector<CL_String> &args ) 
 {
     CL_ConsoleWindow *console=0;
     try 
@@ -153,7 +153,6 @@ CATrophy::main( int argc, char** argv )
         }
 
         CL_SetupDisplay setup_display;
-        CL_SetupCore setup_core;
 #ifdef USE_SDL
         CL_SetupSDL setup_sdl;
 #else
@@ -553,6 +552,7 @@ CATrophy::reconfigure()
         }
     }
 
+    graphicContext = display_window->get_gc();
     // Init mouse cursor:
     //
     if( debug )
@@ -1884,5 +1884,20 @@ void CATrophy::scroll()
 {
     m_track->scroll(offsetX, offsetY, (int)(player[0]->getX()), (int)(player[0]->getY()), width, height, panelWidth);
 }
+
+class Program
+{
+public:
+  static int main(const std::vector<CL_String> &args)
+  {
+    CL_SetupCore setup_core;
+
+    CATrophy ca_trophy;
+    application = ca_trophy;
+    return ca_trophy.start(args);
+  }
+}
+
+CL_ClanApplication app(&Program::main);
 
 // EOF

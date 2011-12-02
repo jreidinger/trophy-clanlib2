@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "cainfodialog.h"
 #include "caresources.h"
 #include "catrophy.h"
@@ -30,18 +32,13 @@ CAInfoDialog::CAInfoDialog( const std::string& title,
        
 
     switch( type ) {
-    case Info:
-        icon = CA_RES->misc_info;
-        // CL_Surface::load( "misc/info", CA_RES->resources );
-        break;
-
     case Warning:
-        icon = CA_RES->misc_caution;
-        // CL_Surface::load( "misc/caution", CA_RES->resources );
+        icon = CA_RES.misc_caution;
         break;
 
-    default:
-        icon = 0;
+    case Info: 
+    default: //use Info as default
+        icon = CA_RES.misc_info;
         break;
     }
 
@@ -57,19 +54,15 @@ void
 CAInfoDialog::buildScreen() {
     CADialog::buildScreen();
 
-    int x = (icon ? 112 : 32);
+    int x = 112; //FIXME magic number
 
-    CA_RES->font_normal_14_white->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_normal_14_white->draw (left+x, top+32, title);
+    CA_RES.font_normal_14_white.draw_text (*CA_APP->graphicContext,left+x, top+32, title);
 
     for( unsigned int i=0; i<textList.size(); ++i ) {
-        CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-        CA_RES->font_normal_11_white->draw (left+x, top+64+i*16, textList[i]);
+        CA_RES.font_normal_11_white.draw_text (*CA_APP->graphicContext,left+x, top+64+i*16, textList[i]);
     }
 
-    if( icon ) {
-        icon->draw (left+32, top+32);
-    }
+    icon.draw (*CA_APP->graphicContext,left+32, top+32);
 }
 
 
