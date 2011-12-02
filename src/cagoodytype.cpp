@@ -1,8 +1,9 @@
 #include "cagoodytype.h"
 #include "casoundeffect.h"
 #include "player.h"
+#include "catrophy.h"
 
-CAGoodyType::CAGoodyType (CL_Surface* surface, int life, CASoundEffect* soundEffect):
+CAGoodyType::CAGoodyType (CL_Image surface, int life, CASoundEffect* soundEffect):
     m_surface(surface),
     m_life(life),
     m_soundEffect(soundEffect)
@@ -17,7 +18,7 @@ void CAGoodyType::playSound() const
 /** Play the sound associated with the goody */
 void CAGoodyType::draw(int x, int y) const
 {
-   m_surface->draw( x-8, y-8 );
+   m_surface.draw( *CA_APP->graphicContext, x-8, y-8 );
 }
 
 void CAGoodyType::catchGoodie(Player* pl)
@@ -33,7 +34,7 @@ void CAGoodyType::catchGoodie(Player* pl)
 
 
 template<TypeGoodie N>
-CAGoodyTypeDerived<N>::CAGoodyTypeDerived (CL_Surface* surface, int life, CASoundEffect* soundEffect)
+CAGoodyTypeDerived<N>::CAGoodyTypeDerived (CL_Image surface, int life, CASoundEffect* soundEffect)
 : CAGoodyType(surface, life, soundEffect)
 {}
 

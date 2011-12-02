@@ -13,7 +13,7 @@
 CALineEdit::CALineEdit( const std::string text,
                         unsigned int letters,
                         Alignment alignment,
-                        CL_Font* font )
+                        CL_Font font )
         : CAWidget( alignment ) {
     if( CA_APP->debug ) std::cout << "CALineEdit() begin" << std::endl;
 
@@ -49,20 +49,16 @@ CALineEdit::display( bool active )
     switch( alignment ) 
     {
     case Left:
-        font->set_alignment(origin_top_left, 0, 0);
-        font->draw ( left, top, text );
+        font.draw_text (CA_APP->graphicContext, left, top, text );
         if( active && frame>0.5 ) {
-            font->set_alignment(origin_top_left, 0, 0);
-            font->draw ( left + font->get_width( text.substr(0, cursor) ), top, "|" );
+            font->draw_text ( CA_APP->graphicContext, left + font->get_width( text.substr(0, cursor) ), top, "|" );
         }
         break;
 
     case Right:
-        font->set_alignment(origin_top_right, 0, 0);
-        font->draw( right, top, text );
+        font.draw_text (CA_APP->graphicContext, right, top, text );
         if( active && frame>0.5 ) {
-        font->set_alignment(origin_top_right, 0, 0);
-            font->draw( right - font->get_width( text.substr(cursor) ) + 3, top, "|" );
+            font->draw_text(CA_APP->graphicContext, right - font->get_width( text.substr(cursor) ) + 3, top, "|" );
         }
         break;
 

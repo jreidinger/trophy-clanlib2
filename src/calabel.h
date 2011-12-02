@@ -8,12 +8,12 @@
 */
 class CALabel : public CAWidget  {
 public:
-    CALabel( std::string text, Alignment alignment, CL_Font* font );
+    CALabel( std::string text, Alignment alignment, CL_Font font );
     ~CALabel();
 
     virtual void display( bool active=true );
     //! Sets a nwe text for this label.
-    void setText( const std::string text ) {
+    void setText( const std::string& text ) {
         this->text = text;
     }
 
@@ -22,7 +22,7 @@ private:
 
     std::string text;
     //! Pointer to the font.
-    CL_Font* font;
+    CL_Font font;
 };
 
 #endif

@@ -119,14 +119,14 @@ CASoundEffect::getFrequency(int ind) {
 */
 void
 CASoundEffect::playBackgroundMelody() {
-    CA_RES->effectBackground01->play( 8 );
+    CA_RES.effectBackground01.play( 8 );
 }
 
 /** Stop the background melody.
 */
 void
 CASoundEffect::stopBackgroundMelody() {
-    CA_RES->effectBackground01->stop();
+    CA_RES.effectBackground01.stop();
 }
 
 // EOF

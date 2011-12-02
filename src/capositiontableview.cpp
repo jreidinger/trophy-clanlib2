@@ -13,7 +13,7 @@
 CAPositionTableView::CAPositionTableView()
         : CADialog() {
     resize( 600, 340 );
-    label = new CALabel( "", CAWidget::Left, CA_RES->font_normal_11_white );
+    label = new CALabel( "", CAWidget::Left, CA_RES.font_normal_11_white );
 }
 
 
@@ -52,13 +52,11 @@ CAPositionTableView::buildScreen() {
             //
             std::ostringstream ossRank;
             ossRank << rank << ".";
-            CA_RES->font_normal_11_white->set_alignment(origin_top_right, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 40, y, ossRank.str() );
+            CA_RES.font_normal_11_white.draw_text( *CA_APP->graphicContext, left + 40, y, ossRank.str() );
 
             // Player name:
             //
-            CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 64, y, CA_APP->m_RacePlayer[pl]->getName() );
+            CA_RES.font_normal_11_white.draw_text( *CA_APP->graphicContext, left + 64, y, CA_APP->m_RacePlayer[pl]->getName() );
 
             // Race time:
             //
@@ -84,22 +82,7 @@ CAPositionTableView::buildScreen() {
 
             // Car name:
             //
-            CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( left + 500, y, CA_APP->m_RacePlayer[pl]->getCar()->name );
-            /*label->setText( CA_APP->player[pl]->getCarType().name );
-            label->move( left + 420, y );
-            label->display();*/
-
-
-            /*
-            sprintf( line,
-                     "%s %s %s %s %s",
-                     rankStr,
-                     CA_APP->player[pl]->getName().get_string(),
-                     timeStr, pointStr, moneyStr );
-
-            cout << line << endl;
-            */
+            CA_RES.font_normal_11_white.draw_text( *CA_APP->graphicContext, left + 500, y, CA_APP->m_RacePlayer[pl]->getCar()->name );
         }
     }
 
