@@ -24,12 +24,12 @@ protected:
     void load();
 
 private:
-    static CAResources theOneAndOnlyResource;
+    static CAResources *theOneAndOnlyResource;
 
 public:
     enum AnimationMode { Forward, Backward, Revolving };
 
-    static CAResources getResources();
+    static CAResources* getResources();
     ~CAResources();
 
     /*

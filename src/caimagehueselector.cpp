@@ -60,9 +60,9 @@ CAImageHueSelector::setImageSize( int w, int h ) {
     CAImageView::setImageSize( w,h );
 
     if( direction==Horizontal ) {
-        width += 2*CA_RES.gui_arrow_l.get_width();
+        width += 2*CA_RES->gui_arrow_l.get_width();
     } else {
-        height += 2*CA_RES.gui_arrow_t.get_height();
+        height += 2*CA_RES->gui_arrow_t.get_height();
     }
 
     right = left + width;

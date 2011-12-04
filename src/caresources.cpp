@@ -10,13 +10,13 @@
 #include "caloadingscreen.h"
 #include "caimagemanipulation.h"
 
-CAResources CAResources::theOneAndOnlyResource = NULL;
+CAResources* CAResources::theOneAndOnlyResource = NULL;
 
 
 /** Gets the one and only Resources-Object.
     Creates a new one on first call.
  */
-CAResources
+CAResources*
 CAResources::getResources() {
     if(theOneAndOnlyResource == NULL) {
         theOneAndOnlyResource = new CAResources;

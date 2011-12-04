@@ -33,12 +33,12 @@ CAInfoDialog::CAInfoDialog( const std::string& title,
 
     switch( type ) {
     case Warning:
-        icon = CA_RES.misc_caution;
+        icon = CA_RES->misc_caution;
         break;
 
     case Info: 
     default: //use Info as default
-        icon = CA_RES.misc_info;
+        icon = CA_RES->misc_info;
         break;
     }
 
@@ -56,10 +56,10 @@ CAInfoDialog::buildScreen() {
 
     int x = 112; //FIXME magic number
 
-    CA_RES.font_normal_14_white.draw_text (*CA_APP->graphicContext,left+x, top+32, title);
+    CA_RES->font_normal_14_white.draw_text (*CA_APP->graphicContext,left+x, top+32, title);
 
     for( unsigned int i=0; i<textList.size(); ++i ) {
-        CA_RES.font_normal_11_white.draw_text (*CA_APP->graphicContext,left+x, top+64+i*16, textList[i]);
+        CA_RES->font_normal_11_white.draw_text (*CA_APP->graphicContext,left+x, top+64+i*16, textList[i]);
     }
 
     icon.draw (*CA_APP->graphicContext,left+32, top+32);

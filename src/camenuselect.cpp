@@ -1,7 +1,10 @@
+#include <string>
+#include <sstream>
+
 #include "camenu.h"
 #include "camenuselect.h"
 #include "caresources.h"
-#include <string>
+#include "catrophy.h"
 
   /** Constructor for selections of more than two items.
     \param menu Pointer to menu
@@ -51,8 +54,7 @@
         CAMenuLabel::display( highlight );
 
         if( font ) {
-            font->set_alignment(origin_top_right, 0, 0);
-            font->draw (menu->getRight() - CA_MENUSPACE/2, top + CA_MENUSPACE/2, valueList[selectedItem]);
+            font->draw_text ( *CA_APP->graphicContext,menu->getRight() - CA_MENUSPACE/2, top + CA_MENUSPACE/2, valueList[selectedItem]);
         }
     }
 

@@ -15,7 +15,7 @@ AC_MSG_CHECKING(ClanLib version)
 	    AC_SUBST(CLANLIB_MODULES, ["clanGL-2.3 clanCore-2.3 clanSound-2.3 clanDisplay-2.3 clanApp-2.3"])
 	else
 	   AC_MSG_RESULT(no)
-	   AC_MSG_ERROR([Unable to find a compatible version of ClanLib. Check for ClanLib 0.8 or ClanLib 1.0])
+	   AC_MSG_ERROR([Unable to find a compatible version of ClanLib. Check for ClanLib 2.3])
 	fi
 	
 

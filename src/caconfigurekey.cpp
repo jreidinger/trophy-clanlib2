@@ -32,7 +32,7 @@ void CAConfigureKey::buildScreen()
 {
     CADialog::buildScreen();
     const std::string text = std::string ("Press Key For ") + m_keyString[m_keyMode];
-    CA_RES.font_normal_14_white.draw_text ( *CA_APP->graphicContext, (left+32+right-32)/2, (top+32+bottom-32)/2, text );
+    CA_RES->font_normal_14_white.draw_text ( *CA_APP->graphicContext, (left+32+right-32)/2, (top+32+bottom-32)/2, text );
 }
 
 /** Called on key released.

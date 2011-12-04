@@ -14,7 +14,7 @@ CAMenuInput::CAMenuInput( CAMenu* menu,
     isInt = false;
     edit = new CALineEdit( resultStr,
                            maxLength, CAWidget::Right,
-                           CA_RES.font_normal_22_gray );
+                           CA_RES->font_normal_22_gray );
 
 }
 
@@ -35,7 +35,7 @@ CAMenuInput::CAMenuInput( CAMenu* menu,
     sprintf( intStr, "%d", *resultInt );
     edit = new CALineEdit( intStr,
                            maxLength, CAWidget::Right,
-                           CA_RES.font_normal_22_gray );
+                           CA_RES->font_normal_22_gray );
 }
 
 
