@@ -20,13 +20,13 @@ class CACarUpgrades;
 class ShopScreen : public CAScreen
 {
 public:
-    ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font, CACarUpgrades* carRes);
+    ShopScreen(Player* player, CL_Image background, CL_Image button, CL_Font font, CACarUpgrades* carRes);
     virtual ~ShopScreen();
 
     virtual int run();
     virtual void buildScreen();
 
-    virtual void on_key_released (const CL_InputEvent &key);
+    virtual void on_key_released (const CL_InputEvent &key, const CL_InputState&);
 
 private:
     void updateText();
@@ -35,11 +35,11 @@ private:
     //! the human player
     Player* m_player;
     //! The Background Surface
-    CL_Surface* m_background;
+    CL_Image m_background;
     //! The button use
-    CL_Surface* m_button;
+    CL_Image m_button;
     //! The font use for display car information
-    CL_Font* m_font;
+    CL_Font m_font;
     //! Upgrades ressources manager
     CACarUpgrades* m_carRes;
 

@@ -4,7 +4,7 @@
 #include "player.h"
 
 
-CarOption::CarOption(CL_ResourceManager* resources, CACarUpgrades* carUp, int maxOption, const std::string& pathPrice, const std::string& name)
+CarOption::CarOption(CL_ResourceManager resources, CACarUpgrades* carUp, int maxOption, const std::string& pathPrice, const std::string& name)
 :  m_carUp(carUp), m_current(0), m_maxOpt(maxOption), m_name(name)
 {
     for (int i=0; i < m_maxOpt; i++)

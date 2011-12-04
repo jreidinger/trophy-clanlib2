@@ -15,7 +15,7 @@
 class UpgradesPanel : public CAWidget
 {
     public:
-        UpgradesPanel( Player* player, CL_Font* carFont, CL_Font* upgradeFont, const int nvLeft, const int nvTop );
+        UpgradesPanel( Player* player, CL_Font carFont, CL_Font upgradeFont, const int nvLeft, const int nvTop );
 
         virtual ~UpgradesPanel() {}
 

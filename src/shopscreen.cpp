@@ -11,7 +11,7 @@
 
 /** Constructor.
 */
-ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* button, CL_Font* font, CACarUpgrades* carRes)
+ShopScreen::ShopScreen(Player* player, CL_Image background, CL_Image button, CL_Font font, CACarUpgrades* carRes)
 :   CAScreen("T H E  S H O P", "Choose a new car and press Enter to confirm"),
     m_player      (player),
     m_background  (background),
@@ -23,13 +23,12 @@ ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* butto
     top           (CA_APP->headerHeight + 30),
     bottom        (CA_APP->headerHeight + 400),
     m_guiBox      (),
-    m_barHeight   (m_font->get_height() + 6),
+    m_barHeight   (m_font.get_font_metrics().get_height() + 6),
     m_confirmMode (false),
     m_cursor      (0),
     m_isAbleToBuy (false),
     m_curWidth    (12)
 {
-    m_font->set_alignment(origin_top_center, 0, 0);
     m_carImage = new CAImageSelector();
     m_carImage->move(left + 16, top + 32);
     
@@ -60,7 +59,7 @@ ShopScreen::ShopScreen(Player* player, CL_Surface* background, CL_Surface* butto
     m_player->getCar()->getTires()->updateImageView(m_imageView[1], m_carImage->getWidth());
     m_player->getCar()->getArmor()->updateImageView(m_imageView[2], m_carImage->getWidth());
 
-    m_continue = new CAImageView ( "Continue", "", CA_RES->misc_flag/*m_carRes->getMotor(4)*/, true );
+    m_continue = new CAImageView ( "Continue", "", CA_RES.misc_flag, true );
     m_continue->resize(m_carImage->getWidth(), -1);
 
     for (int i = 0; i < 3; i++)
@@ -96,7 +95,7 @@ ShopScreen::~ShopScreen()
 int
 ShopScreen::run() 
 {
-    slot = CL_Keyboard::sig_key_up().connect(this, &ShopScreen::on_key_released);
+    slot = CA_APP->keyboard.sig_key_up().connect(this, &ShopScreen::on_key_released);
 
     CA_APP->fadeScreen( true, this );
     done = false;
@@ -113,18 +112,14 @@ ShopScreen::run()
         // Play background sound:
         CASoundEffect::playBackgroundMelody();
 
-        CL_Display::flip();   // Copy framebufer to screen
-        CL_System::keep_alive();      // VERY VITAL for the system!
+        CA_APP->display_window->flip();   // Copy framebufer to screen
+        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
 
         CA_APP->measureFrameTime( false );
     }
 
     CA_APP->fadeScreen( false, this );
     CA_APP->waitForSilence();
-
-    //CL_Input::chain_button_release.remove( this );
-
-    CL_Keyboard::sig_key_up().disconnect(slot);
     return (cancel);
 }
 
@@ -135,13 +130,14 @@ ShopScreen::buildScreen()
 {
     // Background:
     //
-    m_background->draw ( CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
+    m_background.draw ( *CA_APP->graphicContext, CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
     displayTitle();
     displayHelp();
 
     // Background
     //
-    CL_Display::fill_rect( CL_Rect(left, top, right, bottom), CL_Color(0, 0, 0, 64) );
+    CL_RoundedRect round_rect(CL_Sizef(right-left,bottom-top));
+    round_rect.fill( *CA_APP->graphicContext, CL_Pointf(left, top), CL_Colorf(0, 0, 0, 64) );
 
     // GuiBox:
     //
@@ -150,32 +146,23 @@ ShopScreen::buildScreen()
     // Text:
     //
     const int topTxt = m_guiBox.getTop() + 8;
-    m_font->draw ( m_guiBox.getHCenter(), topTxt, m_text );
+    m_font.draw_text ( *CA_APP->graphicContext, m_guiBox.getHCenter(), topTxt, m_text );
 
     // Cursor:
     //
     static float cursorAnim = 0.0;    // Counter for cursor animation:
     
     // We need to display four blinking rectangles around the widget (we don't want blinking inside the blended part of the widget)
-    const CL_Color blinkColor = CL_Color (255, 216, 84, (int)((cursorAnim/2)*255) );
+    const CL_Colorf blinkColor(255, 216, 84, (int)((cursorAnim/2)*255) );
 
-    CL_Display::fill_rect( CL_Rect(m_focus->getLeft(), m_focus->getTop()-m_curWidth,
-                    m_focus->getRight()+m_curWidth, m_focus->getTop()),
-                    blinkColor);
+    CL_RoundedRect vert_rect(CL_Sizef(m_curWidth,m_focus->getHeight()),0);
+    CL_RoundedRect hor_rect(CL_Sizef(m_focus->getWidth()+2*m_curWidth,m_curWidth),0);
+    vert_rect.fill( *CA_APP->graphicContext, CL_Pointf(m_focus->getLeft()-m_curWidth,m_focus->getTop()),blinkColor);
+    vert_rect.fill( *CA_APP->graphicContext, CL_Pointf(m_focus->getRight(),m_focus->getTop()),blinkColor);
+    hor_rect.fill( *CA_APP->graphicContext, CL_Pointf(m_focus->getLeft()-m_curWidth,m_focus->getTop()-m_curWidth),blinkColor);
+    hor_rect.fill( *CA_APP->graphicContext, CL_Pointf(m_focus->getLeft()-m_curWidth,m_focus->getBottom()),blinkColor);
 
-    CL_Display::fill_rect( CL_Rect(m_focus->getLeft()-m_curWidth, m_focus->getTop()-m_curWidth,
-                    m_focus->getLeft(), m_focus->getBottom()),
-                    blinkColor);
-
-    CL_Display::fill_rect( CL_Rect(m_focus->getLeft()-m_curWidth, m_focus->getBottom(),
-                m_focus->getRight(), m_focus->getBottom()+m_curWidth),
-                blinkColor);
-
-    CL_Display::fill_rect( CL_Rect(m_focus->getRight(), m_focus->getTop(),
-                        m_focus->getRight()+m_curWidth, m_focus->getBottom()+m_curWidth),
-                        blinkColor);
-
-    CA_RES->advanceAnimation( &cursorAnim, 1, 2.0, CAResources::Revolving );
+    CA_RES.advanceAnimation( &cursorAnim, 1, 2.0, CAResources::Revolving );
 
 
 
@@ -183,11 +170,11 @@ ShopScreen::buildScreen()
     //
     if (m_isAbleToBuy)
     {
-        const int fh      = m_font->get_height(); //Font Height
-        const int curLeft = m_guiBox.getLeft() + CA_RES->gui_border2->get_width() + 5;
+        const int fh      = m_font.get_font_metrics().get_height(); //Font Height
+        const int curLeft = m_guiBox.getLeft() + CA_RES.gui_border2.get_width() + 5;
         const int curTop  = m_cursor*fh*2+topTxt+fh*2;
-        CA_RES->menu_cursorani->draw (curLeft, curTop);
-        CA_RES->menu_cursorani->update();
+        CA_RES.menu_cursorani.draw ( *CA_APP->graphicContext,curLeft, curTop);
+        CA_RES.menu_cursorani.update();
     }
 
     // Cars to buy
@@ -207,7 +194,7 @@ ShopScreen::buildScreen()
 
     //
     // UpgradesPanel
-    UpgradesPanel uPanel(m_player, m_font, CA_RES->font_lcd_13_green, m_guiBox.getRight()+32, top+32);
+    UpgradesPanel uPanel(m_player, m_font, CA_RES.font_lcd_13_green, m_guiBox.getRight()+32, top+32);
     uPanel.display();
 
 }
@@ -215,7 +202,7 @@ ShopScreen::buildScreen()
 /** Called on key release.
 */
 void
-ShopScreen::on_key_released (const CL_InputEvent &key) 
+ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&) 
 {
     switch( key.id ) 
     {
@@ -263,11 +250,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
                 if (m_player->getCar()->getMotor()->buyOption(m_player))
                 {
                     m_player->getCar()->getMotor()->updateImageView(m_imageView[0], m_carImage->getWidth());
-                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
                 }
                 else
                 {
-                    if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectHorn.play( 2 );
                 }
             }
             else if (m_focus == m_imageView[1])
@@ -275,11 +262,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
                 if (m_player->getCar()->getTires()->buyOption(m_player))
                 {
                     m_player->getCar()->getTires()->updateImageView(m_imageView[1], m_carImage->getWidth());
-                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
                 }
                 else
                 {
-                    if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectHorn.play( 2 );
                 }
             }
             else if (m_focus == m_imageView[2])
@@ -287,11 +274,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
                 if (m_player->getCar()->getArmor()->buyOption(m_player))
                 {
                     m_player->getCar()->getArmor()->updateImageView(m_imageView[2], m_carImage->getWidth());
-                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
                 }
                 else
                 {
-                    if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectHorn.play( 2 );
                 }
             }
             else if (m_focus == m_continue)
@@ -300,7 +287,7 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
             }
             else
             {
-                if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+                if( CA_APP->sound ) CA_RES.effectHorn.play( 2 );
             }
         }
         break;
@@ -313,19 +300,19 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
                 if (m_confirmMode == true && m_isAbleToBuy)
                 {
                     m_cursor = (m_cursor+1)%2;
-                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
                 }
                 else if (key.id == CL_KEY_DOWN)
                 {
                     m_focus = m_imageView[0];
-                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                    if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
                 }
 
             }
             else if (m_focus == m_imageView[0] && key.id == CL_KEY_UP)
             {
                 m_focus = m_carImage;
-                if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
             }
         }
         break;
@@ -346,11 +333,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key)
                 if (m_focus == m_continue && key.id == CL_KEY_LEFT)
                 {
                    m_focus = m_imageView[2];
-                   if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
+                   if( CA_APP->sound ) CA_RES.effectMenu.play( 2 );
                 }
                 else if (m_focus != m_continue)
                 {
-                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 ); // we will make a change
+                    if( CA_APP->sound ) CA_RES.effectMenu.play( 2 ); // we will make a change
                     
                     int focusNum = 0;
                     for (int i=0; i<3; i++)
@@ -464,7 +451,7 @@ void ShopScreen::updateText()
             {
                 m_isAbleToBuy = false;
                 oss << "You don't have enough money.\nYou are " << CA_APP->carType[carNum].price - m_player->getMoney() << "$ short\n";
-                if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+                if( CA_APP->sound ) CA_RES.effectHorn.play( 2 );
                 m_confirmMode = false;
             }
         }
@@ -472,7 +459,7 @@ void ShopScreen::updateText()
         {
             m_isAbleToBuy = false;
             oss << "You already have a " <<  CA_APP->carType[carNum].name;
-            if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
+            if( CA_APP->sound ) CA_RES.effectHorn.play( 2 );
             m_confirmMode = false;
         }
     }

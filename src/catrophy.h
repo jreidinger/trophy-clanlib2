@@ -141,6 +141,8 @@ public:
     bool sound;
     //! Sound volume
     int  volume;
+    //! Keyboard
+    CL_InputDevice keyboard;
     //! Fullscreen mode?
     bool fullScreen;
     // ! big Money Mode
@@ -238,14 +240,14 @@ public:
     CACarUpgrades *carUp;
     //! new clanlib graphical context
     CL_GraphicContext* graphicContext;
-
+    //! display window, useful e.g. for flipping
+    CL_DisplayWindow *display_window;
 private:
     //! Current time in milliseconds since race start
     int  time;
     //! Current race time as string (e.g. "02:23")
     std::string timeString;
 
-    CL_DisplayWindow *display_window;
 
     CAConfigureKey* m_ConfigureKey;
 

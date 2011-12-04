@@ -553,6 +553,7 @@ CATrophy::reconfigure()
     }
 
     graphicContext = display_window->get_gc();
+    keyboard = display_window->get_ic().get_keyboard();
     // Init mouse cursor:
     //
     if( debug )

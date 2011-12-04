@@ -15,7 +15,7 @@ public:
     CAImageHueSelector( Direction vertical=Horizontal );
     CAImageHueSelector( const std::string upperText,
                         const std::string lowerText,
-                        CL_Surface* image,
+                        CL_Image image,
                         bool autoResize=true,
                         Direction vertical=Horizontal );
     ~CAImageHueSelector();
@@ -31,7 +31,7 @@ public:
 private:
     //! Pointer to the surface with modified hue.
 
-    CL_Surface* hueImage;
+    CL_Image hueImage;
     //! Currently selected hue (0-360).
     int hue;
 };
