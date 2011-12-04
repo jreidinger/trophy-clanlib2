@@ -5,11 +5,8 @@
     \param resource The sample to play.
     \param maxPlays Maximal number the sound can be played at once.
 */
-CASoundEffect::CASoundEffect( CL_SoundBuffer* sample, int maxPlays ) {
-    this->maxPlays = maxPlays;
-    numPlays = 0;
+CASoundEffect::CASoundEffect( CL_SoundBuffer sample, int maxPlays ):sample(sample),maxPlays(maxPlays),numPlays(0) {
     session = new CL_SoundBuffer_Session[maxPlays];
-    this->sample = sample;
 }
 
 /** Destructor.
@@ -44,7 +41,7 @@ CASoundEffect::play( int num, bool loop )
         //
         if( numPlays<maxPlays ) 
         {
-            session[numPlays] = sample->play(loop);
+            session[numPlays] = sample.play(loop);
             numPlays++;
         }
     }

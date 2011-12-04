@@ -147,7 +147,7 @@ CarType::CarType(const std::string& mainPath, CL_ResourceManager resources, CACa
     if(debug) std::cout << "  surface" << std::endl;
 
     path = mainPath + "surface";
-    surface = CL_Image( *CA_APP->graphicContext, path, &resources );
+    surface = CL_Sprite( *CA_APP->graphicContext, path, &resources );
 
     if(debug) std::cout << "  surface3d" << std::endl;
 

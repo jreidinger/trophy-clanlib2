@@ -32,7 +32,7 @@ private:
     //! We play the sample already 'numPlays' times at once
     int numPlays;
     //! The current sound sessions for this sample
-    CL_SoundBuffer_Session session;
+    CL_SoundBuffer_Session *session;
 
 };
 

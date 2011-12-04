@@ -20,7 +20,7 @@ Player::Player( int id, const std::string& name,
 {
     for( int i=0; i<CA_FPR; ++i )
     {
-        sprite[i] = 0;
+        sprite[i] = CL_Sprite();
     }
 
     this->id = id;
@@ -43,14 +43,6 @@ Player::Player( int id, const std::string& name,
 */
 Player::~Player()
 {
-    for( int i=0; i<CA_FPR; ++i )
-    {
-        if( sprite[i] )
-        {
-            delete sprite[i];
-            sprite[i] = 0;
-        }
-    }
 }
 
 /** Resets this player.
@@ -124,7 +116,7 @@ void Player::resetForRace( const unsigned int routeNumber, const Track* currentT
 */
 void
 Player::setColor( HSVColor col, bool render ) {
-    if( color!=col || sprite[0]==0 ) {
+    if( color!=col || sprite[0].is_null() ) {
         color = col;
         if( render ) renderSprites( color );
     }
@@ -177,15 +169,13 @@ Player::renderSprites( HSVColor col )
     // Due to a ClanLib bug introduced with ClanLib 0.5 I have to use
     // green as the transparency channel - which results in this
     // massive overhead of calculations / waste of memory - sorry.
-    CL_Surface* tmpSf;
-    tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface, color.h, color.s, color.v );
+//    CL_Sprite tmpSf;
+//TODO    tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface, color.h, color.s, color.v );
     for( int i=0; i<CA_FPR; ++i ) 
     {
-        if( sprite[i] ) delete sprite[i];
-        sprite[i] = new CL_Surface( *tmpSf );
-        sprite[i]->rotate( (float)i/CA_FPR*360.0 );
+        sprite[i] = CL_Sprite( m_Pcar.surface );
+        sprite[i].rotate( CL_Angle::from_degrees((float)i/CA_FPR*360.0) );
     }
-    delete tmpSf;
 }
 
 /** Changes the direction and the frame of this sprite.
@@ -459,7 +449,7 @@ Player::checkFunctionMap()
 
     int i;
     int px, py;
-    unsigned int r,g,b,a;
+    unsigned int g,b;
     unsigned int speedNibbleEdge=15;
 
     // Color below car edges:
@@ -530,10 +520,8 @@ Player::checkFunctionMap()
     if( !CA_APP->checkCoordinate( px,py ) ) return;
 
     CL_Color tmp = m_currentTrack->getFunctionalPixel( px,py );
-    r = tmp.get_red();
     g = tmp.get_green();
     b = tmp.get_blue();
-    a = tmp.get_alpha();
 
     // TODO : It seems to be the contrary (15=fast, ... 0 = slow) ?
     unsigned int speedNibble = (g&0xF0)>>4;   // Speed regulation (0=fast ... 15=slow)
@@ -725,16 +713,16 @@ Player::kill() {
 void
 Player::display( const int offsetX, const int offsetY )
 {
-    sprite[frame]->draw ( (int)(x+offsetX - sprite[ frame ]->get_width()/2),
-                          (int)(y+offsetY - sprite[ frame ]->get_height()/2) );
+    sprite[frame].draw ( *CA_APP->graphicContext, (int)(x+offsetX - sprite[ frame ].get_width()/2),
+                          (int)(y+offsetY - sprite[ frame ].get_height()/2) );
 
     // Display hit points:
     //
     for( int c=0; c<hitPointCounter; ++c ) 
     {
-        CA_RES->misc_hitpoint->set_frame(TrophyMath::getRandomNumber( 0,4 ));
-        CA_RES->misc_hitpoint->draw ( hitPoint[c][0]+offsetX - CA_RES->misc_hitpoint->get_width()/2,
-                                      hitPoint[c][1]+offsetY - CA_RES->misc_hitpoint->get_height()/2);
+        CA_RES->misc_hitpoint.set_frame(TrophyMath::getRandomNumber( 0,4 ));
+        CA_RES->misc_hitpoint.draw ( *CA_APP->graphicContext, hitPoint[c][0]+offsetX - CA_RES->misc_hitpoint.get_width()/2,
+                                      hitPoint[c][1]+offsetY - CA_RES->misc_hitpoint.get_height()/2);
     }
     resetHitPoints();
 
@@ -743,19 +731,19 @@ Player::display( const int offsetX, const int offsetY )
     if( !death && !finished && !lapped && shootMode && bullets>0 ) 
     {
         int gunX, gunY;
-        gunX = (int)(x + cos( newDirection/ARAD ) * 18) - CA_RES->misc_gunfire->get_width()/2;
-        gunY = (int)(y + sin( newDirection/ARAD ) * 18) - CA_RES->misc_gunfire->get_height()/2;
-        CA_RES->misc_gunfire->set_frame((int)((float)newDirection/5.0));
-        CA_RES->misc_gunfire->draw ( gunX+offsetX, gunY+offsetY );
+        gunX = (int)(x + cos( newDirection/ARAD ) * 18) - CA_RES->misc_gunfire.get_width()/2;
+        gunY = (int)(y + sin( newDirection/ARAD ) * 18) - CA_RES->misc_gunfire.get_height()/2;
+        CA_RES->misc_gunfire.set_frame((int)((float)newDirection/5.0));
+        CA_RES->misc_gunfire.draw ( *CA_APP->graphicContext, gunX+offsetX, gunY+offsetY );
     }
 
     // Display car fire if we're death or if we are almost dead:
     // TODO: differentate death and almost dead
     if( death ) 
     {
-        CA_RES->misc_carfire->set_frame((int)floor(explFrame));
-        CA_RES->misc_carfire->draw ( (int)(x+offsetX - CA_RES->misc_carfire->get_width()/2),
-                                          (int)(y+offsetY - CA_RES->misc_carfire->get_height()/2));
+        CA_RES->misc_carfire.set_frame((int)floor(explFrame));
+        CA_RES->misc_carfire.draw ( *CA_APP->graphicContext, (int)(x+offsetX - CA_RES->misc_carfire.get_width()/2),
+                                          (int)(y+offsetY - CA_RES->misc_carfire.get_height()/2));
     }
 }
 

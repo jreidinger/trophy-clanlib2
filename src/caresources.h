@@ -49,11 +49,11 @@ public:
     CL_Image gui_loading;
     CL_Image gui_progressbar;
 
-    CL_Font font_normal_11_white;
-    CL_Font font_normal_14_white;
-    CL_Font font_normal_22_white;
-    CL_Font font_normal_22_gray;
-    CL_Font font_lcd_13_green;
+    CL_Font_Sprite font_normal_11_white;
+    CL_Font_Sprite font_normal_14_white;
+    CL_Font_Sprite font_normal_22_white;
+    CL_Font_Sprite font_normal_22_gray;
+    CL_Font_Sprite font_lcd_13_green;
 
     CL_Image misc_cross;
     CL_Image misc_flag;
@@ -74,7 +74,7 @@ public:
     CL_Image goody_fogbomb;
 
     //! Rendered sprites for the players fog. Shared by all players.
-    CL_Image dust[CA_FPR];
+    CL_Sprite dust[CA_FPR];
 
     CL_Image menu_bg;
     CL_Sprite menu_cursorani;

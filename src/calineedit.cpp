@@ -13,7 +13,7 @@
 CALineEdit::CALineEdit( const std::string text,
                         unsigned int letters,
                         Alignment alignment,
-                        CL_Font font )
+                        CL_Font_Sprite font )
         : CAWidget( alignment ) {
     if( CA_APP->debug ) std::cout << "CALineEdit() begin" << std::endl;
 
@@ -22,9 +22,7 @@ CALineEdit::CALineEdit( const std::string text,
     this->font = font;
     cursor = this->text.length();
 
-    std::string wString;
-    for( unsigned int i=0; i<letters-1; ++i ) wString.push_back('W');
-    resize( font->get_width( wString ), font->get_height() );
+    resize( font.get_font_metrics().get_max_character_width()*letters, font.get_font_metrics().get_height() );
 
     if( CA_APP->debug ) std::cout << "CALineEdit() end" << std::endl;
 }
@@ -49,16 +47,16 @@ CALineEdit::display( bool active )
     switch( alignment ) 
     {
     case Left:
-        font.draw_text (CA_APP->graphicContext, left, top, text );
+        font.draw_text (*CA_APP->graphicContext, left, top, text );
         if( active && frame>0.5 ) {
-            font->draw_text ( CA_APP->graphicContext, left + font->get_width( text.substr(0, cursor) ), top, "|" );
+            font.draw_text ( *CA_APP->graphicContext, left + font.get_text_size( *CA_APP->graphicContext, text.substr(0, cursor) ).width, top, "|" );
         }
         break;
 
     case Right:
-        font.draw_text (CA_APP->graphicContext, right, top, text );
+        font.draw_text (*CA_APP->graphicContext, right, top, text );
         if( active && frame>0.5 ) {
-            font->draw_text(CA_APP->graphicContext, right - font->get_width( text.substr(cursor) ) + 3, top, "|" );
+            font.draw_text(*CA_APP->graphicContext, right - font.get_text_size( *CA_APP->graphicContext,text.substr(cursor)).width + 3, top, "|" );
         }
         break;
 

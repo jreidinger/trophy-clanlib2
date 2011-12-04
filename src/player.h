@@ -201,7 +201,7 @@ private:
     //! Car number (index of CA_Trophy::carType[])
     int         carNumber;
     //! Rendered sprites for this player (rotated and color-cycled)
-    CL_Image sprite[CA_FPR];
+    CL_Sprite sprite[CA_FPR];
 
     //! current speed in pixel per second
     float  speed;

@@ -13,7 +13,7 @@ public:
     CALineEdit( const std::string text,
                 unsigned int letters,
                 Alignment alignment,
-                CL_Font font );
+                CL_Font_Sprite font );
     ~CALineEdit();
 
     const std::string getText() {
@@ -30,7 +30,7 @@ private:
     //! Cursor position.
     unsigned int cursor;
     //! font.
-    CL_Font  font;
+    CL_Font_Sprite  font;
     //! The input text
     std::string text;
 };

@@ -38,7 +38,7 @@ CAImageHueSelector::CAImageHueSelector( const std::string upperText,
     if( CA_APP->debug ) std::cout << "CAImageHueSelector() begin 2" << std::endl;
 
     this->direction = direction;
-    hueImage = CAImageManipulation::changeHSV( image, 0, 0, 0 );
+    hueImage = image; //TODO CAImageManipulation::changeHSV( image, 0, 0, 0 );
     hue = 0;
     setImageSize( image.get_width(), image.get_height() );
 
@@ -81,7 +81,7 @@ CAImageHueSelector::changeImageHue( bool forward ) {
         if( hue > 360 ) hue -= 360;
         if( hue < 0   ) hue += 360;
 
-        hueImage = CAImageManipulation::changeHSV( image.image, hue, 0, 0 );
+        hueImage = image.image; //TODO CAImageManipulation::changeHSV( image.image, hue, 0, 0 );
     }
 }
 
