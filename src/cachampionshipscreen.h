@@ -30,8 +30,9 @@ enum DisplayMode
 
 class CAChampionshipScreen : public CAScreen {
 public:
+  
     CAChampionshipScreen(Player* humanPlayer, const std::vector<Player*> player, const std::vector<std::vector<Player*> > runningPlayer,
-                                          CL_Surface* background, CL_Surface* button, CL_Surface* button_easy, CL_Surface* button_medium, CL_Surface* button_hard, CL_Font* font);
+                                          CL_Image background, CL_Image button, CL_Image button_easy, CL_Image button_medium, CL_Image button_hard, CL_Font font);
     ~CAChampionshipScreen();
 
     void reset();
@@ -62,17 +63,17 @@ private:
     //! players running in the 3 races
     std::vector<std::vector <Player*> > m_runningPlayers;
     //! The Background Surface
-    CL_Surface* m_background;
+    CL_Image m_background;
     //! The font use for display championship result
-    CL_Font* m_font;
+    CL_Font m_font;
     //! The button use in the championship table
-    CL_Surface* m_button;
+    CL_Image m_button;
      //! The button use for easy race point
-    CL_Surface* m_buttonEasy;
+    CL_Image m_buttonEasy;
      //! The button use for medium race point
-    CL_Surface* m_buttonMedium;
+    CL_Image m_buttonMedium;
      //! The button use for hard race point
-    CL_Surface* m_buttonHard;
+    CL_Image m_buttonHard;
     
      //! display mode (display the point earned in last Race)
     DisplayMode m_displayMode;

@@ -209,13 +209,14 @@ CAImageManipulation::flip( CL_Surface* surface, bool horizontal )
     \param saturation Changing of saturation: -100...100
     \param value Changing of value (Color intensity): -100...100
 */
-CL_Surface*
-CAImageManipulation::changeHSV( CL_Surface* surface,
+CL_Sprite
+CAImageManipulation::changeHSV( CL_Sprite surface,
                                 int hue, int saturation, int value ) 
 {
     // Copy the surface
     //CL_Surface *result = new CL_Surface(*surface);
     //CL_PixelBuffer pixbuf = result->get_pixeldata();
+    /*
     CL_PixelBuffer pixBufOriginal = surface->get_pixeldata();
     int bpp = pixBufOriginal.get_format().get_depth()/8; 
     CL_PixelBuffer pixbuf(surface->get_width(), surface->get_height(), surface->get_width()*bpp, pixBufOriginal.get_format());
@@ -228,13 +229,6 @@ CAImageManipulation::changeHSV( CL_Surface* surface,
             pf != CL_PixelFormat::rgba4444 && pf != CL_PixelFormat::abgr4444)
     {
         std::cout << "Unknow pixel format !" << std::endl;
-        /*
-        std::cout << "bpp : " << bpp << std::endl;
-        std::cout << "alpha mask : " << pf.get_alpha_mask() << std::endl;
-        std::cout << "red mask   : " << pf.get_red_mask() << std::endl;
-        std::cout << "green mask : " << pf.get_green_mask() << std::endl;
-        std::cout << "blue mask  : " << pf.get_blue_mask() << std::endl;
-        */
         return new CL_Surface(*surface);
     }
 
@@ -346,6 +340,8 @@ CAImageManipulation::changeHSV( CL_Surface* surface,
 
     //return result;
     return new CL_Surface(pixbuf, CL_Surface::flag_keep_pixelbuffer);
+    */
+      return CL_Sprite();
 }
 
 /** Clears a canvas to transparent.

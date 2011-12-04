@@ -58,7 +58,7 @@ Player::reset() {
      \param routeNumber The initial route number for this player
      \currentTrack The track where the race is
 */
-void Player::resetForRace( const unsigned int routeNumber, const Track* currentTrack)
+void Player::resetForRace( const unsigned int routeNumber, Track* currentTrack)
 {
     m_currentTrack = currentTrack;
     active = true;

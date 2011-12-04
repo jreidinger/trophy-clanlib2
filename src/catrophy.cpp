@@ -9,6 +9,7 @@
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
+#include <ClanLib/application.h>
 
 #include <cmath>
 #include <fstream>
@@ -50,8 +51,8 @@ theApp() {
 /** The main function.
     Called by ClanLib main().
 */
-int
-CATrophy::main( std::vector<CL_String> &args ) 
+void
+CATrophy::start(const std::vector<CL_String> &args ) 
 {
     CL_ConsoleWindow *console=0;
     try 
@@ -81,24 +82,23 @@ CATrophy::main( std::vector<CL_String> &args )
 
         // Proccess parameters:
         //
-        int c=1;
-        while( c<argc ) 
+        for( unsigned c =1; c< args.size();c++)
         {
             // General options:
             //
-            if( !strcmp(argv[c], "--debug" ) || !strcmp(argv[c], "-d") ) {
+            if( args[c].compare("--debug" ) == 0 || args[c].compare("-d") == 0 ) {
                 debug = true;
 				console=new CL_ConsoleWindow("Trophy debugging console");
-				console->redirect_stdio();
+//				console->redirect_stdio(); TODO
 				
                 std::cout << "Debug mode on" << std::endl;
             } 
-            else if( !strcmp(argv[c], "--trackinfo" ) ) {
+            else if( args[c].compare("--trackinfo") ==0 ) {
                 trackInfo = true;
             }
-            else if( !strcmp(argv[c], "--help") || !strcmp(argv[c], "-h") )
+            else if( args[c].compare("--help") == 0 || args[c].compare("-h") == 0 )
             {
-                std::cout << "Usage: " << argv[0] << "[options]" << std::endl;
+                std::cout << "Usage: " << args[0].c_str() << "[options]" << std::endl;
                 std::cout << "Options :" << std::endl;
                 std::cout << "--debug, -d : active debugging information" << std::endl;
                 std::cout << "--trackinfo"  << std::endl;
@@ -114,42 +114,43 @@ CATrophy::main( std::vector<CL_String> &args )
                 exit(0);
             }
 
-            else if( !strcmp(argv[c], "--bigmoney" ) )
+            else if( !strcmp(args[c].c_str(), "--bigmoney" ) )
             {
                 m_cheatMoney = true;
             }
 
             // Graphic options:
             //
-            else if( !strcmp(argv[c], "--fullscreen" ) || !strcmp(argv[c], "-f") ) {
+            else if( !strcmp(args[c].c_str(), "--fullscreen" ) || !strcmp(args[c].c_str(), "-f") ) {
                 fullScreen = true;
-            } else if( !strcmp(argv[c], "--fast" ) ) {
+            } else if( !strcmp(args[c].c_str(), "--fast" ) ) {
                 fast = true;
-            } else if( !strcmp(argv[c], "--640x480" ) ) {
+            } else if( !strcmp(args[c].c_str(), "--640x480" ) ) {
                 resolution = "640x480";
-            } else if( !strcmp(argv[c], "--800x600" ) ) {
+            } else if( !strcmp(args[c].c_str(), "--800x600" ) ) {
                 resolution = "800x600";
-            } else if( !strcmp(argv[c], "--1024x768" ) ) {
+            } else if( !strcmp(args[c].c_str(), "--1024x768" ) ) {
                 resolution = "1024x768";
             }
 
             // Audio options:
             //
-            else if( !strcmp(argv[c], "--nosound" ) ) {
+            else if( !strcmp(args[c].c_str(), "--nosound" ) ) {
                 sound = false;
             }
 
             // Network options:
             //
-            else if( !strcmp(argv[c], "--server" ) ) {
+            else if( !strcmp(args[c].c_str(), "--server" ) ) {
                 server = true;
-            } else if( !strcmp(argv[c], "--client" ) ) {
+            } else if( !strcmp(args[c].c_str(), "--client" ) ) {
                 client = true;
-            } else if( !strcmp( argv[c], "-i" ) || !strcmp( argv[c], "--ip" ) ) {
-                if( c<argc-1 ) strcpy( serverIp, argv[c+1] );
+            } else if( !strcmp( args[c].c_str(), "-i" ) || !strcmp( args[c].c_str(), "--ip" ) ) {
+                if( c<args.size()-1 ){
+                  strcpy( serverIp, args[c+1].c_str() );
+                  c++;
+                }
             }
-
-            ++c;
         }
 
         CL_SetupDisplay setup_display;
@@ -167,7 +168,7 @@ CATrophy::main( std::vector<CL_String> &args )
         // Init sound:
         //
         CL_SetupSound setup_sound;
-        sound_output = new CL_SoundOutput(44100);
+        sound_output = CL_SoundOutput(44100);
 
         reconfigure();
 
@@ -231,11 +232,11 @@ CATrophy::main( std::vector<CL_String> &args )
         delete m_ConfigureKey;
 
         // TODO : The only way I found to restore properly the resolution before exiting
-        if(fullScreen) display_window->set_windowed();
+//        if(fullScreen) display_window->set_windowed();
     } 
-    catch (CL_Error err) 
+    catch (CL_Exception err) 
     {
-        std::cout << "An error occured: " << err.message << std::endl;
+        std::cout << "An error occured: " << err.message.c_str() << std::endl;
     }
 
     if (console)
@@ -245,8 +246,6 @@ CATrophy::main( std::vector<CL_String> &args )
             delete console;
             console=0;
     }
-
-    return 0;
 }
 
 /** Gets the application title.
@@ -284,10 +283,8 @@ CATrophy::deinitCarTypes()
 
     for( int i=0; i<CA_NUMCARTYPES; ++i ) 
     {
-        if( carType[i].surface ) delete carType[i].surface;
-        carType[i].surface = 0;
-        if( carType[i].surface3d ) delete carType[i].surface3d;
-        carType[i].surface3d = 0;
+        carType[i].surface = CL_Sprite();
+        carType[i].surface3d = CL_Image();
     }
 
     if(debug) std::cout << "deinitCarTypes end" << std::endl;
@@ -442,7 +439,7 @@ CATrophy::deinitPanel()
 void
 CATrophy::initTrackList() 
 {
-    std::istringstream iss ( CL_String::load("tracks/directories", CA_RES->resources).c_str() );
+    std::istringstream iss ( CA_RES->resources.get_string_resource("tracks/directories","").c_str() );
     std::string temp;
     while (std::getline(iss,temp, '~'))
        trackList.push_back(temp);
@@ -505,63 +502,44 @@ CATrophy::initRace( const std::string& trackName )
 void
 CATrophy::reconfigure() 
 {
-    static bool firstCall = true;
-    static bool lastFullScreen = fullScreen;
-
-    sound_output->set_global_volume(volume/(float)10);
+    sound_output.set_global_volume(volume/(float)10);
     std::size_t pos = resolution.find('x');
     std::istringstream issW (resolution.substr(0, pos));
     issW >> width;
     std::istringstream issH (resolution.substr(pos+1));
     issH >> height;
-    if(firstCall)
+    CL_DisplayWindowDescription desc;
+    desc.set_title(get_title());
+    desc.set_size(CL_Size(width,height),true);
+    if (fullScreen)
     {
-        try 
-        {
-            display_window = new CL_DisplayWindow ( get_title(), width, height, fullScreen );
-            input_context = display_window->get_ic();
-        } 
-        catch( CL_Error err ) 
-        {
-            std::cout << "Exception caught: " << err.message << std::endl;
-        }
-        lastFullScreen = fullScreen;
-    }
-    else if (lastFullScreen != fullScreen )
-    {
-        if(fullScreen) 
-            display_window->set_fullscreen(width, height);
-        else
-            display_window->set_windowed();
-        lastFullScreen = fullScreen;
+      desc.set_fullscreen(true);
+      desc.set_decorations(false);
     }
     else
     {
-        try
-	{
-            display_window->set_size(width, height);
-	    input_context = display_window->get_ic();
-	    if(fullScreen) 
-                display_window->set_fullscreen(width, height);
-            else
-                display_window->set_windowed();
-	}
-	catch( CL_Error err ) 
-        {
-            std::cout << "Exception caught: " << err.message << std::endl;
-        }
+      desc.set_allow_resize(true);
     }
-
-    graphicContext = display_window->get_gc();
+    try 
+    {
+        display_window = new CL_DisplayWindow ( desc );
+        input_context = display_window->get_ic();
+        graphicContext = &display_window->get_gc();
+    } 
+    catch( CL_Exception err ) 
+    {
+        std::cout << "Exception caught: " << err.message.c_str() << std::endl;
+        exit(1);
+    }
     keyboard = display_window->get_ic().get_keyboard();
     // Init mouse cursor:
     //
+    /*
     if( debug )
-        CL_Mouse::show();
+        input_context.get_mouse().show();
     else
-        CL_Mouse::hide();
-
-    firstCall = false;
+        input_context.get_mouse().hide();
+        */
 }
 
 /** Resets all goodies. Done before a new race.
@@ -1281,7 +1259,7 @@ CATrophy::run()
     {
         measureFrameTime( true );
 
-        if( CL_Keyboard::get_keycode(CL_KEY_P) )
+        if( input_context.get_keyboard().get_keycode(CL_KEY_P) )
         {
             pause = !pause;
         }
@@ -1388,11 +1366,11 @@ CATrophy::run()
         rhythm++;
         if( rhythm==3 ) rhythm=0;
 
-        CL_Display::flip();   // Copy framebufer to screen
-        CL_System::keep_alive();      // VERY VITAL for the system!
+        display_window->flip();   // Copy framebufer to screen
+        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
 
         measureFrameTime( false );
-		isEscapePressed = CL_Keyboard::get_keycode(CL_KEY_ESCAPE);
+		isEscapePressed = input_context.get_keyboard().get_keycode(CL_KEY_ESCAPE);
 
         if (isEscapePressed)
         {
@@ -1641,11 +1619,11 @@ CATrophy::waitForSilence() {
     bool done;
     do {
         done = true;
-        if( CL_Keyboard::get_keycode( CL_KEY_ENTER ) ||
-                CL_Keyboard::get_keycode( CL_KEY_ESCAPE ) ) {
+        if( input_context.get_keyboard().get_keycode( CL_KEY_ENTER ) ||
+                input_context.get_keyboard().get_keycode( CL_KEY_ESCAPE ) ) {
             done = false;
         }
-        CL_System::keep_alive();      // VERY VITAL for the system!
+        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
     }
     while( !done );
 }
@@ -1677,7 +1655,7 @@ CATrophy::buildScreen()
 
     // Do the game field:
     //
-    CL_Display::set_cliprect(crField);
+    graphicContext->set_cliprect(crField);
 
     m_track->displayMap(offsetX,offsetY); 
 
@@ -1708,9 +1686,9 @@ CATrophy::buildScreen()
 
     // Do the panel:
     //
-    CL_Display::set_cliprect(crPanel);
+    graphicContext->set_cliprect(crPanel);
     panel->display();
-    CL_Display::set_cliprect(crAll);
+    graphicContext->set_cliprect(crAll);
 }
 
 
@@ -1759,10 +1737,10 @@ CATrophy::displayFogBombs( bool up, bool bomb ) {
                     }
                 }
 
-                CA_RES->misc_fog->set_frame((int)fogBomb[c].frame);
-                CA_RES->misc_fog->draw ( fogBomb[c].x + offsetX - CA_RES->misc_fog->get_width()/2,
-                                              fogBomb[c].y + offsetY - CA_RES->misc_fog->get_height()/2);
-                if( CA_RES->advanceAnimation( &fogBomb[c].frame, CA_RES->misc_fog->get_frame_count(), 6.0 ) )
+                CA_RES->misc_fog.set_frame((int)fogBomb[c].frame);
+                CA_RES->misc_fog.draw (*graphicContext, fogBomb[c].x + offsetX - CA_RES->misc_fog.get_width()/2,
+                                              fogBomb[c].y + offsetY - CA_RES->misc_fog.get_height()/2);
+                if( CA_RES->advanceAnimation( &fogBomb[c].frame, CA_RES->misc_fog.get_frame_count(), 6.0 ) )
                 {
                     fogBomb[c].active=false;
                 }
@@ -1783,18 +1761,18 @@ CATrophy::displayDustClowds( bool up )
         if( dustClowd[c].active && dustClowd[c].up==up ) 
         {
             frame = (int)dustClowd[c].frame;
-            x = dustClowd[c].x + offsetX - CA_RES->misc_dust->get_width()/2;
-            y = dustClowd[c].y + offsetY - CA_RES->misc_dust->get_height()/2;
+            x = dustClowd[c].x + offsetX - CA_RES->misc_dust.get_width()/2;
+            y = dustClowd[c].y + offsetY - CA_RES->misc_dust.get_height()/2;
 
             if( frame >= 0 &&
-                    frame < (int)CA_RES->misc_dust->get_frame_count() &&
+                    frame < (int)CA_RES->misc_dust.get_frame_count() &&
                     checkCoordinate( x,y ) ) 
             {
-                CA_RES->misc_dust->set_frame(frame);
-                CA_RES->misc_dust->draw (x, y);
+                CA_RES->misc_dust.set_frame(frame);
+                CA_RES->misc_dust.draw (*graphicContext, x, y);
             }
 
-            if( CA_RES->advanceAnimation( &dustClowd[c].frame, CA_RES->misc_dust->get_frame_count(), 8.0 ) ) 
+            if( CA_RES->advanceAnimation( &dustClowd[c].frame, CA_RES->misc_dust.get_frame_count(), 8.0 ) ) 
             {
                 dustClowd[c].active = false;
             }
@@ -1808,15 +1786,15 @@ CATrophy::displayDustClowds( bool up )
 void
 CATrophy::displayCheckFlag() 
 {
-    static int flagPos = -CA_RES->misc_checkflag->get_height();
+    static int flagPos = -CA_RES->misc_checkflag.get_height();
     if( firstPlayerFinished ) 
     {
-        CA_RES->misc_checkflag->draw (width-CA_RES->misc_checkflag->get_width()-32,
+        CA_RES->misc_checkflag.draw (*graphicContext, width-CA_RES->misc_checkflag.get_width()-32,
                                             //panelWidth+(width-panelWidth-CA_RES->misc_checkflag->get_width())/2,
                                             flagPos);
         if( flagPos<32 ) flagPos+=2;
 
-        CA_RES->misc_checkflag->update();
+        CA_RES->misc_checkflag.update();
     }
 }
 
@@ -1827,15 +1805,15 @@ CATrophy::displayStartingLights() {
     static int lightPos = 32;
     if( lightState<4 ) {
         if( lightState==3 ) {
-            if( lightPos > (-(int)CA_RES->misc_light->get_height()) ) {
+            if( lightPos > (-(int)CA_RES->misc_light.get_height()) ) {
                 lightPos-=2;
             }
         } else {
             lightPos = 0;
         }
 
-        CA_RES->misc_light->set_frame(lightState);
-        CA_RES->misc_light->draw (width-CA_RES->misc_light->get_width()-32,
+        CA_RES->misc_light.set_frame(lightState);
+        CA_RES->misc_light.draw (*graphicContext,width-CA_RES->misc_light.get_width()-32,
                                         //panelWidth+(width-panelWidth-CA_RES->misc_light->get_width())/2,
                                         lightPos);
     }
@@ -1868,12 +1846,12 @@ CATrophy::fadeScreen( bool in, CAScreen* screen, bool whole ) {
         tb = ( in ? 16-b : b );
         for( y=height; y>=0; y-=32 ) {
             if( tb>0 )
-                CL_Display::fill_rect( CL_Rect(0, y-tb, width, y+tb), CL_Color(0, 0, 0, 255) );
+                CL_Draw::fill( *graphicContext, CL_Rectf(0, y-tb, width, y+tb), CL_Colorf(0, 0, 0, 255) );
             tb = ( in ? tb-1 : tb+1 );
         }
 
-        CL_Display::flip();
-        CL_System::keep_alive();
+        display_window->flip();
+        CL_KeepAlive::process(-1);
     }
 
     if( debug ) std::cout << "fadeScreen end" << std::endl;
@@ -1894,10 +1872,11 @@ public:
     CL_SetupCore setup_core;
 
     CATrophy ca_trophy;
-    application = ca_trophy;
-    return ca_trophy.start(args);
+    application = &ca_trophy;
+    ca_trophy.start(args);
+    return 0;
   }
-}
+};
 
 CL_ClanApplication app(&Program::main);
 

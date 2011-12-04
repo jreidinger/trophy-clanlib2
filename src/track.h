@@ -6,6 +6,7 @@
 #include <string>
 #include <ClanLib/core.h>
 #include <ClanLib/application.h>
+#include <ClanLib/display.h>
 #include <memory>
 #ifdef USE_SDL
     #include <ClanLib/sdl.h>
@@ -41,11 +42,11 @@ public:
 
     void displayMap(const int offsetX, const int offsetY) const;
 
-    int getSpeedLimit( const int x, const int y ) const;
+    int getSpeedLimit( const int x, const int y ); //TODO const
     
-    int getLapPart( const int x, const int y ) const;
+    int getLapPart( const int x, const int y ); //TODO const
 
-    int getLevel( const int x, const int y ) const;
+    int getLevel( const int x, const int y );
 
     void displayTrackPoints(const int& offsetX, const int& offsetY) const;
 
@@ -55,7 +56,7 @@ public:
 
     int getStartAngle() const {return m_startAngle;}
 
-    CL_Color getFunctionalPixel(int x, int y) const;
+    CL_Color getFunctionalPixel(int x, int y);
 
     int getWidth() const;
 

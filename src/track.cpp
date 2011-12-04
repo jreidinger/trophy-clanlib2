@@ -1,14 +1,16 @@
 #include "track.h"
+#include "catrophy.h"
 #include "utils/trophymath.h"
 #include "caresources.h"
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <fstream>
+#include <sstream>
 
 Track::Track(const std::string& trackName, const bool debug):
-    m_functionMap(0),
-    m_visualMap(0),
-    m_bridge(0),
+    m_functionMap(),
+    m_visualMap(),
+    m_bridge(),
     m_blocked(false),
     m_rp_number(0)
 {
@@ -20,13 +22,13 @@ Track::Track(const std::string& trackName, const bool debug):
     std::string vmapPath = trackPath + "vmap.tga";
     try
     {
-        m_visualMap.reset(new CL_Surface(CL_ProviderFactory::load(vmapPath)));
+        m_visualMap = CL_Image( *CA_APP->graphicContext,vmapPath);
     }
-    catch(CL_Error err)
+    catch(CL_Exception err)
     {
         trackPath = std::string("../resources/tracks/") + trackName + "/";
         vmapPath = trackPath + "vmap.tga";
-        m_visualMap.reset(new CL_Surface(CL_ProviderFactory::load(vmapPath)));
+        m_visualMap = CL_Image( *CA_APP->graphicContext,vmapPath);
     }
 
    // loading.setProgress( 15 ); TODO
@@ -36,9 +38,9 @@ Track::Track(const std::string& trackName, const bool debug):
     std::string fmapPath = trackPath + "fmap.tga";
     // We need to load a surface and then create the pixelbuffer if we don't want to loose the information
     // about the color. Don't know if it is a bug of ClanLib or the normal behavior.
-    m_functionMap.reset(new CL_PixelBuffer( ((CL_Surface)CL_ProviderFactory::load(fmapPath)).get_pixeldata() ));
+    m_functionMap = CL_PixelBuffer(fmapPath);
     // TODO : is it OK if we never unlock it ? functionMap is not meant to be drawn
-    m_functionMap->lock();
+    m_functionMap.lock(cl_access_read_write);
 
    // loading.setProgress( 30 ); TODO
 
@@ -105,7 +107,7 @@ Track::Track(const std::string& trackName, const bool debug):
                 //
                 else if( name=="Object" && value=="bridge") {
                     std::string bridgePath = trackPath + value + ".tga";
-                    m_bridge.reset(new CL_Surface(CL_TargaProvider(bridgePath)));
+                    m_bridge = CL_Image( *CA_APP->graphicContext,bridgePath);
                     m_bridgePos[0] = xv;
                     m_bridgePos[1] = yv;
                 }
@@ -117,7 +119,8 @@ Track::Track(const std::string& trackName, const bool debug):
 
 void Track::handleTrackCreation(const int offsetX, const int offsetY)
 {
-    if( CL_Mouse::get_keycode(CL_MOUSE_LEFT) ) 
+    CL_InputDevice& mouse = CA_APP->display_window->get_ic().get_mouse();
+    if( mouse.get_keycode(CL_MOUSE_LEFT) ) 
     {
         if( !m_blocked ) 
         {
@@ -125,17 +128,21 @@ void Track::handleTrackCreation(const int offsetX, const int offsetY)
             FILE* fp = fopen( "trackdata.txt", "at" );
             if( fp ) 
             {
-                fprintf( fp, "x = \"%d\"\n", CL_Mouse::get_x()-offsetX );
-                fprintf( fp, "y = \"%d\"\n", CL_Mouse::get_y()-offsetY );
+                fprintf( fp, "x = \"%d\"\n", mouse.get_x()-offsetX );
+                fprintf( fp, "y = \"%d\"\n", mouse.get_y()-offsetY );
                 fprintf( fp, "RP = \"%d\"\n\n", m_rp_number++ );
                 fclose( fp );
-                CL_Color fmap_pix = m_functionMap->get_pixel(CL_Mouse::get_x()-offsetX, CL_Mouse::get_y()-offsetY);
-                CL_PixelBuffer pixbuf = m_visualMap->get_pixeldata();
+                /*
+                 * TODO
+                CL_Color fmap_pix = m_functionMap.get_pixel(mouse.get_x()-offsetX, mouse.get_y()-offsetY);
+
+                CL_PixelBuffer pixbuf = m_visualMap.get_pixeldata();
                 pixbuf.lock();
-                CL_Color vmap_pix = pixbuf.get_pixel(CL_Mouse::get_x()-offsetX, CL_Mouse::get_y()-offsetY);
+                CL_Color vmap_pix = pixbuf.get_pixel(mouse.get_x()-offsetX, mouse.get_y()-offsetY);
                 pixbuf.unlock();
                 std::cout << "vmap (r, g, b, a) = (" << vmap_pix.get_red() << ", " << vmap_pix.get_green() << ", " << vmap_pix.get_blue() << ", " << vmap_pix.get_alpha() << ")" << std::endl;
                 std::cout << "fmap (r, g, b, a) = (" << fmap_pix.get_red() << ", " << fmap_pix.get_green() << ", " << fmap_pix.get_blue() << ", " << fmap_pix.get_alpha() << ")" << std::endl;
+                */
             }
         }
     } 
@@ -150,23 +157,23 @@ void Track::handleTrackCreation(const int offsetX, const int offsetY)
 */
 bool Track::checkCoordinate( const int x, const int y ) const
 {
-    return ( x>=0 && y>=0 && x<(int)m_visualMap->get_width() && y<(int)m_visualMap->get_height() );
+    return ( x>=0 && y>=0 && x<(int)m_visualMap.get_width() && y<(int)m_visualMap.get_height() );
 }
 
 /** Displays the race map.
 */
 void Track::displayMap(const int offsetX, const int offsetY) const
 {
-    m_visualMap->draw (offsetX,offsetY);
+    m_visualMap.draw ( *CA_APP->graphicContext,offsetX,offsetY);
 }
 
 
 void Track::scroll(int& offsetX, int& offsetY, const int posX, const int posY, const int width, const int height, const int panelWidth)
 {
     const int maxOffsetX = panelWidth;
-    const int minOffsetX = -(m_visualMap->get_width()-(width-panelWidth)) + panelWidth;
+    const int minOffsetX = -(m_visualMap.get_width()-(width-panelWidth)) + panelWidth;
     const int maxOffsetY = 0;
-    const int minOffsetY = -(m_visualMap->get_height()-height);
+    const int minOffsetY = -(m_visualMap.get_height()-height);
 
     offsetX = - ((int)(posX) - (width-panelWidth)/2) + panelWidth;
     offsetY = - ((int)(posY) - height/2);
@@ -178,11 +185,11 @@ void Track::scroll(int& offsetX, int& offsetY, const int posX, const int posY, c
 
 /** Gets the speed limit for a coordinate of the map
 */
-int Track::getSpeedLimit( const int x, const int y ) const
+int Track::getSpeedLimit( const int x, const int y )
 {
     if( checkCoordinate( x,y ) ) 
     {
-        CL_Color tmp = m_functionMap->get_pixel( x,y );
+        CL_Color tmp = m_functionMap.get_pixel( x,y );
         unsigned int g = tmp.get_green();
         return ((g)&0xF0)>>4;
     }
@@ -192,11 +199,11 @@ int Track::getSpeedLimit( const int x, const int y ) const
 
 /** Gets the lap part for a coordinate of the map
 */
-int Track::getLapPart( const int x, const int y ) const
+int Track::getLapPart( const int x, const int y )
 {
     if( checkCoordinate( x,y ) ) 
     {
-        CL_Color tmp = m_functionMap->get_pixel( x,y );
+        CL_Color tmp = m_functionMap.get_pixel( x,y );
         unsigned int b = tmp.get_blue();
         return ((b)&0x1F);
     }
@@ -209,11 +216,11 @@ int Track::getLapPart( const int x, const int y ) const
             1: Level on the point is up
             2: Level on the point is not defined
 */
-int Track::getLevel( const int x, const int y ) const
+int Track::getLevel( const int x, const int y )
 {
     if( checkCoordinate( x,y ) ) 
     {
-        CL_Color tmp = m_functionMap->get_pixel( x,y );
+        CL_Color tmp = m_functionMap.get_pixel( x,y );
         unsigned int g = tmp.get_green();
         if( (g&0x02)!=0 ) return 1;
         if( (g&0x01)!=0 ) return 0;
@@ -232,9 +239,8 @@ void Track::displayTrackPoints(const int& offsetX, const int& offsetY) const
         for( unsigned int r=0; r<m_rp[t].size(); ++r )
         {
             sprintf( str, "%d/%d", r, t );
-            CA_RES->misc_cross->draw (m_rp[t][r].getX()+offsetX-8, m_rp[t][r].getY()+offsetY-8);
-            CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-            CA_RES->font_normal_11_white->draw( m_rp[t][r].getX()+offsetX, m_rp[t][r].getY()+offsetY+5, str );
+            CA_RES->misc_cross.draw ( *CA_APP->graphicContext,m_rp[t][r].getX()+offsetX-8, m_rp[t][r].getY()+offsetY-8);
+            CA_RES->font_normal_11_white.draw_text( *CA_APP->graphicContext, m_rp[t][r].getX()+offsetX, m_rp[t][r].getY()+offsetY+5, str );
         }
     }
 }
@@ -243,9 +249,9 @@ void Track::displayTrackPoints(const int& offsetX, const int& offsetY) const
 */
 void Track::displayBridge(const int& offsetX, const int& offsetY) const
 {
-    if( m_bridge.get() != NULL )
+    if( !m_bridge.is_null() )
     {
-        m_bridge->draw (m_bridgePos[0]+offsetX, m_bridgePos[1]+offsetY);
+        m_bridge.draw ( *CA_APP->graphicContext,m_bridgePos[0]+offsetX, m_bridgePos[1]+offsetY);
     }
 }
 
@@ -267,17 +273,17 @@ void Track::getNextRoutePoint(unsigned int& routeNumber, unsigned int& routePoin
 }
 
 
-CL_Color Track::getFunctionalPixel(int x, int y) const
+CL_Color Track::getFunctionalPixel(int x, int y)
 {
-    return m_functionMap->get_pixel(x, y);
+    return m_functionMap.get_pixel(x, y);
 }
 
 int Track::getWidth() const
 {
-     return m_visualMap->get_width();
+     return m_visualMap.get_width();
 }
 
 int Track::getHeight() const
 {
-     return m_visualMap->get_height();
+     return m_visualMap.get_height();
 }

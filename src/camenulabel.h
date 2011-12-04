@@ -23,7 +23,7 @@ public:
     virtual void handleKey (const CL_InputEvent &key);
 
 protected:
-    CL_Font* font;
+    CL_Font font;
 };
 
 #endif

@@ -10,7 +10,7 @@ class HumanPlayer;
 */
 class CASlotSelectionDialog : public CADialog  {
 public:
-    CASlotSelectionDialog( const std::string title, CL_Font* font, const std::string& homedir );
+    CASlotSelectionDialog( const std::string title, CL_Font_Sprite font, const std::string& homedir );
     ~CASlotSelectionDialog();
 
     std::string display();
@@ -23,7 +23,7 @@ private:
     int cursor;
     
     //! The font use for displaying information
-    CL_Font* m_font;
+    CL_Font_Sprite m_font;
 
     //! home directory where the saveFile are
     const std::string& m_homedir;

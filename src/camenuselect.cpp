@@ -53,8 +53,8 @@
     {
         CAMenuLabel::display( highlight );
 
-        if( font ) {
-            font->draw_text ( *CA_APP->graphicContext,menu->getRight() - CA_MENUSPACE/2, top + CA_MENUSPACE/2, valueList[selectedItem]);
+        if( !font.is_null() ) {
+            font.draw_text ( *CA_APP->graphicContext,menu->getRight() - CA_MENUSPACE/2, top + CA_MENUSPACE/2, valueList[selectedItem]);
         }
     }
 

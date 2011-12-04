@@ -231,10 +231,10 @@ public:
     int  serverPort;
 
     //! Input context
-    CL_InputContext *input_context;
+    CL_InputContext input_context;
 
     //! Sound output
-    CL_SoundOutput *sound_output;
+    CL_SoundOutput sound_output;
 
     //! Upgrades ressources manager
     CACarUpgrades *carUp;

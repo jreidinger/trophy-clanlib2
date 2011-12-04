@@ -89,15 +89,14 @@ CACredits::buildScreen()
 
     CA_RES->advanceAnimation( &scrollPos, textHeight-(bottom-top-64), 32.0, CAResources::Revolving );
 
-    CL_Display::set_cliprect( crArea );
+    CA_APP->graphicContext->set_cliprect( crArea );
     //CL_Display::fill_rect( left,top, right,bottom, 0.0,0.0,0.0, 0.2 );
     for( unsigned int l=0; l<text.size(); ++l ) 
     {
         const std::string item = text[l];
-        CA_RES->font_normal_14_white->set_alignment(origin_top_center, 0, 0);
-        CA_RES->font_normal_14_white->draw ( (left+32+right-32)/2, (int)(top+32+26-scrollPos+l*26), item );
+        CA_RES->font_normal_14_white.draw_text ( *CA_APP->graphicContext, (left+32+right-32)/2, (int)(top+32+26-scrollPos+l*26), item );
     }
-    CL_Display::set_cliprect( crAll );
+    CA_APP->graphicContext->set_cliprect( crAll );
 }
 
 

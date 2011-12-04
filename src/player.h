@@ -27,7 +27,7 @@ public:
     virtual ~Player();
 
     void   reset();
-    virtual void   resetForRace(const unsigned int routeNumber, const Track* currentTrack);
+    virtual void   resetForRace(const unsigned int routeNumber, Track* currentTrack);
 
     //! Returns ID of this player.
     int    getId() const { return id; }
@@ -280,7 +280,7 @@ private:
     //! current index for the hitPoint array.
     int    hitPointCounter;
     // ! The track where the player is assigned
-    const Track* m_currentTrack;
+    Track* m_currentTrack;
 
 
 protected:
