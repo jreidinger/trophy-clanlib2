@@ -38,7 +38,7 @@ CADialog::run() {
 
     //slot = CL_Input::sig_button_release.connect(thCreateSlot(this, &CADialog::on_button_release));
     //slot = CL_Input::sig_button_press.connect(this, &CADialog::on_button_release);
-    slot = CL_Keyboard::sig_key_up().connect(this, &CADialog::on_key_released);
+    slot = CA_APP->keyboard.sig_key_up().connect(this, &CADialog::on_key_released);
 
     //if( !modal ) CA_APP->fadeScreen( true, this );
     done = false;

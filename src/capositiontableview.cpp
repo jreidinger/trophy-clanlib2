@@ -93,7 +93,7 @@ CAPositionTableView::buildScreen() {
 /** Called on button releases
 */
 void
-CAPositionTableView::on_key_released (const CL_InputEvent &key) 
+CAPositionTableView::on_key_released (const CL_InputEvent &key, CL_InputState &state) 
 {
     switch( key.id ) {
     case CL_KEY_ENTER:

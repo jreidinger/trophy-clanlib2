@@ -16,7 +16,7 @@ public:
     ~CACredits();
 
     virtual void buildScreen();
-    virtual void on_key_released( const CL_InputEvent &key );
+    virtual void on_key_released( const CL_InputEvent &key, CL_InputState & state );
 
 protected:
     void setText(const std::vector<std::string>& newText);

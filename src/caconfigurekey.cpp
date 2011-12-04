@@ -37,7 +37,7 @@ void CAConfigureKey::buildScreen()
 
 /** Called on key released.
 */
-void CAConfigureKey::on_key_released( const CL_InputEvent &key ) 
+void CAConfigureKey::on_key_released( const CL_InputEvent &key, CL_InputState &state ) 
 {
     switch( key.id ) {
 

@@ -104,7 +104,7 @@ CACredits::buildScreen()
 /** Called on key released.
 */
 void
-CACredits::on_key_released( const CL_InputEvent &key ) 
+CACredits::on_key_released( const CL_InputEvent &key, InputState & state ) 
 {
     switch( key.id ) {
 

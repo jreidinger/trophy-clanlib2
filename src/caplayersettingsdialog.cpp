@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "caplayersettingsdialog.h"
 #include "caimagehueselector.h"
 #include "catrophy.h"
@@ -49,8 +51,7 @@ void
 CAPlayerSettingsDialog::buildScreen() {
     CADialog::buildScreen();
 
-    CA_RES->font_normal_14_white->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_normal_14_white->draw( left+32, top+58, "Please enter your nickname:" );
+    CA_RES->font_normal_14_white.draw_text( *CA_APP->graphicContext, left+32, top+58, "Please enter your nickname:" );
 
     nameInput.display();
     carImage.display();

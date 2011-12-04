@@ -32,8 +32,8 @@ CALoadingScreen::setProgress( float p ) {
     progress = p;
     buildScreen();
 
-    CL_Display::flip();   // Copy framebufer to screen
-    CL_System::keep_alive();      // VERY VITAL for the system!
+    CA_APP->display_window->flip();   // Copy framebufer to screen
+    CL_KeepAlive::process(-1);      // VERY VITAL for the system!
 }
 
 
@@ -61,13 +61,13 @@ CALoadingScreen::end() {
 */
 void
 CALoadingScreen::buildScreen() {
-    CL_Display::clear();
+    CA_APP->graphicContext->clear();
 
-    int right = (CA_APP->width-CA_RES->gui_loading->get_width())/2;
-    int top = (CA_APP->height-CA_RES->gui_loading->get_height())/2;
-    CA_RES->gui_loading->draw (right, top);
+    int right = (CA_APP->width-CA_RES->gui_loading.get_width())/2;
+    int top = (CA_APP->height-CA_RES->gui_loading.get_height())/2;
+    CA_RES->gui_loading.draw ( *CA_APP->graphicContext,right, top);
 
-    CA_RES->gui_progressbar->draw ( CL_Rect(right+35, top+87, right+35+(int)(249.0 / 100.0 * progress), top+87+26) );
+    CA_RES->gui_progressbar.draw ( *CA_APP->graphicContext, CL_Rect(right+35, top+87, right+35+(int)(249.0 / 100.0 * progress), top+87+26) );
 }
 
 // EOF
