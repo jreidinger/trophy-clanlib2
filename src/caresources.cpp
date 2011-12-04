@@ -34,79 +34,6 @@ CAResources::CAResources() {}
 /** Destructor.
 */
 CAResources::~CAResources() {
-    delete misc_cross;
-    delete misc_flag;
-    delete misc_light;
-    delete misc_hitpoint;
-    delete misc_gunfire;
-    delete misc_carfire;
-    delete misc_checkflag;
-    delete misc_fog;
-    delete misc_dust;
-    delete misc_info;
-    delete misc_caution;
-
-    delete goody_turbo;
-    delete goody_life;
-    delete goody_money;
-    delete goody_bullets;
-
-    delete font_normal_11_white;
-    delete font_normal_14_white;
-    delete font_normal_22_white;
-    delete font_normal_22_gray;
-    delete font_lcd_13_green;
-
-    delete menu_bg;
-    delete menu_cursorani;
-    delete menu_bar;
-
-    delete panel_label;
-    delete panel_button;
-    delete panel_life;
-    delete panel_infoview;
-    delete panel_speed;
-    delete panel_turbolabel;
-    delete panel_turbo;
-    delete panel_death;
-
-    delete gui_edge1;
-    delete gui_edge2;
-    delete gui_edge3;
-    delete gui_edge4;
-    delete gui_border1;
-    delete gui_border2;
-    delete gui_border3;
-    delete gui_border4;
-    delete gui_button;
-    delete gui_button_red;
-    delete gui_button_green;
-    delete gui_button_blue;
-    delete gui_arrow_l;
-    delete gui_arrow_r;
-    delete gui_arrow_t;
-    delete gui_arrow_b;
-
-#ifndef CA_LIGHTVERSION
-    delete sound_horn;
-    delete sound_menu;
-    delete sound_selector;
-    delete sound_slide;
-    delete sound_crash;
-    delete sound_engine;
-    delete sound_goody_money;
-    delete sound_goody_bullets;
-    delete sound_goody_turbo;
-    delete sound_goody_fogbomb;
-    delete sound_goody_life;
-
-    delete sound_shoot;
-    delete sound_fogbomb;
-    delete sound_fire;
-
-    delete sound_background01;
-#endif
-
     delete effectCrash;
     delete effectSlide;
     delete effectEngine;
@@ -123,12 +50,6 @@ CAResources::~CAResources() {
     delete effectFogBomb;
     delete effectFire;
     delete effectBackground01;
-
-    for( int i=0; i<CA_FPR; ++i ) {
-        delete dust[i];
-    }
-
-    delete resources;
 }
 
 
@@ -138,13 +59,13 @@ void
 CAResources::load() {
     // Try to load resource file (resources.dat):
     //
-    CL_GraphicalContext gc = *CA_APP->graphicalContext;
+    CL_GraphicContext& gc = *CA_APP->graphicContext;
     chdir(PKGDATADIR);
 
     try {
         // TODO : Can we just forget the boolean ?
         //resources = new CL_ResourceManager( "resources.dat", true );
-        resources = new CL_ResourceManager( "resources.xml" );
+        resources.load( "resources.xml" );
     }
 
     // Just use the resource config file (resources.scr) if there's no compiled .dat:
@@ -152,13 +73,13 @@ CAResources::load() {
     catch (CL_Exception err) {
         // TODO : Can we just forget the boolean ?
         //resources = new CL_ResourceManager( "resources.scr", false );
-        resources = new CL_ResourceManager( "../resources/resources.xml" );
+        resources.load( "../resources/resources.xml" );
     }
 
     // Load info frame for showing loading status:
     //
-    gui_loading = new CL_Image(gc, "gui/loading", resources );
-    gui_progressbar = new CL_Image(gc, "gui/progressbar", resources );
+    gui_loading = CL_Image(gc, "gui/loading", &resources );
+    gui_progressbar = CL_Image(gc, "gui/progressbar", &resources );
 
     // Show progress:
     //
@@ -166,33 +87,33 @@ CAResources::load() {
 
     // Load fonts:
     //
-    font_normal_11_white = new CL_Font( "fonts/normal_11_white", resources );
-    font_normal_14_white = new CL_Font( "fonts/normal_14_white", resources );
-    font_normal_22_white = new CL_Font( "fonts/normal_22_white", resources );
-    font_normal_22_gray = new CL_Font( "fonts/normal_22_gray", resources );
-    font_lcd_13_green = new CL_Font( "fonts/lcd_13_green", resources );
+    font_normal_11_white = CL_Font_Sprite(gc, "fonts/normal_11_white", &resources );
+    font_normal_14_white = CL_Font_Sprite(gc, "fonts/normal_14_white", &resources );
+    font_normal_22_white = CL_Font_Sprite(gc, "fonts/normal_22_white", &resources );
+    font_normal_22_gray = CL_Font_Sprite(gc, "fonts/normal_22_gray", &resources );
+    font_lcd_13_green = CL_Font_Sprite(gc, "fonts/lcd_13_green", &resources );
 
     CA_APP->loading.setProgress( 15 );
 
     // Load sounds:
     //
 
-    sound_horn = new CL_SoundBuffer( "sounds/horn", resources );
-    sound_menu = new CL_SoundBuffer( "sounds/menu", resources );
-    sound_selector = new CL_SoundBuffer( "sounds/selector", resources );
-    sound_slide = new CL_SoundBuffer( "sounds/slide", resources );
-    sound_crash = new CL_SoundBuffer( "sounds/crash", resources );
-    sound_engine = new CL_SoundBuffer( "sounds/engine", resources );
-    sound_light = new CL_SoundBuffer( "sounds/light", resources );
-    sound_goody_money = new CL_SoundBuffer( "sounds/goody_money", resources );
-    sound_goody_bullets = new CL_SoundBuffer( "sounds/goody_bullets", resources );
-    sound_goody_turbo = new CL_SoundBuffer( "sounds/goody_turbo", resources );
-    sound_goody_fogbomb = new CL_SoundBuffer( "sounds/goody_fogbomb", resources );
-    sound_goody_life = new CL_SoundBuffer( "sounds/goody_life", resources );
-    sound_shoot = new CL_SoundBuffer( "sounds/shoot", resources );
-    sound_fogbomb = new CL_SoundBuffer( "sounds/fogbomb", resources );
-    sound_fire = new CL_SoundBuffer( "sounds/fire", resources );
-    sound_background01 = new CL_SoundBuffer( "sounds/background01", resources );
+    sound_horn = CL_SoundBuffer( "sounds/horn", &resources );
+    sound_menu = CL_SoundBuffer( "sounds/menu", &resources );
+    sound_selector = CL_SoundBuffer( "sounds/selector", &resources );
+    sound_slide = CL_SoundBuffer( "sounds/slide", &resources );
+    sound_crash = CL_SoundBuffer( "sounds/crash", &resources );
+    sound_engine = CL_SoundBuffer( "sounds/engine", &resources );
+    sound_light = CL_SoundBuffer( "sounds/light", &resources );
+    sound_goody_money = CL_SoundBuffer( "sounds/goody_money", &resources );
+    sound_goody_bullets = CL_SoundBuffer( "sounds/goody_bullets", &resources );
+    sound_goody_turbo = CL_SoundBuffer( "sounds/goody_turbo", &resources );
+    sound_goody_fogbomb = CL_SoundBuffer( "sounds/goody_fogbomb", &resources );
+    sound_goody_life = CL_SoundBuffer( "sounds/goody_life", &resources );
+    sound_shoot = CL_SoundBuffer( "sounds/shoot", &resources );
+    sound_fogbomb = CL_SoundBuffer( "sounds/fogbomb", &resources );
+    sound_fire = CL_SoundBuffer( "sounds/fire", &resources );
+    sound_background01 = CL_SoundBuffer( "sounds/background01", &resources );
 
     CA_APP->loading.setProgress( 25 );
 
@@ -283,11 +204,11 @@ CAResources::load() {
     gui_border4 = new CL_Image( gc, "gui/border4", resources );
     gui_button = new CL_Image( gc, "gui/button", resources );
     gui_button_red = new CL_Image( gc,"gui/button", resources );
-    gui_button_red->set_color (1.0f, 0.0f, 0.0f);
+    gui_button_red.set_color (1.0f, 0.0f, 0.0f);
     gui_button_green = new CL_Image( gc,"gui/button", resources );
-    gui_button_green->set_color (0.0f, 1.0f, 0.0f);
+    gui_button_green.set_color (0.0f, 1.0f, 0.0f);
     gui_button_blue = new CL_Image( gc,"gui/button", resources );
-    gui_button_blue->set_color (0.0f, 0.0f, 1.0f);
+    gui_button_blue.set_color (0.0f, 0.0f, 1.0f);
     gui_arrow_l = new CL_Image( gc, "gui/arrow_l", resources );
     gui_arrow_r = new CL_Image( gc, "gui/arrow_r", resources );
     gui_arrow_t = new CL_Image( gc, "gui/arrow_t", resources );

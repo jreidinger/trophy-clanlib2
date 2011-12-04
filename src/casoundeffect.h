@@ -10,7 +10,7 @@
   */
 class CASoundEffect {
 public:
-    CASoundEffect( CL_SoundBuffer* sample, int maxPlays=1 );
+    CASoundEffect( CL_SoundBuffer sample, int maxPlays=1 );
     ~CASoundEffect();
 
     void play(int num=1, bool loop=false);
@@ -26,13 +26,13 @@ public:
 private:
     //! The sample to play.
 
-    CL_SoundBuffer* sample;
+    CL_SoundBuffer sample;
     //! Max. number the sample can be played at once.
     int maxPlays;
     //! We play the sample already 'numPlays' times at once
     int numPlays;
     //! The current sound sessions for this sample
-    CL_SoundBuffer_Session* session;
+    CL_SoundBuffer_Session session;
 
 };
 

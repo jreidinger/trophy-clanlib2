@@ -124,22 +124,22 @@ public:
     CL_SoundBuffer sound_fire;
     CL_SoundBuffer sound_background01;
 
-    CASoundEffect effectCrash;
-    CASoundEffect effectSlide;
-    CASoundEffect effectEngine;
-    CASoundEffect effectHorn;
-    CASoundEffect effectLight;
-    CASoundEffect effectMenu;
-    CASoundEffect effectSelector;
-    CASoundEffect effectGoodyMoney;
-    CASoundEffect effectGoodyBullets;
-    CASoundEffect effectGoodyTurbo;
-    CASoundEffect effectGoodyFogbomb;
-    CASoundEffect effectGoodyLife;
-    CASoundEffect effectShoot;
-    CASoundEffect effectFogBomb;
-    CASoundEffect effectFire;
-    CASoundEffect effectBackground01;
+    CASoundEffect* effectCrash;
+    CASoundEffect* effectSlide;
+    CASoundEffect* effectEngine;
+    CASoundEffect* effectHorn;
+    CASoundEffect* effectLight;
+    CASoundEffect* effectMenu;
+    CASoundEffect* effectSelector;
+    CASoundEffect* effectGoodyMoney;
+    CASoundEffect* effectGoodyBullets;
+    CASoundEffect* effectGoodyTurbo;
+    CASoundEffect* effectGoodyFogbomb;
+    CASoundEffect* effectGoodyLife;
+    CASoundEffect* effectShoot;
+    CASoundEffect* effectFogBomb;
+    CASoundEffect* effectFire;
+    CASoundEffect* effectBackground01;
 
 };
 

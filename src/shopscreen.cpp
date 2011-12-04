@@ -250,11 +250,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&)
                 if (m_player->getCar()->getMotor()->buyOption(m_player))
                 {
                     m_player->getCar()->getMotor()->updateImageView(m_imageView[0], m_carImage->getWidth());
-                    if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
                 }
                 else
                 {
-                    if( CA_APP->sound ) CA_RES->effectHorn.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
                 }
             }
             else if (m_focus == m_imageView[1])
@@ -262,11 +262,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&)
                 if (m_player->getCar()->getTires()->buyOption(m_player))
                 {
                     m_player->getCar()->getTires()->updateImageView(m_imageView[1], m_carImage->getWidth());
-                    if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
                 }
                 else
                 {
-                    if( CA_APP->sound ) CA_RES->effectHorn.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
                 }
             }
             else if (m_focus == m_imageView[2])
@@ -274,11 +274,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&)
                 if (m_player->getCar()->getArmor()->buyOption(m_player))
                 {
                     m_player->getCar()->getArmor()->updateImageView(m_imageView[2], m_carImage->getWidth());
-                    if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
                 }
                 else
                 {
-                    if( CA_APP->sound ) CA_RES->effectHorn.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
                 }
             }
             else if (m_focus == m_continue)
@@ -287,7 +287,7 @@ ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&)
             }
             else
             {
-                if( CA_APP->sound ) CA_RES->effectHorn.play( 2 );
+                if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
             }
         }
         break;
@@ -300,19 +300,19 @@ ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&)
                 if (m_confirmMode == true && m_isAbleToBuy)
                 {
                     m_cursor = (m_cursor+1)%2;
-                    if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
                 }
                 else if (key.id == CL_KEY_DOWN)
                 {
                     m_focus = m_imageView[0];
-                    if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
                 }
 
             }
             else if (m_focus == m_imageView[0] && key.id == CL_KEY_UP)
             {
                 m_focus = m_carImage;
-                if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
             }
         }
         break;
@@ -333,11 +333,11 @@ ShopScreen::on_key_released (const CL_InputEvent &key, const CL_InputState&)
                 if (m_focus == m_continue && key.id == CL_KEY_LEFT)
                 {
                    m_focus = m_imageView[2];
-                   if( CA_APP->sound ) CA_RES->effectMenu.play( 2 );
+                   if( CA_APP->sound ) CA_RES->effectMenu->play( 2 );
                 }
                 else if (m_focus != m_continue)
                 {
-                    if( CA_APP->sound ) CA_RES->effectMenu.play( 2 ); // we will make a change
+                    if( CA_APP->sound ) CA_RES->effectMenu->play( 2 ); // we will make a change
                     
                     int focusNum = 0;
                     for (int i=0; i<3; i++)
@@ -451,7 +451,7 @@ void ShopScreen::updateText()
             {
                 m_isAbleToBuy = false;
                 oss << "You don't have enough money.\nYou are " << CA_APP->carType[carNum].price - m_player->getMoney() << "$ short\n";
-                if( CA_APP->sound ) CA_RES->effectHorn.play( 2 );
+                if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
                 m_confirmMode = false;
             }
         }
@@ -459,7 +459,7 @@ void ShopScreen::updateText()
         {
             m_isAbleToBuy = false;
             oss << "You already have a " <<  CA_APP->carType[carNum].name;
-            if( CA_APP->sound ) CA_RES->effectHorn.play( 2 );
+            if( CA_APP->sound ) CA_RES->effectHorn->play( 2 );
             m_confirmMode = false;
         }
     }
