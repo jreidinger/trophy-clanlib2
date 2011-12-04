@@ -8,11 +8,10 @@
     \param direction Vertical selector? (Use Up/Down arrows to control)
 */
 CAImageHueSelector::CAImageHueSelector( Direction direction )
-        : CAImageView() {
+        : CAImageView(),hueImage() {
     if( CA_APP->debug ) std::cout << "CAImageHueSelector() begin" << std::endl;
 
     this->direction = direction;
-    hueImage = 0;
     hue = 0;
 
     if( CA_APP->debug ) std::cout << "CAImageHueSelector() end" << std::endl;
@@ -29,7 +28,7 @@ CAImageHueSelector::CAImageHueSelector( Direction direction )
 */
 CAImageHueSelector::CAImageHueSelector( const std::string upperText,
                                         const std::string lowerText,
-                                        CL_Surface* image,
+                                        CL_Image image,
                                         bool autoResize,
                                         Direction direction )
         : CAImageView( upperText,
@@ -41,7 +40,7 @@ CAImageHueSelector::CAImageHueSelector( const std::string upperText,
     this->direction = direction;
     hueImage = CAImageManipulation::changeHSV( image, 0, 0, 0 );
     hue = 0;
-    setImageSize( image->get_width(), image->get_height() );
+    setImageSize( image.get_width(), image.get_height() );
 
     if( CA_APP->debug ) std::cout << "CAImageHueSelector() end 2" << std::endl;
 }
@@ -49,10 +48,6 @@ CAImageHueSelector::CAImageHueSelector( const std::string upperText,
 /** Destructor.
 */
 CAImageHueSelector::~CAImageHueSelector() {
-    if( hueImage ) {
-        delete hueImage;
-        hueImage = NULL;
-    }
 }
 
 /** Sets the size of the image view (without top/bottom button).
@@ -65,9 +60,9 @@ CAImageHueSelector::setImageSize( int w, int h ) {
     CAImageView::setImageSize( w,h );
 
     if( direction==Horizontal ) {
-        width += 2*CA_RES->gui_arrow_l->get_width();
+        width += 2*CA_RES.gui_arrow_l.get_width();
     } else {
-        height += 2*CA_RES->gui_arrow_t->get_height();
+        height += 2*CA_RES.gui_arrow_t.get_height();
     }
 
     right = left + width;
@@ -79,14 +74,13 @@ CAImageHueSelector::setImageSize( int w, int h ) {
 */
 void
 CAImageHueSelector::changeImageHue( bool forward ) {
-    if( image.image ) {
+    if( !image.image.is_null() ) {
         // TODO : clean the constants
         int amount = 5 * (forward ? 1 : -1);
         hue += amount;
         if( hue > 360 ) hue -= 360;
         if( hue < 0   ) hue += 360;
 
-        if( hueImage ) delete hueImage;
         hueImage = CAImageManipulation::changeHSV( image.image, hue, 0, 0 );
     }
 }
@@ -100,25 +94,23 @@ CAImageHueSelector::display( bool active )
 
     CL_Rect crAll( 0, 0, CA_APP->width, CA_APP->height );
     CL_Rect crImage( left, top, right, bottom );
-    CL_Display::set_cliprect( crImage );
+    CA_APP->graphicContext->set_cliprect( crImage );
 
-    CL_Display::fill_rect( CL_Rect(left, top, right, bottom), CL_Color(0, 0, 0, 64) );
+    CL_Draw::fill( *CA_APP->graphicContext, CL_Rect(left, top, right, bottom), CL_Colorf(0, 0, 0, 64) );
 
     displayTextButtons( active );
 
-    //if( hueImage ) hueImage->draw (left + (width-hueImage->get_width())/2, top+barHeight);
-
-    if (hueImage)
+    if (!hueImage.is_null())
     {
         // center the image
-       const int leftPos = left + (width  - hueImage->get_width()) /2;
-       const int topPos  = top  + (height - hueImage->get_height())/2;
-       hueImage->draw(leftPos, topPos);
+       const int leftPos = left + (width  - hueImage.get_width()) /2;
+       const int topPos  = top  + (height - hueImage.get_height())/2;
+       hueImage.draw( *CA_APP->graphicContext,leftPos, topPos);
     }
 
     displayArrows( active );
 
-    CL_Display::set_cliprect( crAll );
+    CA_APP->graphicContext->set_cliprect( crAll );
 }
 
 /** Handles key events for this view / selector.

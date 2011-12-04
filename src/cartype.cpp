@@ -1,3 +1,6 @@
+#include <sstream>
+
+#include "catrophy.h"
 #include "cartype.h"
 #include "cacarupgrades.h"
 #include "caimageview.h"
@@ -7,17 +10,18 @@
 CarOption::CarOption(CL_ResourceManager resources, CACarUpgrades* carUp, int maxOption, const std::string& pathPrice, const std::string& name)
 :  m_carUp(carUp), m_current(0), m_maxOpt(maxOption), m_name(name)
 {
+    int pathPricei = resources.get_integer_resource(pathPrice,0);
     for (int i=0; i < m_maxOpt; i++)
-        m_PriceList.push_back((i*CL_Integer( pathPrice, resources ))/2+CL_Integer( pathPrice, resources ));
+        m_PriceList.push_back((i*pathPricei)/2+pathPricei);
 }
 
 
-CL_Surface* CarOption::getImage() const
+CL_Image CarOption::getImage() const
 {
     int imageNum = m_current;
     if (m_current == m_maxOpt)
         imageNum--;
-     return getSurface(imageNum);
+     return getImage(imageNum);
 }
 
 int CarOption::getPrice () const
@@ -67,14 +71,14 @@ void CarOption::updateImageView(CAImageView* imageView, const int imageViewWidth
 }
 
 
-CarMotor::CarMotor(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp)
+CarMotor::CarMotor(const std::string& mainPath, CL_ResourceManager resources, CACarUpgrades* carUp)
 : CarOption(resources, carUp, 5, mainPath + "motorPrice", "Engine")
 {
     std::string path = mainPath + "acceleration";
-    m_acceleration = 6 * CL_Integer( path, resources );
+    m_acceleration = 6 * resources.get_integer_resource( path, 1 );
 
     path = mainPath + "maxSpeed";
-    m_maxSpeed = 6 * CL_Integer( path, resources );
+    m_maxSpeed = 6 * resources.get_integer_resource( path, 1 );
 }
 
 
@@ -85,17 +89,17 @@ void CarMotor::upgrade()
 }
 
 
-CL_Surface* CarMotor::getSurface(const int imageNum) const
+CL_Image CarMotor::getImage(const int imageNum) const
 {
     return m_carUp->getMotor(imageNum);
 }
 
 
-CarTires::CarTires(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp)
+CarTires::CarTires(const std::string& mainPath, CL_ResourceManager resources, CACarUpgrades* carUp)
 : CarOption(resources, carUp, 5, mainPath + "tiresPrice", "Tires")
 {
     std::string path = mainPath + "slidingFactor";
-    m_slidingFactor = 0.01 * CL_Integer( path, resources );
+    m_slidingFactor = 0.01 * resources.get_integer_resource( path, 1 );
 }
 
 void CarTires::upgrade()
@@ -104,13 +108,13 @@ void CarTires::upgrade()
 }
 
 
-CL_Surface* CarTires::getSurface(const int imageNum) const
+CL_Image CarTires::getImage(const int imageNum) const
 {
     return m_carUp->getTires(imageNum);
 }
 
 
-CarArmor::CarArmor(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp)
+CarArmor::CarArmor(const std::string& mainPath, CL_ResourceManager resources, CACarUpgrades* carUp)
 : CarOption(resources, carUp, 5, mainPath + "armorPrice", "Armor")
 {
     m_armor = 0; //For now all cars start with zero armor, this might change in the future
@@ -123,13 +127,13 @@ void CarArmor::upgrade()
 }
 
 
-CL_Surface* CarArmor::getSurface(const int imageNum) const
+CL_Image CarArmor::getImage(const int imageNum) const
 {
     return m_carUp->getArmor(imageNum);
 }
 
 
-CarType::CarType(const std::string& mainPath, CL_ResourceManager* resources, CACarUpgrades* carUp, const bool debug)
+CarType::CarType(const std::string& mainPath, CL_ResourceManager resources, CACarUpgrades* carUp, const bool debug)
      :
          m_motor (mainPath, resources, carUp),
          m_tires (mainPath, resources, carUp),
@@ -138,32 +142,32 @@ CarType::CarType(const std::string& mainPath, CL_ResourceManager* resources, CAC
     if(debug) std::cout << "  name" << std::endl;
 
     std::string path = mainPath + "name";
-    name = CL_String::load( path, resources );
+    name = resources.get_string_resource( path, "name" );
 
     if(debug) std::cout << "  surface" << std::endl;
 
     path = mainPath + "surface";
-    surface = new CL_Surface( path, resources );
+    surface = CL_Image( *CA_APP->graphicContext, path, &resources );
 
     if(debug) std::cout << "  surface3d" << std::endl;
 
     path = mainPath + "surface3d";
-    surface3d = new CL_Surface( path, resources );
+    surface3d = CL_Image( *CA_APP->graphicContext, path, &resources );
 
     path = mainPath + "length";
-    length = CL_Integer( path, resources );
+    length = resources.get_integer_resource( path, 0 );
     path = mainPath + "width";
-    width = CL_Integer( path, resources );
+    width = resources.get_integer_resource( path, 0 );
     path = mainPath + "minSpeed";
-    minSpeed = 6 * CL_Integer( path, resources );
+    minSpeed = 6 * resources.get_integer_resource( path, 1 );
     path = mainPath + "maxTurbo";
-    maxTurbo = CL_Integer( path, resources );
+    maxTurbo = resources.get_integer_resource( path, 1000 );
     path = mainPath + "acceleration";
-    deceleration = 6 * CL_Integer( path, resources );
+    deceleration = 6 * resources.get_integer_resource( path, 1000 );
     path = mainPath + "steeringPower";
-    steeringPower = CL_Integer( path, resources );
+    steeringPower = resources.get_integer_resource( path, 1 );
     path = mainPath + "price";
-    price = CL_Integer( path, resources );
+    price = resources.get_integer_resource( path, 0 );
 
 
     radius = std::sqrt( (double)width/2 * (double)width/2 + (double)length/2 * (double)length/2 );
