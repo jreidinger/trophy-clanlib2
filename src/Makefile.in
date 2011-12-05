@@ -190,7 +190,7 @@ trophy_SOURCES = cagoody.cpp cainfodialog.cpp caescapedialog.cpp camenu.h canets
 		 caslotselectiondialog.h humanplayer.h humanplayer.cpp computerplayer.cpp computerplayer.h \
 		 upgradespanel.cpp upgradespanel.h windialog.h windialog.cpp
 
-AM_LDFLAGS = `pkg-config --libs $(CLANLIB_MODULES)`
+AM_LDFLAGS = `pkg-config --libs $(CLANLIB_MODULES)` -lpthread
 INCLUDES = `pkg-config --cflags $(CLANLIB_MODULES)`
 AM_CPPFLAGS = -DPKGDATADIR=\"$(pkgdatadir)\"
 AM_CXXFLAGS = -Wall

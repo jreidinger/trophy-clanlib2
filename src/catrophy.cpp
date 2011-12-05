@@ -236,7 +236,7 @@ CATrophy::start(const std::vector<CL_String> &args )
     } 
     catch (CL_Exception err) 
     {
-        std::cout << "An error occured: " << err.message.c_str() << std::endl;
+        std::cout << "An error occured: " << err.get_message_and_stack_trace().c_str() << std::endl;
     }
 
     if (console)

@@ -10,7 +10,7 @@ mustQuit(false),
 firstEscape(false)
 {}
     
-void CAEscapeDialog::on_key_released (const CL_InputEvent &key)
+void CAEscapeDialog::on_key_released (const CL_InputEvent &key, const CL_InputState &event)
 {
     switch( key.id ) {
         case CL_KEY_Y: 

@@ -62,7 +62,7 @@ CAPlayerSettingsDialog::buildScreen() {
 /** Called on key release.
 */
 void
-CAPlayerSettingsDialog::on_key_released (const CL_InputEvent &key) 
+CAPlayerSettingsDialog::on_key_released (const CL_InputEvent &key, const CL_InputState &state) 
 {
     switch( key.id ) 
     {

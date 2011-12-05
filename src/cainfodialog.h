@@ -20,7 +20,7 @@ public:
                   CAScreen* screen=0 );
 
     virtual void buildScreen();
-    virtual void on_key_released (const CL_InputEvent &key);
+    virtual void on_key_released (const CL_InputEvent &key, const CL_InputState &state);
 
 private:
     //! Text list which contains the dialog text - one item is one line.

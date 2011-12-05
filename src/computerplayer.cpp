@@ -18,7 +18,7 @@ void ComputerPlayer::display(  const int offsetX, const int offsetY )
 {
     Player::display(offsetX, offsetY);
     if( CA_APP->trackInfo )
-        CL_Display::draw_line(getX()+offsetX, getY()+offsetY, nxTemp + offsetX, nyTemp + offsetY, CL_Color::white);
+        CL_Draw::line( *CA_APP->graphicContext,getX()+offsetX, getY()+offsetY, nxTemp + offsetX, nyTemp + offsetY, CL_Colorf::white);
 }
 
 /** On Race Over, computers players are checking if they could buy a new car
@@ -178,7 +178,7 @@ void ComputerPlayer::pilot()
 /** Reset things before a new race starts.
 */
 void
-ComputerPlayer::resetForRace(const unsigned int routeNumber, const Track* currentTrack)
+ComputerPlayer::resetForRace(const unsigned int routeNumber, Track* currentTrack)
 {
     Player::resetForRace(routeNumber, currentTrack);
     m_routeNumber = routeNumber;

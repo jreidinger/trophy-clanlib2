@@ -38,14 +38,14 @@ void HumanPlayer::pilot()
     else {
         // Accelerate (E/UP):
         //
-        if (CL_Keyboard::get_keycode(m_keyMap[ACCELERATE]))
+        if (CA_APP->keyboard.get_keycode(m_keyMap[ACCELERATE]))
         {
             speedMode = Accelerate;
         }
 
         // Decelerate (D/DOWN):
         //
-        else if (CL_Keyboard::get_keycode(m_keyMap[BRAKE]))
+        else if (CA_APP->keyboard.get_keycode(m_keyMap[BRAKE]))
         {
             speedMode = Decelerate;
         }
@@ -60,14 +60,14 @@ void HumanPlayer::pilot()
     if( !isDeath() ) {
         // Steer left:
         //
-        if (CL_Keyboard::get_keycode(m_keyMap[LEFT]))
+        if (CA_APP->keyboard.get_keycode(m_keyMap[LEFT]))
         {
             directionMode = Left;
         }
 
         // Steer right:
         //
-        else if (CL_Keyboard::get_keycode(m_keyMap[RIGHT]))
+        else if (CA_APP->keyboard.get_keycode(m_keyMap[RIGHT]))
         {
             directionMode = Right;
         }
@@ -81,14 +81,14 @@ void HumanPlayer::pilot()
 
     // Horn:
     //
-    if (CL_Keyboard::get_keycode(m_keyMap[HORN]))
+    if (CA_APP->keyboard.get_keycode(m_keyMap[HORN]))
     {
         CA_RES->effectHorn->play();
     }
 
     // Shoot:
     //
-    if (CL_Keyboard::get_keycode(m_keyMap[SHOOT]))
+    if (CA_APP->keyboard.get_keycode(m_keyMap[SHOOT]))
     {
         if( !hasFinished() && !isDeath() && !isLapped() && CA_APP->allowShooting && getBullets()>0 ) {
             CA_RES->effectShoot->play( 2 );
@@ -101,7 +101,7 @@ void HumanPlayer::pilot()
     // Drop fog bomb:
     //
     static bool blockKeyF = false;
-    if (CL_Keyboard::get_keycode(m_keyMap[BOMB]))
+    if (CA_APP->keyboard.get_keycode(m_keyMap[BOMB]))
     {
         if( !hasFinished() && !isDeath() && !isLapped() && CA_APP->allowShooting && !blockKeyF && getFogBombs()!=0 ) {
             CA_APP->dropFogBomb( int(getX()), int(getY()), isUp() );
@@ -114,7 +114,7 @@ void HumanPlayer::pilot()
 
     // Turbo:
     //
-    if (CL_Keyboard::get_keycode(m_keyMap[BOOST]))
+    if (CA_APP->keyboard.get_keycode(m_keyMap[BOOST]))
     {
         activateTurbo();
     } else {

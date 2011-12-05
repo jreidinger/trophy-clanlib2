@@ -20,7 +20,7 @@ class CACarUpgrades;
 class ShopScreen : public CAScreen
 {
 public:
-    ShopScreen(Player* player, CL_Image background, CL_Image button, CL_Font font, CACarUpgrades* carRes);
+    ShopScreen(Player* player, CL_Image background, CL_Image button, CL_Font_Sprite font, CACarUpgrades* carRes);
     virtual ~ShopScreen();
 
     virtual int run();
@@ -39,7 +39,7 @@ private:
     //! The button use
     CL_Image m_button;
     //! The font use for display car information
-    CL_Font m_font;
+    CL_Font_Sprite m_font;
     //! Upgrades ressources manager
     CACarUpgrades* m_carRes;
 

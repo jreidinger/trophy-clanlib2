@@ -11,7 +11,7 @@ public:
                   bool modal=false,
                   CAScreen* screen=0 );
     
-    void on_key_released (const CL_InputEvent &key);
+    void on_key_released (const CL_InputEvent &key, const CL_InputState &state);
 
 bool isMustQuit();
 private:

@@ -16,7 +16,7 @@ public:
     std::string display();
     virtual void buildScreen();
 
-    virtual void on_key_released (const CL_InputEvent &key);
+    virtual void on_key_released (const CL_InputEvent &key, const CL_InputState &state);
 
 private:
     //! Cursor (selected slot)

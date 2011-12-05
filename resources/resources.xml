@@ -4,7 +4,7 @@
     </section>
     <section name="cars">
         <string name="directories" value="vw~jeep~z3~flash2" />
-        <surface name="dust" file="cars/dust.tga" x="0" y="0" width="64" height="64"/>
+        <sprite name="dust"><image-file file="cars/dust.tga" /> </sprite>
         <section name="vw">
             <integer name="length" value="55" />
             <integer name="width" value="22" />
@@ -20,8 +20,8 @@
             <integer name="motorPrice" value="500" />
             <integer name="tiresPrice" value="200" />
             <integer name="armorPrice" value="300" />
-            <surface name="surface" file="cars/vw/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/vw/surface3d.tga" x="0" y="0" width="100" height="100" />
+            <sprite name="surface"><image-file file="cars/vw/surface.tga" /> </sprite>
+            <image name="surface3d"><image-file file="cars/vw/surface3d.tga" /> </image>
         </section>
         <section name="jeep">
             <integer name="length" value="60" />
@@ -38,8 +38,8 @@
             <integer name="motorPrice" value="750" />
             <integer name="tiresPrice" value="300" />
             <integer name="armorPrice" value="500" />
-            <surface name="surface" file="cars/jeep/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/jeep/surface3d.tga" x="0" y="0" width="100" height="100" />
+            <sprite name="surface"><image-file file="cars/jeep/surface.tga" /> </sprite>
+            <image name="surface3d"><image-file file="cars/jeep/surface3d.tga" /> </image>
         </section>
         <section name="z3">
             <integer name="length" value="61" />
@@ -56,8 +56,8 @@
             <integer name="motorPrice" value="1000" />
             <integer name="tiresPrice" value="500" />
             <integer name="armorPrice" value="750" />
-            <surface name="surface" file="cars/z3/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/z3/surface3d.tga" x="0" y="0" width="100" height="100" />
+            <sprite name="surface"><image-file file="cars/z3/surface.tga" /> </sprite>
+            <image name="surface3d"><image-file file="cars/z3/surface3d.tga" /> </image>
         </section>
         <section name="flash2">
             <integer name="length" value="60" />
@@ -74,32 +74,32 @@
             <integer name="motorPrice" value="1500" />
             <integer name="tiresPrice" value="1000" />
             <integer name="armorPrice" value="1500" />
-            <surface name="surface" file="cars/flash2/surface.tga" x="0" y="0" width="64" height="64" />
-            <surface name="surface3d" file="cars/flash2/surface3d.tga" x="0" y="0" width="100" height="100" />
+            <sprite name="surface"><image-file file="cars/flash2/surface.tga" /> </sprite>
+            <image name="surface3d"><image-file file="cars/flash2/surface3d.tga" /> </image>
         </section>
     </section>
     <section name="upgrades">
         <string name="directories" value="motors~tires" />
         <section name="motors">
-            <surface name="motor1" file="upgrades/motors/motor_1.tga" x="0" y="0" width="100" height="100" />
-            <surface name="motor2" file="upgrades/motors/motor_2.tga" x="0" y="0" width="100" height="100" />
-            <surface name="motor3" file="upgrades/motors/motor_3.tga" x="0" y="0" width="100" height="100" />
-            <surface name="motor4" file="upgrades/motors/motor_4.tga" x="0" y="0" width="100" height="100" />
-            <surface name="motor5" file="upgrades/motors/motor_5.tga" x="0" y="0" width="100" height="100" />
+            <image name="motor1"><image-file file="upgrades/motors/motor_1.tga" /> </image>
+            <image name="motor2"><image-file file="upgrades/motors/motor_2.tga" /> </image>
+            <image name="motor3"><image-file file="upgrades/motors/motor_3.tga" /> </image>
+            <image name="motor4"><image-file file="upgrades/motors/motor_4.tga" /> </image>
+            <image name="motor5"><image-file file="upgrades/motors/motor_5.tga" /> </image>
         </section>
         <section name="tires">
-            <surface name="tires1" file="upgrades/tires/tires_1.tga" x="0" y="0" width="100" height="100" />
-            <surface name="tires2" file="upgrades/tires/tires_2.tga" x="0" y="0" width="100" height="100" />
-            <surface name="tires3" file="upgrades/tires/tires_3.tga" x="0" y="0" width="100" height="100" />
-            <surface name="tires4" file="upgrades/tires/tires_4.tga" x="0" y="0" width="100" height="100" />
-            <surface name="tires5" file="upgrades/tires/tires_5.tga" x="0" y="0" width="100" height="100" />
+            <image name="tires1"><image-file file="upgrades/tires/tires_1.tga" /> </image>
+            <image name="tires2"><image-file file="upgrades/tires/tires_2.tga" /> </image>
+            <image name="tires3"><image-file file="upgrades/tires/tires_3.tga" /> </image>
+            <image name="tires4"><image-file file="upgrades/tires/tires_4.tga" /> </image>
+            <image name="tires5"><image-file file="upgrades/tires/tires_5.tga" /> </image>
         </section>
         <section name="armors">
-            <surface name="armor1" file="upgrades/armors/armor_1.tga" x="0" y="0" width="100" height="100" />
-            <surface name="armor2" file="upgrades/armors/armor_2.tga" x="0" y="0" width="100" height="100" />
-            <surface name="armor3" file="upgrades/armors/armor_3.tga" x="0" y="0" width="100" height="100" />
-            <surface name="armor4" file="upgrades/armors/armor_4.tga" x="0" y="0" width="100" height="100" />
-            <surface name="armor5" file="upgrades/armors/armor_5.tga" x="0" y="0" width="100" height="100" />
+            <image name="armor1"><image-file file="upgrades/armors/armor_1.tga" /> </image>
+            <image name="armor2"><image-file file="upgrades/armors/armor_2.tga" /> </image>
+            <image name="armor3"><image-file file="upgrades/armors/armor_3.tga" /> </image>
+            <image name="armor4"><image-file file="upgrades/armors/armor_4.tga" /> </image>
+            <image name="armor5"><image-file file="upgrades/armors/armor_5.tga" /> </image>
         </section>
     </section>
     <section name="bullets">
@@ -109,23 +109,23 @@
             <integer name="length" value="32" />
             <integer name="width" value="4" />
             <integer name="price" value="500" />
-            <surface name="surface" file="bullets/rocket/surface.tga" x="0" y="0" width="32" height="32" />
-            <surface name="surface3d" file="bullets/rocket/surface3d.tga" x="0" y="0" width="32" height="32" />
+            <image name="surface"><image-file file="bullets/rocket/surface.tga" /> </image>
+            <image name="surface3d"><image-file file="bullets/rocket/surface3d.tga" /> </image>
         </section>
     </section>
     <section name="goody">
-        <surface name="turbo" file="goody/turbo.tga" x="0" y="0" width="32" height="32" />
-        <surface name="life" file="goody/life.tga" x="0" y="0" width="32" height="32" />
-        <surface name="money" file="goody/money.tga" x="0" y="0" width="32" height="32" />
-        <surface name="bullets" file="goody/bullets.tga" x="0" y="0" width="32" height="32" />
-        <surface name="fogbomb" file="goody/fogbomb.tga" x="0" y="0" width="32" height="32" />
+        <image name="turbo"><image-file file="goody/turbo.tga" /> </image>
+        <image name="life"><image-file file="goody/life.tga" /> </image>
+        <image name="money"><image-file file="goody/money.tga" /> </image>
+        <image name="bullets"><image-file file="goody/bullets.tga" /> </image>
+        <image name="fogbomb"><image-file file="goody/fogbomb.tga" /> </image>
     </section>
     <section name="misc">
-        <surface name="cross" file="misc/cross.tga" x="0" y="0" width="16" height="16" />
-        <surface name="flag" file="misc/flag.tga" x="0" y="0" width="100" height="100" />
-        <surface name="picture" file="misc/picture.tga" x="0" y="0" width="102" height="128" />
-        <surface name="info" file="misc/info.tga" x="0" y="0" width="48" height="48" />
-        <surface name="caution" file="misc/caution.tga" x="0" y="0" width="48" height="48" />
+        <image name="cross"><image-file file="misc/cross.tga" /> </image>
+        <image name="flag"><image-file file="misc/flag.tga" /> </image>
+        <image name="picture"><image-file file="misc/picture.tga" /> </image>
+        <image name="info"><image-file file="misc/info.tga" /> </image>
+        <image name="caution"><image-file file="misc/caution.tga" /> </image>
         <sprite name="light">
             <image file="misc/light.tga">
                 <grid pos="0,0" size="150,100" array="4,1" />
@@ -165,21 +165,23 @@
         </sprite>
     </section>
     <section name="gui">
-        <surface name="loading" file="gui/loading.tga" x="0" y="0" width="320" height="160" />
-        <surface name="progressbar" file="gui/progressbar.tga" x="0" y="0" width="6" height="26" />
-        <surface name="edge1" file="gui/edge1.tga" x="0" y="0" width="16" height="16" />
-        <surface name="edge2" file="gui/edge2.tga" x="0" y="0" width="16" height="16" />
-        <surface name="edge3" file="gui/edge3.tga" x="0" y="0" width="16" height="16" />
-        <surface name="edge4" file="gui/edge4.tga" x="0" y="0" width="16" height="16" />
-        <surface name="border1" file="gui/border1.tga" x="0" y="0" width="16" height="6" />
-        <surface name="border2" file="gui/border2.tga" x="0" y="0" width="6" height="16" />
-        <surface name="border3" file="gui/border3.tga" x="0" y="0" width="16" height="6" />
-        <surface name="border4" file="gui/border4.tga" x="0" y="0" width="6" height="16" />
-        <surface name="button" file="gui/button.tga" x="0" y="0" width="64" height="20" />
-        <surface name="arrow_l" file="gui/arrow_l.tga" x="0" y="0" width="16" height="16" />
-        <surface name="arrow_r" file="gui/arrow_r.tga" x="0" y="0" width="16" height="16" />
-        <surface name="arrow_t" file="gui/arrow_t.tga" x="0" y="0" width="16" height="16" />
-        <surface name="arrow_b" file="gui/arrow_b.tga" x="0" y="0" width="16" height="16" />
+      <image name="loading">
+        <image-file file="gui/loading.tga"/>
+      </image>
+        <image name="progressbar"><image-file file="gui/progressbar.tga" /> </image>
+        <image name="edge1"><image-file file="gui/edge1.tga" /> </image>
+        <image name="edge2"><image-file file="gui/edge2.tga" /> </image>
+        <image name="edge3"><image-file file="gui/edge3.tga" /> </image>
+        <image name="edge4"><image-file file="gui/edge4.tga" /> </image>
+        <image name="border1"><image-file file="gui/border1.tga" /> </image>
+        <image name="border2"><image-file file="gui/border2.tga" /> </image>
+        <image name="border3"><image-file file="gui/border3.tga" /> </image>
+        <image name="border4"><image-file file="gui/border4.tga" /> </image>
+        <image name="button"><image-file file="gui/button.tga" /> </image>
+        <image name="arrow_l"><image-file file="gui/arrow_l.tga" /> </image>
+        <image name="arrow_r"><image-file file="gui/arrow_r.tga" /> </image>
+        <image name="arrow_t"><image-file file="gui/arrow_t.tga" /> </image>
+        <image name="arrow_b"><image-file file="gui/arrow_b.tga" /> </image>
     </section>
     <section name="sounds">
         <sample name="horn" file="sounds/carhorn.wav" />
@@ -200,22 +202,22 @@
         <sample name="background01" file="sounds/background01.wav" />
     </section>
     <section name="menu">
-        <surface name="bg" file="menu/bg.tga" x="0" y="0" width="320" height="240"/>
+        <image name="bg"><image-file file="menu/bg.tga" /> </image>
         <sprite name="cursorani"> 
             <image file="menu/cursorani.tga">
                 <alpha />
             </image>
             <animation speed="100" loop="yes" />
         </sprite>
-        <surface name="bar" file="menu/bar.tga" x="0" y="0" width="360" height="6"/>
+        <image name="bar"><image-file file="menu/bar.tga" /> </image>
     </section>
     <section name="panel">
-        <surface name="label" file="panel/label.tga" x="0" y="0" width="120" height="27"/>
-        <surface name="button" file="panel/button.tga" x="0" y="0" width="120" height="20"/>
-        <surface name="life" file="panel/life.tga" x="0" y="0" width="120" height="20"/>
-        <surface name="infoview" file="panel/infoview.tga" x="0" y="0" width="120" height="35"/>
-        <surface name="turbolabel" file="panel/turbolabel.tga" x="0" y="0" width="120" height="12"/>
-        <surface name="death" file="panel/death.tga" x="0" y="0" width="120" height="55"/>
+        <image name="label"><image-file file="panel/label.tga" /> </image>
+        <image name="button"><image-file file="panel/button.tga" /> </image>
+        <image name="life"><image-file file="panel/life.tga" /> </image>
+        <image name="infoview"><image-file file="panel/infoview.tga" /> </image>
+        <image name="turbolabel"><image-file file="panel/turbolabel.tga" /> </image>
+        <image name="death"><image-file file="panel/death.tga" /> </image>
         <sprite name="speed">
             <image file="panel/speed.tga">
                 <grid pos="0,0" size="120,31" array="1,11" />

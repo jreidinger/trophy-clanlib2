@@ -1,6 +1,8 @@
+#include <sstream>
 #include "caimagemanipulation.h"
 #include "caplayerview.h"
 #include "caresources.h"
+#include "catrophy.h"
 
 /** Constructor.
     \param player Pointer to the appropriate player.
@@ -39,29 +41,25 @@ CAPlayerView::display( const int defaultPos ) {
 
     // Display color button:
     //
-    button->draw (0, y);
-    CA_RES->panel_life->draw ( (int)((float)player->getLife() / 100.0 * 120.0), y );
+    button.draw ( *CA_APP->graphicContext,0, y);
+    CA_RES->panel_life.draw ( *CA_APP->graphicContext, (int)((float)player->getLife() / 100.0 * 120.0), y );
 
     // Display name:
     //
-    CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_normal_11_white->draw( 3, y+2, player->getName() );
+    CA_RES->font_normal_11_white.draw_text( *CA_APP->graphicContext, 3, y+2, player->getName() );
 
     // Display laps and rank:
     //
-    CA_RES->panel_infoview->draw (0, y+20);
-    CA_RES->font_lcd_13_green->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_lcd_13_green->draw( 50, y+22, ossLap.str() );
-    CA_RES->font_lcd_13_green->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_lcd_13_green->draw( 70, y+31, ossNumLap.str() );
-    CA_RES->font_normal_11_white->set_alignment(origin_top_left, 0, 0);
-    CA_RES->font_normal_11_white->draw( 99, y+30, ossRank.str() );
+    CA_RES->panel_infoview.draw ( *CA_APP->graphicContext,0, y+20);
+    CA_RES->font_lcd_13_green.draw_text( *CA_APP->graphicContext, 50, y+22, ossLap.str() );
+    CA_RES->font_lcd_13_green.draw_text( *CA_APP->graphicContext, 70, y+31, ossNumLap.str() );
+    CA_RES->font_normal_11_white.draw_text( *CA_APP->graphicContext, 99, y+30, ossRank.str() );
 
     // Display cross for death players:
     //
     if( player->getLife()<0.1 ) {
-        CL_Display::fill_rect( CL_Rect(0, y, 120, y+55), CL_Color(0, 0, 0, 85) );
-        CA_RES->panel_death->draw (0, y);
+        CL_Draw::fill( *CA_APP->graphicContext, CL_Rectf(0, y, 120, y+55), CL_Colorf(0, 0, 0, 85) );
+        CA_RES->panel_death.draw ( *CA_APP->graphicContext,0, y);
     }
 }
 
@@ -69,11 +67,11 @@ CAPlayerView::display( const int defaultPos ) {
 */
 void
 CAPlayerView::renderButton() {
-    if( button ) delete button;
-    button = CAImageManipulation::changeHSV( CA_RES->panel_button,
+    button = CA_RES->panel_button;
+/*    button = CAImageManipulation::changeHSV( CA_RES->panel_button,
              player->getColor().h,
              player->getColor().s,
-             player->getColor().v );
+             player->getColor().v );*/
     currentColor = player->getColor();
 }
 

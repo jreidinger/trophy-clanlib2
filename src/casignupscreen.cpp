@@ -5,6 +5,7 @@
 #include "caimageview.h"
 #include "cachampionshipscreen.h" // For RankPredicate
 #include <vector>
+#include <algorithm>
 
 struct FindPlayer:public std::binary_function<std::vector<Player*>, Player*, bool>
 {
@@ -36,7 +37,7 @@ CASignUpScreen::CASignUpScreen(std::vector<Player*> player, std::vector<int> tra
 
     for( int i=0; i<3; ++i )
     {
-        image[i] = 0;
+        image[i] = CL_Image();
         racePreview[i] = 0;
     }
 
@@ -103,9 +104,8 @@ CASignUpScreen::reset()
             delete racePreview[i];
             racePreview[i] = 0;
         }
-        if( image[i] ) {
-            delete image[i];
-            image[i] = 0;
+        if( !image[i].is_null() ) {
+            image[i] = CL_Image();
         }
         // CAImageData doesn't delete image[i] !!
     }
@@ -129,15 +129,13 @@ CASignUpScreen::setOffset( int offset )
         {
             try
             {
-                //image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
-                image[i] = new CL_Surface (CL_TargaProvider( trackPath + m_trackList[i] + "/thumb.tga" ));
+                image[i] = CL_Image ( *CA_APP->graphicContext, trackPath + m_trackList[i] + "/thumb.tga" );
                 
             }
-            catch(CL_Error err)
+            catch(CL_Exception err)
             {
                 trackPath = "../resources/tracks/";
-                //image[i] = new CL_Surface (CL_TargaProvider( trackPath + CA_APP->trackList[i+offset] + "/thumb.tga" ));
-                image[i] = new CL_Surface (CL_TargaProvider( trackPath + m_trackList[i] + "/thumb.tga" ));
+                image[i] = CL_Image ( *CA_APP->graphicContext, trackPath + m_trackList[i] + "/thumb.tga" );
             }
             std::ostringstream oss;
             oss << "$" << (i==0 ? CA_PRIZE : (i==1 ? CA_PRIZE_MEDIUM : CA_PRIZE_HARD));
@@ -150,7 +148,7 @@ CASignUpScreen::setOffset( int offset )
         } 
         else 
         {
-            image[i] = 0;
+            image[i] = CL_Image();
             racePreview[i] = 0;
         }
     }
@@ -194,7 +192,7 @@ void CASignUpScreen::addVirtualPoints()
 int
 CASignUpScreen::run() 
 {
-    slot = CL_Keyboard::sig_key_up().connect(this, &CASignUpScreen::on_key_released);
+    slot = CA_APP->keyboard.sig_key_up().connect(this, &CASignUpScreen::on_key_released);
 
     CA_APP->fadeScreen( true, this );
     done = false;
@@ -211,8 +209,8 @@ CASignUpScreen::run()
         // Play background sound:
         CASoundEffect::playBackgroundMelody();
 
-        CL_Display::flip();   // Copy framebuffer to screen
-        CL_System::keep_alive();      // VERY VITAL for the system!
+        CA_APP->display_window->flip();   // Copy framebuffer to screen
+        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
 
         CA_APP->measureFrameTime( false );
     }
@@ -222,7 +220,6 @@ CASignUpScreen::run()
 
     //CL_Input::chain_button_release.remove( this );
 
-    CL_Keyboard::sig_key_up().disconnect(slot);
     std::vector<std::string>::const_iterator it = std::find(CA_APP->trackList.begin(), CA_APP->trackList.end(), m_trackList[cursor]);
     
     //return (cancel ? -1 : cursor+offset);
@@ -244,7 +241,7 @@ CASignUpScreen::buildScreen()
 
     // Backgroud:
     //
-    CA_RES->menu_bg->draw ( CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
+    CA_RES->menu_bg.draw ( *CA_APP->graphicContext, CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
 
     // Title / help:
     //
@@ -253,9 +250,9 @@ CASignUpScreen::buildScreen()
 
     // Cursor:
     //
-    CL_Display::fill_rect( CL_Rect(racePreview[cursor]->getLeft()-12, racePreview[cursor]->getTop()-12,
+    CL_Draw::fill( *CA_APP->graphicContext, CL_Rectf(racePreview[cursor]->getLeft()-12, racePreview[cursor]->getTop()-12,
                            racePreview[cursor]->getRight()+12, racePreview[cursor]->getBottom()+12),
-                           CL_Color (255, 216, 84, (int)((cursorAnim/2)*255) ));
+                           CL_Colorf (255, 216, 84, (int)((cursorAnim/2)*255) ));
 
     CA_RES->advanceAnimation( &cursorAnim, 1, 2.0, CAResources::Revolving );
 
@@ -266,7 +263,7 @@ CASignUpScreen::buildScreen()
         if( racePreview[race] )
         {
             racePreview[race]->display();
-            CA_RES->font_normal_14_white->draw( racePreview[race]->getHCenter(),
+            CA_RES->font_normal_14_white.draw_text( *CA_APP->graphicContext, racePreview[race]->getHCenter(),
                                                 racePreview[race]->getTop()-22,
                                                 (race==0 ? "Easy" : (race==1 ? "Medium" : "Hard")) );
         }
@@ -274,7 +271,7 @@ CASignUpScreen::buildScreen()
         {
             for (unsigned int pl=0; pl<m_RacePlayer[race].size(); pl++)
             {
-                CA_RES->font_normal_14_white->draw (racePreview[race]->getHCenter(),
+                CA_RES->font_normal_14_white.draw_text ( *CA_APP->graphicContext,racePreview[race]->getHCenter(),
                                                     racePreview[race]->getBottom()+22*(pl+1), m_StringRacePlayer[race][pl] );
             }
         }
@@ -291,7 +288,7 @@ CASignUpScreen::buildScreen()
 /** Called on key release.
 */
 void
-CASignUpScreen::on_key_released (const CL_InputEvent &key) 
+CASignUpScreen::on_key_released (const CL_InputEvent &key, const CL_InputState &state) 
 {
     switch( key.id ) 
     {

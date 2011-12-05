@@ -29,7 +29,7 @@ public:
 
     void calcMenuDimensions();
 
-    virtual void on_key_pressed(const CL_InputEvent &key );
+    virtual void on_key_pressed(const CL_InputEvent &key, const CL_InputState &state);
 
     //! Returns the left border position.
     int getLeft() {

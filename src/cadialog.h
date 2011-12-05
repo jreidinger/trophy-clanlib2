@@ -18,7 +18,7 @@ public:
     virtual int run();
     virtual void buildScreen();
 
-    virtual void on_key_released( const CL_InputEvent &key, CL_InputState &state ) = 0;
+    virtual void on_key_released( const CL_InputEvent &key, const CL_InputState &state ) = 0;
 
     virtual void resize( int w, int h );
 

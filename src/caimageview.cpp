@@ -8,8 +8,8 @@ CAImageView::CAImageView()
         : CAWidget( CAWidget::Left ) {
     if( CA_APP->debug ) std::cout << "CAImageView() begin" << std::endl;
 
-    barHeight = CA_RES->font_normal_14_white->get_height() + 6;
-    image.image = 0;
+    barHeight = CA_RES->font_normal_14_white.get_font_metrics().get_height() + 6;
+    image.image = CL_Image();
 
     if( CA_APP->debug ) std::cout << "CAImageView() end" << std::endl;
 }
@@ -23,21 +23,21 @@ CAImageView::CAImageView()
 */
 CAImageView::CAImageView( const std::string& upperText,
                           const std::string& lowerText,
-                          CL_Surface* image,
+                          CL_Image image,
                           bool autoResize )
         : CAWidget( CAWidget::Left ),
         m_autoresize(autoResize)
 {
     if( CA_APP->debug ) std::cout << "CAImageView() begin 2" << std::endl;
 
-    barHeight = CA_RES->font_normal_14_white->get_height() + 6;
+    barHeight = CA_RES->font_normal_14_white.get_font_metrics().get_height() + 6;
     this->image.upperText = upperText;
     this->image.lowerText = lowerText;
     this->image.image = image;
 
     if( m_autoresize )
     {
-        setImageSize( image->get_width(), image->get_height() );
+        setImageSize( image.get_width(), image.get_height() );
     }
 
     if( CA_APP->debug ) std::cout << "CAImageView() end 2" << std::endl;
@@ -61,12 +61,12 @@ CAImageView::setImageSize( int w, int h ) {
 }
 
 void
-CAImageView::setImage( CL_Surface* image) {
+CAImageView::setImage( CL_Image image) {
     
     this->image.image = image;
     if( m_autoresize )
     {
-       setImageSize( image->get_width(), image->get_height() );
+       setImageSize( image.get_width(), image.get_height() );
     }
 }
 
@@ -76,23 +76,22 @@ void
 CAImageView::display( bool active ) {
     CL_Rect crAll( 0,0, CA_APP->width, CA_APP->height );
     CL_Rect crImage( left, top, right, bottom );
-    CL_Display::set_cliprect( crImage );
+    CA_APP->graphicContext->set_cliprect( crImage );
 
-    CL_Display::fill_rect( CL_Rect(left, top, right, bottom), CL_Color(0, 0, 0, 64) );
+    CL_Draw::fill( *CA_APP->graphicContext, CL_Rectf(left, top, right, bottom), CL_Colorf(0, 0, 0, 64) );
 
-//    if( image.image ) image.image->draw( left, top+barHeight );
 
-    if (image.image)
+    if (!image.image.is_null())
     {
         // center the image
-       const int leftPos = left + (width  - image.image->get_width()) /2;
-       const int topPos  = top  + (height - image.image->get_height())/2;
-       image.image->draw(leftPos, topPos);
+       const int leftPos = left + (width  - image.image.get_width()) /2;
+       const int topPos  = top  + (height - image.image.get_height())/2;
+       image.image.draw( *CA_APP->graphicContext,leftPos, topPos);
     }
 
     displayTextButtons( active );
 
-    CL_Display::set_cliprect( crAll );
+    CA_APP->graphicContext->set_cliprect( crAll );
 }
 
 /** Displays the arrows for selectors (used for base classes).
@@ -103,15 +102,15 @@ CAImageView::displayArrows( bool active )
     // Selector arrows show the direction of possible movements:
     //
     if( direction==Horizontal ) {
-        int arrowHeight = CA_RES->gui_arrow_l->get_height();
-        int arrowWidth = CA_RES->gui_arrow_l->get_width();
-        CA_RES->gui_arrow_l->draw (left, top+height/2-arrowHeight/2);
-        CA_RES->gui_arrow_r->draw (right-arrowWidth, top+height/2-arrowHeight/2);
+        int arrowHeight = CA_RES->gui_arrow_l.get_height();
+        int arrowWidth = CA_RES->gui_arrow_l.get_width();
+        CA_RES->gui_arrow_l.draw ( *CA_APP->graphicContext,left, top+height/2-arrowHeight/2);
+        CA_RES->gui_arrow_r.draw ( *CA_APP->graphicContext,right-arrowWidth, top+height/2-arrowHeight/2);
     } else {
-        int arrowHeight = CA_RES->gui_arrow_t->get_height();
-        int arrowWidth = CA_RES->gui_arrow_t->get_width();
-        CA_RES->gui_arrow_t->draw ((left+right)/2-arrowWidth/2, top+barHeight);
-        CA_RES->gui_arrow_b->draw ((left+right)/2-arrowWidth/2, bottom-barHeight-arrowHeight);
+        int arrowHeight = CA_RES->gui_arrow_t.get_height();
+        int arrowWidth = CA_RES->gui_arrow_t.get_width();
+        CA_RES->gui_arrow_t.draw ( *CA_APP->graphicContext,(left+right)/2-arrowWidth/2, top+barHeight);
+        CA_RES->gui_arrow_b.draw ( *CA_APP->graphicContext,(left+right)/2-arrowWidth/2, bottom-barHeight-arrowHeight);
     }
 }
 
@@ -122,17 +121,16 @@ CAImageView::displayTextButtons( bool active )
 {
     // Buttons:
     //
-    CA_RES->gui_button->draw ( CL_Rect(left, top, left+width, top+barHeight) );
-    CA_RES->gui_button->draw ( CL_Rect(left, top+height-barHeight, left+width, top+height-barHeight+barHeight) );
+    CA_RES->gui_button.draw ( *CA_APP->graphicContext, CL_Rect(left, top, left+width, top+barHeight) );
+    CA_RES->gui_button.draw ( *CA_APP->graphicContext, CL_Rect(left, top+height-barHeight, left+width, top+height-barHeight+barHeight) );
 
     // Texts:
     //
     int textPosX = left + width/2;
     int textPosY = top + 6;
-    CA_RES->font_normal_14_white->set_alignment(origin_top_center, 0, 0);
-    CA_RES->font_normal_14_white->draw( textPosX, textPosY, image.upperText );
+    CA_RES->font_normal_14_white.draw_text( *CA_APP->graphicContext, textPosX, textPosY, image.upperText );
     textPosY = top + height - barHeight + 6;
-    CA_RES->font_normal_14_white->draw( textPosX, textPosY, image.lowerText );
+    CA_RES->font_normal_14_white.draw_text( *CA_APP->graphicContext, textPosX, textPosY, image.lowerText );
 }
 
 /** Handles key events for this view (no action).

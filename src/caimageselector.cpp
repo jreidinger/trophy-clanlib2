@@ -34,7 +34,7 @@ CAImageSelector::setImageSize( int w, int h ) {
     CAImageView::setImageSize( w, h );
 
     if( direction==Horizontal ) {
-        width += 2*CA_RES->gui_arrow_l->get_width();
+        width += 2*CA_RES->gui_arrow_l.get_width();
     } else {
         //height += 2*CA_RES->gui_arrow_t->get_height();
     }
@@ -55,7 +55,7 @@ CAImageSelector::setImageSize( int w, int h ) {
 void
 CAImageSelector::addImage( const std::string upperText,
                            const std::string lowerText,
-                           CL_Surface* image,
+                           CL_Image image,
                            bool autoResize ) {
     this->image[numImages].upperText = upperText;
     this->image[numImages].lowerText = lowerText;
@@ -71,7 +71,7 @@ CAImageSelector::addImage( const std::string upperText,
     if( numImages<CA_IV_MAXIMAGES ) numImages++;
 
     if( autoResize ) {
-        setImageSize( image->get_width(), image->get_height() );
+        setImageSize( image.get_width(), image.get_height() );
     }
 }
 
@@ -86,7 +86,7 @@ CAImageSelector::display( bool active ) {
     CL_Rect crAll( 0,0, CA_APP->width, CA_APP->height );
     CL_Rect crImage( left,top, right, bottom );
 
-    CL_Display::set_cliprect( crImage );
+    CA_APP->graphicContext->set_cliprect( crImage );
 
     // Animate:
     //
@@ -120,19 +120,19 @@ CAImageSelector::display( bool active ) {
 
     if( direction==Horizontal ) {
         center = (left+right)/2;
-        int image1Pos = (int)(center - rest*width - image[image1].image->get_width()/2);
-        image[image1].image->draw (image1Pos, top+barHeight);
-        image[image2].image->draw (image1Pos + width, top+barHeight);
+        int image1Pos = (int)(center - rest*width - image[image1].image.get_width()/2);
+        image[image1].image.draw ( *CA_APP->graphicContext,image1Pos, top+barHeight);
+        image[image2].image.draw ( *CA_APP->graphicContext,image1Pos + width, top+barHeight);
     } else {
         center = (top+bottom)/2;
-        int image1Pos = (int)(center - rest*height - image[image1].image->get_height()/2);
-        image[image1].image->draw ((left+right-image[image1].image->get_width())/2, image1Pos);
-        image[image2].image->draw ((left+right-image[image1].image->get_width())/2, image1Pos + height);
+        int image1Pos = (int)(center - rest*height - image[image1].image.get_height()/2);
+        image[image1].image.draw ( *CA_APP->graphicContext,(left+right-image[image1].image.get_width())/2, image1Pos);
+        image[image2].image.draw ( *CA_APP->graphicContext,(left+right-image[image1].image.get_width())/2, image1Pos + height);
     }
 
     displayArrows( active );
 
-    CL_Display::set_cliprect( crAll );
+    CA_APP->graphicContext->set_cliprect( crAll );
 }
 
 

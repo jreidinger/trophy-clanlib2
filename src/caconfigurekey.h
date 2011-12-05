@@ -33,10 +33,7 @@ public:
     ~CAConfigureKey();
 
     virtual void buildScreen();
-    virtual void on_key_released( const CL_InputEvent &key, CL_InputState &state );
-
-    /*std::map<ConfigureKey::DefineKey, int> getKeyMap()
-    { return m_keyMap; }*/
+    virtual void on_key_released( const CL_InputEvent &key, const CL_InputState &state );
 
 private:
     std::map<ConfigureKey::DefineKey, std::string> m_keyString;

@@ -14,7 +14,7 @@ public:
     ~CAPositionTableView();
 
     virtual void buildScreen();
-    virtual void on_key_released (const CL_InputEvent &key, CL_InputState &state);
+    virtual void on_key_released (const CL_InputEvent &key, const CL_InputState &state);
 
 private:
     //! Label for table output

@@ -15,7 +15,7 @@
 class UpgradesPanel : public CAWidget
 {
     public:
-        UpgradesPanel( Player* player, CL_Font carFont, CL_Font upgradeFont, const int nvLeft, const int nvTop );
+        UpgradesPanel( Player* player, CL_Font_Sprite carFont, CL_Font_Sprite upgradeFont, const int nvLeft, const int nvTop );
 
         virtual ~UpgradesPanel() {}
 
@@ -27,9 +27,9 @@ class UpgradesPanel : public CAWidget
         //! the human player
         Player* m_player;
         //! the font uses in the panel    
-        CL_Font* m_carfont;
+        CL_Font_Sprite m_carfont;
         //! the font uses for the upgrades   
-        CL_Font* m_upgradesFont;
+        CL_Font_Sprite m_upgradesFont;
         //! the center of the bar
         int m_center;
         //! height of a bar

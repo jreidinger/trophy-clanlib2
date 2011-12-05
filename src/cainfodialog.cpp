@@ -70,7 +70,7 @@ CAInfoDialog::buildScreen() {
 /** Called on key released.
 */
 void
-CAInfoDialog::on_key_released (const CL_InputEvent &key) 
+CAInfoDialog::on_key_released (const CL_InputEvent &key, const CL_InputState &state) 
 {
     switch( key.id ) {
     case CL_KEY_ENTER:

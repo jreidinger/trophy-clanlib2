@@ -81,7 +81,7 @@ void CAMenu::addMenuSelect( const std::string& label, const std::string valueLis
 int CAMenu::run() {
     //slot = CL_Input::sig_button_press.connect(this, &CAMenu::on_button_press);
     // TODO : Connect the right signal
-    slot = CL_Keyboard::sig_key_up().connect(this, &CAMenu::on_key_pressed);
+    slot = CA_APP->keyboard.sig_key_up().connect(this, &CAMenu::on_key_pressed);
 
     //CA_APP->fadeScreen( true, this );
     done = false;
@@ -103,8 +103,8 @@ int CAMenu::run() {
 
         changed = false;
 
-        CL_Display::flip();   // Copy framebufer to screen
-        CL_System::keep_alive();      // VERY VITAL for the system!
+        CA_APP->display_window->flip();   // Copy framebufer to screen
+        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
 
         CA_APP->measureFrameTime( false );
     }
@@ -112,7 +112,6 @@ int CAMenu::run() {
     //CA_APP->fadeScreen( false, this );
     CA_APP->waitForSilence();
 
-    CL_Keyboard::sig_key_up().disconnect(slot);
     return (cancel ? -1 : cursor);
 }
 
@@ -122,7 +121,7 @@ void
 CAMenu::buildScreen() {
     // Menu Backgroud:
     //
-    CA_RES->menu_bg->draw ( CL_Rect (0,0, CA_APP->width,CA_APP->height) );
+    CA_RES->menu_bg.draw ( *CA_APP->graphicContext, CL_Rect (0,0, CA_APP->width,CA_APP->height) );
 
     // Menu Title:
     //
@@ -130,8 +129,7 @@ CAMenu::buildScreen() {
     //CA_RES->menu_bar->put_screen( left,top+height+12 );
     //CA_RES->menu_itemoff->put_screen( left,top );
 
-    CA_RES->font_normal_14_white->set_alignment(origin_top_center, 0, 0);
-    CA_RES->font_normal_14_white->draw ((left + right)/2, top + CA_MENUSPACE/2 -10, title);
+    CA_RES->font_normal_14_white.draw_text ( *CA_APP->graphicContext,(left + right)/2, top + CA_MENUSPACE/2 -10, title);
 
     for( int n=0; n<int(item.size()); ++n ) {
         if( item[n]->rtti()!=CA_MI_VIRTUAL ) {
@@ -147,7 +145,7 @@ CAMenu::buildScreen() {
 void
 CAMenu::calcMenuDimensions() {
     //itemHeight = CA_RES->menu_itemon->get_height();
-    itemHeight = CA_RES->font_normal_22_white->get_height() + 6;
+    itemHeight = CA_RES->font_normal_22_white.get_font_metrics().get_height() + 6;
     //headerHeight = CA_RES->menu_itemon->get_height();
     headerHeight = 22;
     height = itemHeight * item.size() + headerHeight;
@@ -162,7 +160,7 @@ CAMenu::calcMenuDimensions() {
 /** Called on key release.
 */
 void
-CAMenu::on_key_pressed (const CL_InputEvent &key) 
+CAMenu::on_key_pressed (const CL_InputEvent &key, const CL_InputState &state) 
 {
     switch( key.id ) {
 

@@ -11,7 +11,7 @@
 
 /** Constructor.
 */
-ShopScreen::ShopScreen(Player* player, CL_Image background, CL_Image button, CL_Font font, CACarUpgrades* carRes)
+ShopScreen::ShopScreen(Player* player, CL_Image background, CL_Image button, CL_Font_Sprite font, CACarUpgrades* carRes)
 :   CAScreen("T H E  S H O P", "Choose a new car and press Enter to confirm"),
     m_player      (player),
     m_background  (background),

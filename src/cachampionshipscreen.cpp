@@ -3,6 +3,7 @@
 #include "player.h"
 #include <functional>
 #include <algorithm>
+#include <sstream>
 
 bool RankPredicate::operator()(const Player* const p1, const Player* const p2)
    {
@@ -17,7 +18,7 @@ bool RankPredicate::operator()(const Player* const p1, const Player* const p2)
 /** Constructor.
 */
 CAChampionshipScreen::CAChampionshipScreen(Player* humanPlayer, const std::vector<Player*> player, const std::vector<std::vector<Player*> > runningPlayer,
-                                                                           CL_Surface* background, CL_Surface* button, CL_Surface* buttonEasy, CL_Surface* buttonMedium, CL_Surface* buttonHard, CL_Font* font)
+                                                                           CL_Image background, CL_Image button, CL_Image buttonEasy, CL_Image buttonMedium, CL_Image buttonHard, CL_Font_Sprite font)
    : CAScreen(),
    m_humanPlayer(humanPlayer),
    m_player(player),
@@ -34,7 +35,7 @@ CAChampionshipScreen::CAChampionshipScreen(Player* humanPlayer, const std::vecto
     right = CA_APP->width;
     top = CA_APP->headerHeight + 30;
     bottom = CA_APP->headerHeight + 400;
-    barHeight = m_font->get_height() + 6;
+    barHeight = m_font.get_font_metrics().get_height() + 6;
     std::sort(m_player.begin(), m_player.end(), RankPredicate());
     title = "C H A M P I O N S H I P";
 }
@@ -54,7 +55,7 @@ CAChampionshipScreen::run()
     //CL_Input::chain_button_release.push_back( this );
     //slot = CL_Input::sig_button_release.connect(thCreateSlot(this, &CAChampionshipScreen::on_button_release));
     //slot = CL_Input::sig_button_press.connect(this, &CAChampionshipScreen::on_button_release);
-    slot = CL_Keyboard::sig_key_up().connect(this, &CAChampionshipScreen::on_key_released);
+    slot = CA_APP->keyboard.sig_key_up().connect(this, &CAChampionshipScreen::on_key_released);
 
     CA_APP->fadeScreen( true, this );
     done = false;
@@ -71,8 +72,8 @@ CAChampionshipScreen::run()
         // Play background sound:
         CASoundEffect::playBackgroundMelody();
 
-        CL_Display::flip();   // Copy framebufer to screen
-        CL_System::keep_alive();      // VERY VITAL for the system!
+        CA_APP->display_window->flip();   // Copy framebufer to screen
+        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
 
         CA_APP->measureFrameTime( false );
     }
@@ -82,7 +83,6 @@ CAChampionshipScreen::run()
 
     //CL_Input::chain_button_release.remove( this );
 
-    CL_Keyboard::sig_key_up().disconnect(slot);
     if (m_player[0] == m_humanPlayer)
         return 0;
     else
@@ -96,10 +96,10 @@ CAChampionshipScreen::buildScreen()
 {
     // Background:
     //
-    m_background->draw ( CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
+    m_background.draw ( *CA_APP->graphicContext, CL_Rect(0, 0, CA_APP->width, CA_APP->height) );
     displayTitle();
 
-    CL_Display::fill_rect( CL_Rect(left, top, right, bottom), CL_Color(0, 0, 0, 64) );
+    CL_Draw::fill( *CA_APP->graphicContext, CL_Rectf(left, top, right, bottom), CL_Colorf(0, 0, 0, 64) );
     
     const int rankWidth = 30;
     const int rankLeft = 0;
@@ -134,8 +134,8 @@ CAChampionshipScreen::buildScreen()
         }
         // Buttons:
         //
-        m_button->draw ( CL_Rect(marginLeft+rankLeft, marginTop+barHeight*upPos, marginLeft+rankLeft+rankWidth, marginTop+(barHeight*(upPos+1))) );
-        m_button->draw ( CL_Rect(marginLeft+nameLeft, marginTop+barHeight*upPos, marginLeft+nameLeft+nameWidth, marginTop+(barHeight*(upPos+1))) );
+        m_button.draw ( *CA_APP->graphicContext, CL_Rect(marginLeft+rankLeft, marginTop+barHeight*upPos, marginLeft+rankLeft+rankWidth, marginTop+(barHeight*(upPos+1))) );
+        m_button.draw ( *CA_APP->graphicContext, CL_Rect(marginLeft+nameLeft, marginTop+barHeight*upPos, marginLeft+nameLeft+nameWidth, marginTop+(barHeight*(upPos+1))) );
         if (m_displayMode != DISPLAY_CHAMPIONSHIP)
         {
             for (int i=0; i<= int(m_displayMode); i++)
@@ -143,30 +143,29 @@ CAChampionshipScreen::buildScreen()
                 std::vector<Player*>::const_iterator it = std::find(m_runningPlayers[i].begin(), m_runningPlayers[i].end(), m_player[rank]);
                 if (it != m_runningPlayers[i].end() && m_player[rank]->getRacePoints() != 0)
                 {
-                    CL_Surface* buttonToUse = (i==0 ? m_buttonEasy : (i==1)? m_buttonMedium : m_buttonHard); // Choose the button color
-                    buttonToUse->draw ( CL_Rect(marginLeft+addPtLeft, marginTop+barHeight*upPos, marginLeft+addPtLeft+addPtWidth, marginTop+(barHeight*(upPos+1))) );
+                    CL_Image buttonToUse = (i==0 ? m_buttonEasy : (i==1)? m_buttonMedium : m_buttonHard); // Choose the button color
+                    buttonToUse.draw ( *CA_APP->graphicContext, CL_Rect(marginLeft+addPtLeft, marginTop+barHeight*upPos, marginLeft+addPtLeft+addPtWidth, marginTop+(barHeight*(upPos+1))) );
                     ossRacePoints << "+" << m_player[rank]->getRacePoints();
                 }
             }
         }
-        m_button->draw ( CL_Rect(marginLeft+totalPtLeft, marginTop+barHeight*upPos, marginLeft+totalPtLeft+totalPtWidth,  marginTop+(barHeight*(upPos+1))) );
+        m_button.draw ( *CA_APP->graphicContext, CL_Rect(marginLeft+totalPtLeft, marginTop+barHeight*upPos, marginLeft+totalPtLeft+totalPtWidth,  marginTop+(barHeight*(upPos+1))) );
 
         // Texts:
         //
         const int textPosX = marginLeft;
         const int textPosY = marginTop + 4 + barHeight*upPos;
-        m_font->set_alignment(origin_top_center, 0, 0);
-        m_font->draw( textPosX+rankLeft+rankWidth/2, textPosY,  ossRankStr.str());
-        m_font->draw( textPosX+nameLeft+nameWidth/2, textPosY, m_player[rank]->getName() );
-        m_font->draw( textPosX+addPtLeft+addPtWidth/2, textPosY, ossRacePoints.str() );
-        m_font->draw( textPosX+totalPtLeft+totalPtWidth/2, textPosY, ossTotalPoints.str() );
+        m_font.draw_text( *CA_APP->graphicContext, textPosX+rankLeft+rankWidth/2, textPosY,  ossRankStr.str());
+        m_font.draw_text( *CA_APP->graphicContext, textPosX+nameLeft+nameWidth/2, textPosY, m_player[rank]->getName() );
+        m_font.draw_text( *CA_APP->graphicContext, textPosX+addPtLeft+addPtWidth/2, textPosY, ossRacePoints.str() );
+        m_font.draw_text( *CA_APP->graphicContext, textPosX+totalPtLeft+totalPtWidth/2, textPosY, ossTotalPoints.str() );
     }
 }
 
 /** Called on key release.
 */
 void
-CAChampionshipScreen::on_key_released (const CL_InputEvent &key) 
+CAChampionshipScreen::on_key_released (const CL_InputEvent &key, const CL_InputState &state) 
 {
     switch( key.id ) 
     {

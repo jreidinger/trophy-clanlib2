@@ -9,7 +9,7 @@
 /** Constructor.
     \param title Title of the dialog (Usually "Save..." or "Load...")
 */
-CASlotSelectionDialog::CASlotSelectionDialog( const std::string title, CL_Font* font, const std::string& homedir )
+CASlotSelectionDialog::CASlotSelectionDialog( const std::string title, CL_Font_Sprite font, const std::string& homedir )
         : CADialog(),
           m_font(font),
           m_homedir(homedir)
@@ -83,7 +83,7 @@ CASlotSelectionDialog::buildScreen() {
 
     // Backgroud:
     //
-    CA_RES->menu_bg->draw ( CL_Rect(0, 0, CA_APP->width, CA_APP->height) ); // TODO don't use CA_APP
+    CA_RES->menu_bg.draw ( *CA_APP->graphicContext, CL_Rect(0, 0, CA_APP->width, CA_APP->height) ); // TODO don't use CA_APP
 
     // Title / help:
     //
@@ -101,16 +101,16 @@ CASlotSelectionDialog::buildScreen() {
     {
         slotsText += m_slotNames[i] + "\n\n";
     }
-    const int topTxt = m_guiBox.getTop() + CA_RES->gui_border1->get_height() + 10;
-    m_font->draw ( m_guiBox.getHCenter(), topTxt, slotsText);
+    const int topTxt = m_guiBox.getTop() + CA_RES->gui_border1.get_height() + 10;
+    m_font.draw_text ( *CA_APP->graphicContext, m_guiBox.getHCenter(), topTxt, slotsText);
 
     // Cursor
     //
-    const int fh      = m_font->get_height(); //Font Height
-    const int curLeft = m_guiBox.getLeft() + CA_RES->gui_border2->get_width() + 5;
+    const int fh      = m_font.get_font_metrics().get_height(); //Font Height
+    const int curLeft = m_guiBox.getLeft() + CA_RES->gui_border2.get_width() + 5;
     const int curTop  = cursor*fh*2+topTxt;
-    CA_RES->menu_cursorani->draw (curLeft, curTop);
-    CA_RES->menu_cursorani->update();
+    CA_RES->menu_cursorani.draw ( *CA_APP->graphicContext,curLeft, curTop);
+    CA_RES->menu_cursorani.update();
     
 
     // Cursor:
@@ -127,7 +127,7 @@ CASlotSelectionDialog::buildScreen() {
     // TODO: Should use something better to know if it's save or load
     if (title[0] == 'S')
     {
-        UpgradesPanel uPanelCurrent(CA_APP->player[0], m_font, CA_RES->font_lcd_13_green, m_guiBox.getLeft()-CA_APP->player[0]->getCar()->surface3d->get_width()-32, top+32);
+        UpgradesPanel uPanelCurrent(CA_APP->player[0], m_font, CA_RES->font_lcd_13_green, m_guiBox.getLeft()-CA_APP->player[0]->getCar()->surface3d.get_width()-32, top+32);
         uPanelCurrent.display();
     }
 
@@ -158,7 +158,7 @@ CASlotSelectionDialog::display()
 /** Called on key release.
 */
 void
-CASlotSelectionDialog::on_key_released (const CL_InputEvent &key) 
+CASlotSelectionDialog::on_key_released (const CL_InputEvent &key, const CL_InputState &state) 
 {
     switch( key.id ) {
 

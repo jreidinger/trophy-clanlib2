@@ -13,7 +13,7 @@ public:
     ComputerPlayer(int id, const std::string& name, int carNumber);
     ~ComputerPlayer();
     void pilot();
-    void resetForRace(const unsigned int routeNumber, const Track* currentTrack);
+    void resetForRace(const unsigned int routeNumber, Track* currentTrack);
     void display( const int offsetX, const int offsetY );
     void OnRaceOver();
 private:
