@@ -28,7 +28,7 @@ CASlotSelectionDialog::CASlotSelectionDialog( const std::string title, CL_Font* 
     {
         std::ostringstream oss;
         oss << m_homedir << "trophySave" << i << ".sav";
-        std::cout << oss.str() << std::endl;
+        if( CA_APP->debug ) std::cout << "File Saved to " << oss.str() << std::endl;
         std::ifstream loadFile(oss.str().c_str());
         if (loadFile)
         {

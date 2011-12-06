@@ -204,10 +204,12 @@ CATrophy::main( int argc, char** argv )
             
         CL_DirectoryScanner checker;
         if (checker.scan(m_homedir))
-            std::cout << m_homedir << " exists" << std::endl;
+        {
+            if (debug) std::cout << m_homedir << " exists" << std::endl;
+        }
         else
         {
-            std::cout << m_homedir << " doesn't exist" << std::endl;
+            if (debug) std::cout << m_homedir << " doesn't exist" << std::endl;
             CL_Directory::create(m_homedir);
         }
             
@@ -977,15 +979,23 @@ CATrophy::saveGame()
     if (saveFileName == "")
         return isOk; // TODO: handle this (or not)      
     std::string saveFileString = m_homedir + saveFileName;
-    std::cout << "saving " << saveFileString << std::endl;
+    if (debug) std::cout << "saving " << saveFileString << std::endl;
     std::ofstream saveFile(saveFileString.c_str());
     if (saveFile)
     {
         saveFile << VERSION << std::endl;
         saveFile << difficulty << std::endl;
         saveFile << m_nbTurns << std::endl;
-        for (unsigned int i=0; i<m_currentTrackNumbers.size(); ++i)
-            saveFile << m_currentTrackNumbers[i] << std::endl;
+        if (m_currentTrackNumbers.size() != 3)
+        {
+            for (unsigned int i=0; i<3; ++i)
+                saveFile << -1 << std::endl;
+        }
+        else 
+        {
+            for (unsigned int i=0; i<3; ++i)
+                saveFile << m_currentTrackNumbers[i] << std::endl;
+        }
         // TODO: This code should probably be in player.cpp
         for( unsigned int c=0; c<CA_MAXPLAYERS; ++c )
         {
@@ -1030,7 +1040,7 @@ CATrophy::loadGame()
     }
     
     std::string loadFileString = m_homedir + loadFileName;
-    std::cout << "loading " << loadFileString << std::endl;
+    if (debug) std::cout << "loading " << loadFileString << std::endl;
     
     std::ifstream loadFile(loadFileString.c_str());
     if (loadFile)
@@ -1054,7 +1064,8 @@ CATrophy::loadGame()
         {
             int trackNumber;
             loadFile >> trackNumber;
-            m_currentTrackNumbers.push_back(trackNumber);
+            if (trackNumber != -1)
+                m_currentTrackNumbers.push_back(trackNumber);
         }
 
         // TODO: This code should probably be in player.cpp
@@ -1231,7 +1242,6 @@ CATrophy::run()
 {
     if(debug) std::cout << "Game Running" << std::endl;
     m_nbTurns++;
-    std::cout << "Nb Tour:" << m_nbTurns << std::endl; // TODO: Sauvegarder
 
     int  gameStartTime;  // Race started
     int  goodyTime;         // Last goody placed at...
@@ -1419,8 +1429,6 @@ CATrophy::run()
                     !m_RacePlayer[c]->isLapped() &&
                     m_RacePlayer[c]->getRaceRank()==rank )
             {
-				std::cout << m_RacePlayer[c]->getName() << std::endl;
-				std::cout << m_RacePlayer[c]->getRaceRank() << std::endl; 
                 CAPositionTable::getPositionTable()->playerFinishedRace( m_RacePlayer[c] );
                 break;
             }
