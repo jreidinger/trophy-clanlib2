@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "cagoodytype.h"
 #include "casoundeffect.h"
 #include "player.h"
@@ -18,7 +20,10 @@ void CAGoodyType::playSound() const
 /** Play the sound associated with the goody */
 void CAGoodyType::draw(int x, int y) const
 {
-   m_surface.draw( *CA_APP->graphicContext, x-8, y-8 );
+  if (m_surface.is_null())
+    std::cerr << "Attempt to draw invalid image";
+  else
+    m_surface.draw( *CA_APP->graphicContext, x-8, y-8 );
 }
 
 void CAGoodyType::catchGoodie(Player* pl)
