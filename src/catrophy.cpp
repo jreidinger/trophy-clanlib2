@@ -1367,7 +1367,7 @@ CATrophy::run()
         if( rhythm==3 ) rhythm=0;
 
         display_window->flip();   // Copy framebufer to screen
-        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
+        CL_KeepAlive::process(10);      // VERY VITAL for the system!
 
         measureFrameTime( false );
 		isEscapePressed = input_context.get_keyboard().get_keycode(CL_KEY_ESCAPE);

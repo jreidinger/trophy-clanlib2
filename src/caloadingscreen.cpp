@@ -33,7 +33,7 @@ CALoadingScreen::setProgress( float p ) {
     buildScreen();
 
     CA_APP->display_window->flip();   // Copy framebufer to screen
-    CL_KeepAlive::process(-1);      // VERY VITAL for the system!
+    CL_KeepAlive::process(100);      // VERY VITAL for the system!
 }
 
 
