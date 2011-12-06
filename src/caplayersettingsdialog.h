@@ -8,11 +8,11 @@
 
 /** Dialog for adjusting player settings (Name, color, car, face)
     @author Andrew Mustun
+    @author Matthieu Lecesne
 */
 class CAPlayerSettingsDialog : public CADialog {
 public:
     CAPlayerSettingsDialog();
-    ~CAPlayerSettingsDialog();
 
     virtual void buildScreen();
     virtual void on_key_released (const CL_InputEvent &key);
@@ -22,10 +22,9 @@ public:
 
 private:
     //! Line edit for players name
-
-    CALineEdit*  nameInput;
+    CALineEdit  nameInput;
     //! Car image hue selector.
-    CAImageHueSelector* carImage;
+    CAImageHueSelector carImage;
 };
 
 #endif

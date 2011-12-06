@@ -30,7 +30,7 @@ enum DisplayMode
 
 class CAChampionshipScreen : public CAScreen {
 public:
-    CAChampionshipScreen(const std::vector<Player*> player, const std::vector<std::vector<Player*> > runningPlayer,
+    CAChampionshipScreen(Player* humanPlayer, const std::vector<Player*> player, const std::vector<std::vector<Player*> > runningPlayer,
                                           CL_Surface* background, CL_Surface* button, CL_Surface* button_easy, CL_Surface* button_medium, CL_Surface* button_hard, CL_Font* font);
     ~CAChampionshipScreen();
 
@@ -55,6 +55,8 @@ private:
     int bottom;
     //! Height of the button
     int barHeight;
+    //! Pointer to human player
+    Player* m_humanPlayer;
     //! all players sorted by Totalrank
     std::vector<Player*> m_player;
     //! players running in the 3 races

@@ -11,7 +11,7 @@ trophy_SOURCES = cagoody.cpp cainfodialog.cpp caescapedialog.cpp camenu.h canets
 		 casignupscreen.h cawidget.h cadustclowd.h caimageview.cpp utils/trophymath.h canetclient.cpp caplayerview.h \
 		 caslotselectiondialog.cpp cafogbomb.h caimageview.h camenu.cpp canetclient.h capositiontable.cpp \
 		 caslotselectiondialog.h humanplayer.h humanplayer.cpp computerplayer.cpp computerplayer.h \
-		 upgradespanel.cpp upgradespanel.h
+		 upgradespanel.cpp upgradespanel.h windialog.h windialog.cpp
 
 
 AM_LDFLAGS = `pkg-config --libs $(CLANLIB_MODULES)`

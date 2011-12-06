@@ -10,7 +10,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
-#include <math.h>
+#include <cmath>
 #include <fstream>
 #include <sstream>
 
@@ -33,6 +33,7 @@
 #include "cachampionshipscreen.h"
 #include "caslotselectiondialog.h"
 #include "shopscreen.h"
+#include "windialog.h"
 
 // Global instance of the application needed by the ClanLib main():
 //
@@ -1147,14 +1148,22 @@ void CATrophy::gameLoop()
                     ++m_gameLoopState;
                 }
                 else
-                    std::cerr << "Internal Error" << std::endl; // TODO: A voir, normallement cas impossible
+                    std::cerr << "Internal Error" << std::endl; // TODO: Check if it is really impossible
             }
         }
         if (m_gameLoopState == 2)
         {
-            CAChampionshipScreen myChampionShip(player, allRunningPlayers, CA_RES->menu_bg, CA_RES->gui_button, CA_RES->gui_button_green,  CA_RES->gui_button_blue, CA_RES->gui_button_red, CA_RES->font_normal_11_white);
-            myChampionShip.run();
-            ++m_gameLoopState;
+            CAChampionshipScreen myChampionShip(player[0], player, allRunningPlayers, CA_RES->menu_bg, CA_RES->gui_button, CA_RES->gui_button_green,  CA_RES->gui_button_blue, CA_RES->gui_button_red, CA_RES->font_normal_11_white);
+            if (myChampionShip.run())
+                ++m_gameLoopState;
+            else
+            {
+                WinDialog win(player[0]->getName(), m_nbTurns);
+                win.run();
+                ++m_gameLoopState;
+                goOn = false;
+            }
+                
         }
 
         m_gameLoopState = m_gameLoopState%3;

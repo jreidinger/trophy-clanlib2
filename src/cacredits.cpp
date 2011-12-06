@@ -61,6 +61,10 @@ CACredits::CACredits()
     text.push_back("");     
 }
 
+void CACredits::setText(const std::vector<std::string>& newText)
+{
+    text=newText;
+}
 
 
 /** Destructor.
