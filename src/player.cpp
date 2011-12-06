@@ -173,7 +173,7 @@ Player::renderSprites( HSVColor col )
 //TODO    tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface, color.h, color.s, color.v );
     for( int i=0; i<CA_FPR; ++i ) 
     {
-        sprite[i] = CL_Sprite( m_Pcar.surface );
+        sprite[i].clone(m_Pcar.surface);
         sprite[i].rotate( CL_Angle::from_degrees((float)i/CA_FPR*360.0) );
     }
 }
