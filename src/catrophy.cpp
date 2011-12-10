@@ -154,11 +154,7 @@ CATrophy::start(const std::vector<CL_String> &args )
         }
 
         CL_SetupDisplay setup_display;
-#ifdef USE_SDL
-        CL_SetupSDL setup_sdl;
-#else
         CL_SetupGL setup_gl;
-#endif
 
         // Some layout things:
         //
