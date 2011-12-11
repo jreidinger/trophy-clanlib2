@@ -1630,7 +1630,7 @@ CATrophy::waitForSilence() {
                 input_context.get_keyboard().get_keycode( CL_KEY_ESCAPE ) ) {
             done = false;
         }
-        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
+        CL_KeepAlive::process();      // VERY VITAL for the system!
     }
     while( !done );
 }
@@ -1858,7 +1858,7 @@ CATrophy::fadeScreen( bool in, CAScreen* screen, bool whole ) {
         }
 
         display_window->flip();
-        CL_KeepAlive::process(-1);
+        CL_KeepAlive::process();
     }
 
     if( debug ) std::cout << "fadeScreen end" << std::endl;

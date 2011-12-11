@@ -210,7 +210,7 @@ CASignUpScreen::run()
         CASoundEffect::playBackgroundMelody();
 
         CA_APP->display_window->flip();   // Copy framebuffer to screen
-        CL_KeepAlive::process(-1);      // VERY VITAL for the system!
+        CL_KeepAlive::process();      // VERY VITAL for the system!
 
         CA_APP->measureFrameTime( false );
     }
