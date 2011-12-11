@@ -1615,7 +1615,7 @@ CATrophy::measureFrameTime( bool start ) {
     {
         int timeElapsed = CL_System::get_time()-frameStart;
         if( timeElapsed>0 ) framesPerSec = 1000.0 / timeElapsed;
-        if( framesPerSec<1.0 ) framesPerSec = 1.0;
+        if( framesPerSec<10.0 ) framesPerSec = 10.0;
     }
 }
 
