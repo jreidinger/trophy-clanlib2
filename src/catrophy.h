@@ -3,12 +3,6 @@
 
 #include <ClanLib/core.h>
 
-#ifdef USE_SDL
-    #include <ClanLib/sdl.h>
-#else
-    #include <ClanLib/gl.h>
-#endif
-
 #include <ClanLib/application.h>
 #include "cartype.h"
 #include "cadustclowd.h"

@@ -2502,7 +2502,7 @@ $as_echo_n "checking ClanLib version... " >&6; }
 	if test "$have_clan_23" = "yes"; then
 	    { $as_echo "$as_me:${as_lineno-$LINENO}: result: ClanLib 2.3" >&5
 $as_echo "ClanLib 2.3" >&6; }
-	    CLANLIB_MODULES="clanGL-2.3 clanCore-2.3 clanSound-2.3 clanDisplay-2.3 clanApp-2.3"
+	    CLANLIB_MODULES="clanGL-2.3 clanGL1-2.3 clanSWRender-2.3 clanCore-2.3 clanSound-2.3 clanDisplay-2.3 clanApp-2.3"
 
 	else
 	   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5

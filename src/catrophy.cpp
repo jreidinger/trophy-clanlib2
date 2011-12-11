@@ -10,6 +10,9 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <ClanLib/application.h>
+#include <ClanLib/gl.h>
+#include <ClanLib/gl1.h>
+#include <ClanLib/swrender.h>
 
 #include <cmath>
 #include <fstream>
@@ -155,6 +158,9 @@ CATrophy::start(const std::vector<CL_String> &args )
 
         CL_SetupDisplay setup_display;
         CL_SetupGL setup_gl;
+        CL_SetupGL1 setup_gl1;
+        CL_SetupSWRender setup_sw;
+        setup_gl.set_current();
 
         // Some layout things:
         //
@@ -166,7 +172,19 @@ CATrophy::start(const std::vector<CL_String> &args )
         CL_SetupSound setup_sound;
         sound_output = CL_SoundOutput(44100);
 
-        reconfigure();
+        try {
+          reconfigure();
+        } catch (CL_Exception e) {
+          std::cout << "GL2 is not supported lets try GL1." << std::endl;
+          setup_gl1.set_current();
+          try {
+            reconfigure();
+          } catch (CL_Exception e) {
+            std::cout << "GL1 is not supported lets use software rendering (the slowest)." << std::endl;
+            setup_sw.set_current();
+            reconfigure();
+          }
+        }
 
         headerHeight = (int)((float)height/4.2f);
 
@@ -516,17 +534,10 @@ CATrophy::reconfigure()
     {
       desc.set_allow_resize(true);
     }
-    try 
-    {
-        display_window = new CL_DisplayWindow ( desc );
-        input_context = display_window->get_ic();
-        graphicContext = &display_window->get_gc();
-    } 
-    catch( CL_Exception err ) 
-    {
-        std::cout << "Exception caught: " << err.message.c_str() << std::endl;
-        exit(1);
-    }
+    if (display_window) delete display_window;
+    display_window = new CL_DisplayWindow ( desc );
+    input_context = display_window->get_ic();
+    graphicContext = &display_window->get_gc();
     keyboard = display_window->get_ic().get_keyboard();
     // Init mouse cursor:
     //

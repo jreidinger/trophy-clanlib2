@@ -12,7 +12,7 @@ PKG_CHECK_EXISTS([clanApp-2.3 >= 2.3.0], [have_clan_23=yes])
 AC_MSG_CHECKING(ClanLib version)
 	if test "$have_clan_23" = "yes"; then
 	    AC_MSG_RESULT(ClanLib 2.3)
-	    AC_SUBST(CLANLIB_MODULES, ["clanGL-2.3 clanCore-2.3 clanSound-2.3 clanDisplay-2.3 clanApp-2.3"])
+	    AC_SUBST(CLANLIB_MODULES, ["clanGL-2.3 clanGL1-2.3 clanSWRender-2.3 clanCore-2.3 clanSound-2.3 clanDisplay-2.3 clanApp-2.3"])
 	else
 	   AC_MSG_RESULT(no)
 	   AC_MSG_ERROR([Unable to find a compatible version of ClanLib. Check for ClanLib 2.3])
