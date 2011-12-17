@@ -81,7 +81,7 @@ CATrophy::start(const std::vector<CL_String> &args )
         m_isGameStarted = false;
         m_nbTurns = 0;
         m_gameLoopState = 0;
-        
+        enum { GL=0,GL1,SW } renderer = GL;
 
         // Proccess parameters:
         //
@@ -114,6 +114,9 @@ CATrophy::start(const std::vector<CL_String> &args )
                 std::cout << "--server" << std::endl;
                 std::cout << "--client" << std::endl;
                 std::cout << "--ip" << std::endl;
+                std::cout << "--gl : use openGL2 driver ( default )." << std::endl;
+                std::cout << "--gl1 : use openGL1 driver." << std::endl;
+                std::cout << "--swrender : use software rendering (usually performance problems)." << std::endl;
                 exit(0);
             }
 
@@ -134,6 +137,12 @@ CATrophy::start(const std::vector<CL_String> &args )
                 resolution = "800x600";
             } else if( !strcmp(args[c].c_str(), "--1024x768" ) ) {
                 resolution = "1024x768";
+            } else if( !strcmp(args[c].c_str(), "--gl" ) ) {
+                renderer = GL;
+            } else if( !strcmp(args[c].c_str(), "--gl1" ) ) {
+                renderer = GL1;
+            } else if( !strcmp(args[c].c_str(), "--swrender" ) ) {
+                renderer = SW;
             }
 
             // Audio options:
@@ -160,6 +169,11 @@ CATrophy::start(const std::vector<CL_String> &args )
         CL_SetupGL setup_gl;
         CL_SetupGL1 setup_gl1;
         CL_SetupSWRender setup_sw;
+        switch (renderer) {
+        GL: setup_gl.set_current(); break;
+        GL1: setup_gl1.set_current(); break;
+        SW: setup_sw.set_current(); break; 
+        }
         setup_gl.set_current();
 
         // Some layout things:
@@ -175,7 +189,7 @@ CATrophy::start(const std::vector<CL_String> &args )
         try {
           reconfigure();
         } catch (CL_Exception e) {
-          std::cout << "GL2 is not supported lets try GL1." << std::endl;
+          std::cout << "Option fail lets try GL1." << std::endl;
           setup_gl1.set_current();
           try {
             reconfigure();
