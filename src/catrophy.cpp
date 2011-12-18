@@ -172,9 +172,8 @@ CATrophy::start(const std::vector<CL_String> &args )
         switch (renderer) {
         case GL: setup_gl.set_current(); break;
         case GL1: setup_gl1.set_current(); break;
-        case SW: setup_sw.set_current(); break; 
+        case SW: setup_sw.set_current(); break;
         }
-        setup_gl.set_current();
 
         // Some layout things:
         //
