@@ -170,9 +170,9 @@ CATrophy::start(const std::vector<CL_String> &args )
         CL_SetupGL1 setup_gl1;
         CL_SetupSWRender setup_sw;
         switch (renderer) {
-        GL: setup_gl.set_current(); break;
-        GL1: setup_gl1.set_current(); break;
-        SW: setup_sw.set_current(); break; 
+        case GL: setup_gl.set_current(); break;
+        case GL1: setup_gl1.set_current(); break;
+        case SW: setup_sw.set_current(); break; 
         }
         setup_gl.set_current();
 
