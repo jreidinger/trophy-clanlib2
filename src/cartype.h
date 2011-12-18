@@ -107,7 +107,7 @@ class CarType
         std::string   name;
 
         //! Pointer to surface resource (r,g,b,m,y,c)
-        CL_Sprite surface;
+        CL_Texture surface;
         //! Pointer to surface resource 3d (r,g,b,m,y,c)
         CL_Image surface3d;
 

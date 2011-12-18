@@ -1,4 +1,5 @@
 #include "caimagemanipulation.h"
+#include "catrophy.h"
 
 /** Constructor.
 */
@@ -7,193 +8,6 @@ CAImageManipulation::CAImageManipulation() {}
 /** Destructor.
 */
 CAImageManipulation::~CAImageManipulation() {}
-
-/** Returns a pointer to a new image, based on 'surface'
-    but rotated by an angle of 'degrees' degrees.
-    \param surface The original surface
-    \param angle Rotation angle in degrees (clock-wise)
-    \param exact true: Exact, smooth coloring (calculates color 'between' pixels)
-                 false: Inexact but faster.
-    \param green Use green channel for transparency (Due to ClanLib bug in 0.5)
-*/
-/*
- * TODO : became useless as rotate now exists in CL_Surface
-CL_Surface*
-CAImageManipulation::rotate( CL_Surface* surface,
-                             float angle,
-                             bool exact,
-                             bool green ) {
-    // Create a temporary canvas which contains the original surface:
-    CL_Canvas* tmpCan = new CL_Canvas();
-    // TODO : check that clearCanvas is still usefull
-    //clearCanvas( tmpCan );
-    //surface->put_target( 0, 0, 0, tmpCan );
-    tmpCan->select_surface(*surface);
-
-    // ClanLib bug forces me to use the green channel for transparency...
-    //greenToTransparent( tmpCan );
-
-    // Create a new canvas which will contain the rotated surface:
-    CL_Canvas* newCan = new CL_Canvas();
-    // TODO : check that clearCanvas is still usefull
-    //clearCanvas( newCan );
-
-    int width = surface->get_width();
-    int height = surface->get_height();
-    // Calc size in bytes:
-    // TODO : find a workaround
-    //int bpp = tmpCan->get_bytes_per_pixel();
-    int bpp = 4;
-    int size = width * height * bpp;
-
-    // Only 24bit supported:
-    //
-    if( bpp==4 ) 
-    {
-        CL_PixelBuffer pixbuf = newCan->get_pixeldata();
-        pixbuf.lock();
-
-        int i;             // i is the index for the rotated data
-        int r, g, b, a;
-        float xo, yo;      // Original pixel
-        float xr, yr;      // Rotated pixel
-        float cx, cy;      // Rotation center
-
-        r=g=b=a=0;
-
-        cx = (float)width/2;
-        cy = (float)height/2;
-
-        // Store original image:
-        //
-        unsigned char *oriData = (unsigned char*)pixbuf.get_data();
-        unsigned char *newData = (unsigned char*)pixbuf.get_data();
-
-        // needs to be calculated only once since angle doesn't change!!
-        //
-        float cos_angle = cos( angle/ARAD );     // rotating it clockwise (!) by angle,
-        float sin_angle = sin( angle/ARAD );
-
-        float x0;
-        float y0;
-
-        // Rotate:
-        //
-        for( i=0; i<size; i+=bpp ) {
-            xr = getCoordinateX( width, i );
-            yr = getCoordinateY( width, i );
-
-            x0 = (xr - cx);         // rotation around origin, so i create a relative
-            y0 = (yr - cy);         //   vector by subtracting (cx, cy) ...
-
-            xo = cx +  x0 * cos_angle + y0 * sin_angle;  // ... and add it again after rotation
-            yo = cy +  y0 * cos_angle - x0 * sin_angle;
-
-            if( (int)xo>1 && (int)xo<width-1 &&
-                    (int)yo>1 && (int)yo<height-1   ) {
-
-                getExactColor( oriData,
-                               width, height,
-                               xo, yo,
-                               &r, &g, &b, &a,
-                               exact );
-
-                newData[i  ] = a;
-                newData[i+1] = b;
-                newData[i+2] = g;
-                newData[i+3] = r;
-            } else {
-                newData[i  ] = (green ? 255 : 0);
-                newData[i+1] = 0;
-                newData[i+2] = (green ? 255 : 0);
-                newData[i+3] = 0;
-            }
-        }
-        pixbuf.unlock();
-    }
-    delete tmpCan;
-
-    // ClanLib bug forces me to use the green channel for transparency...
-    //greenToTransparent( newCan );
-
-    // Return new surface based on the canvas:
-    //
-    return new CL_Surface(newCan->get_pixeldata());
-}
-*/
-
-/** Returns a pointer to a new image, based on 'surface'
-    but fliped horizontal or vertical.
-    \param horizontal true: Flip horizontal (left to right)
-                      false: Flip vertical (upsidedown)
-*/
-/*
- * TODO : not used
-CL_Surface*
-CAImageManipulation::flip( CL_Surface* surface, bool horizontal ) 
-{
-	CL_PixelBuffer pixBufOriginal = surface->get_pixeldata();
-	int bpp = pixBufOriginal.get_format().get_depth()/8; 
-	CL_PixelBuffer pixbuf(surface->get_width(), surface->get_height(), surface->get_width()*bpp, pixBufOriginal.get_format());
-	pixBufOriginal.convert(pixbuf);
-    //CL_Canvas* can = new CL_Canvas( );
-    // TODO : check that clearCanvas is still usefull
-    //clearCanvas( can );
-    //surface->put_target( 0,0, 0, can );
-    //can->select_surface(*surface);
-
-    // ClanLib bug forces me to use the green channel for transparency...
-    //greenToTransparent( can );
-
-    // Calc size in bytes:
-    //
-    // TODO : find a workaround
-    //int bpp = can->get_bytes_per_pixel();
-    int size = surface->get_width() * surface->get_height() * bpp;
-    int width = surface->get_width();
-
-    // Only 24bit supported:
-    //
-    if( bpp==4 ) {
-
-        pixbuf.lock();
-
-        unsigned char *data = (unsigned char*)pixbuf.get_data();
-
-        unsigned char tmp;
-        int i, k, x, ind, offs;
-
-        if( horizontal ) {
-            for( i=0; i<size; i+=bpp*width ) {
-                for( x=0; x<width/2; ++x ) {
-                    offs = (width-1-x)*bpp;  // Offset to mirrored pixel
-                    for( k=0; k<bpp; ++k ) {
-                        ind = i+x*bpp+k;
-                        tmp            = data[ind];
-                        data[ind]      = data[i+offs+k];
-                        data[i+offs+k] = tmp;
-                    }
-                }
-            }
-        } else {
-            int rows = bpp * width;
-            for( i=0; i<size/2; i+=bpp ) {
-                ind = size-(rows*(i/rows))-(rows-i%rows);
-                for( k=0; k<bpp; ++k ) {
-                    tmp         = data[i+k];
-                    data[i+k]   = data[ind+k];
-                    data[ind+k] = tmp;
-                }
-            }
-        }
-        pixbuf.unlock();
-    }
-
-    // Return new surface based on the canvas:
-    //
-    return new CL_Surface(pixbuf);
-}
-*/
 
 /** Returns a pointer to a new image, based on 'surface'
     but with changed hue. Changing the hue means to "rotate"
@@ -210,33 +24,30 @@ CAImageManipulation::flip( CL_Surface* surface, bool horizontal )
     \param value Changing of value (Color intensity): -100...100
 */
 CL_Sprite
-CAImageManipulation::changeHSV( CL_Sprite surface,
+CAImageManipulation::changeHSV( CL_Texture surface,
                                 int hue, int saturation, int value ) 
 {
-    // Copy the surface
-    //CL_Surface *result = new CL_Surface(*surface);
-    //CL_PixelBuffer pixbuf = result->get_pixeldata();
-    /*
-    CL_PixelBuffer pixBufOriginal = surface->get_pixeldata();
-    int bpp = pixBufOriginal.get_format().get_depth()/8; 
-    CL_PixelBuffer pixbuf(surface->get_width(), surface->get_height(), surface->get_width()*bpp, pixBufOriginal.get_format());
+    CL_PixelBuffer pixBufOriginal = surface.get_pixeldata();
+    CL_PixelBuffer pixbuf(surface.get_width(), surface.get_height(), pixBufOriginal.get_format());
     pixBufOriginal.convert(pixbuf);
 
-    CL_PixelFormat pf = pixbuf.get_format();
+    CL_TextureFormat pf = pixbuf.get_format();
     // Check that we handle this pixel format
-    if(pf != CL_PixelFormat::rgba8888 && pf != CL_PixelFormat::abgr8888 && 
-            pf != CL_PixelFormat::rgb888 && pf != CL_PixelFormat::bgr888 &&
-            pf != CL_PixelFormat::rgba4444 && pf != CL_PixelFormat::abgr4444)
+    if(pf != CL_TextureFormat::cl_rgba8 && pf != CL_TextureFormat::cl_rgb8 &&
+            pf != CL_TextureFormat::cl_rgba4 )
     {
-        std::cout << "Unknow pixel format !" << std::endl;
-        return new CL_Surface(*surface);
+        std::cout << "Unknow pixel format !" << pf << std::endl;
+        CL_SpriteDescription sdes;
+        sdes.add_frame(pixBufOriginal);
+        return CL_Sprite(*CA_APP->graphicContext,sdes);
     }
 
     // Calc size in bytes:
     //
+    int bpp = pixBufOriginal.get_bytes_per_pixel();
     int size = pixbuf.get_width() * pixbuf.get_height() * bpp;
 
-    pixbuf.lock();
+    pixbuf.lock(CL_BufferAccess::cl_access_read_write);
 
     unsigned char *data = (unsigned char*)pixbuf.get_data();
 
@@ -245,42 +56,23 @@ CAImageManipulation::changeHSV( CL_Sprite surface,
     int r, g, b, a(0);
     int h, s, v;
 
-    for(int i=0; i<size; i+=bpp ) 
+    for(int i=0; i<size; i+=bpp )
     {
-        if(pf == CL_PixelFormat::rgba8888)
+        if(pf == CL_TextureFormat::cl_rgba8)
         {
             a = data[i];
             b = data[i+1];
             g = data[i+2];
             r = data[i+3];
-        } else if (pf == CL_PixelFormat::abgr8888)
+        } else if (pf == CL_TextureFormat::cl_rgb8)
         {
-            r = data[i];
-            g = data[i+1];
-            b = data[i+2];
-            a = data[i+3];
-        } else if (pf == CL_PixelFormat::rgb888)
-        {
-            std::cout << "PixelFormat : rgb888\n";
+            std::cout << "TextureFormat : rgb888\n";
             b = data[i];
             g = data[i+1];
             r = data[i+2];
-        } else if (pf == CL_PixelFormat::bgr888)
+        } else if (pf == CL_TextureFormat::cl_rgba4)
         {
-            std::cout << "PixelFormat : bgr888\n";
-            r = data[i];
-            g = data[i+1];
-            b = data[i+2];
-        } else if (pf == CL_PixelFormat::abgr4444)
-        {
-            std::cout << "PixelFormat : abgr4444\n";
-            a = data[i] && 0x0F;
-            b = (data[i] && 0xF0) >> 4;
-            g = data[i+1] && 0x0F;
-            r = (data[i+1] && 0xF0) >> 4;
-        } else if (pf == CL_PixelFormat::rgba4444)
-        {
-            std::cout << "PixelFormat : rgba4444\n";
+            std::cout << "TextureFormat : rgba4444\n";
             r = data[i] && 0x0F;
             g = (data[i] && 0xF0) >> 4;
             b = data[i+1] && 0x0F;
@@ -303,33 +95,18 @@ CAImageManipulation::changeHSV( CL_Sprite surface,
 
             hsvToRgb( h, s, v, &r, &g, &b );
 
-            if(pf == CL_PixelFormat::rgba8888)
+            if(pf == CL_TextureFormat::cl_rgba8)
             {
                 data[i] = a;
                 data[i+1] = b;
                 data[i+2] = g;
                 data[i+3] = r;
-            } else if (pf == CL_PixelFormat::abgr8888)
-            {
-                data[i] = r;
-                data[i+1] = g;
-                data[i+2] = b;
-                data[i+3] = a;
-            } else if (pf == CL_PixelFormat::rgb888)
+            } else if (pf == CL_TextureFormat::cl_rgb8)
             {
                 data[i] = b;
                 data[i+1] = g;
                 data[i+2] = r;
-            } else if (pf == CL_PixelFormat::bgr888)
-            {
-                data[i] = r;
-                data[i+1] = b;
-                data[i+2] = g;
-            } else if (pf == CL_PixelFormat::abgr4444)
-            {
-                data[i] = a + (b << 4);
-                data[i+1] = g + (r << 4);
-            } else if (pf == CL_PixelFormat::rgba4444)
+            } else if (pf == CL_TextureFormat::cl_rgba4)
             {
                 data[i] = r + (g << 4);
                 data[i+1] = b + (a << 4);
@@ -338,10 +115,9 @@ CAImageManipulation::changeHSV( CL_Sprite surface,
     }
     pixbuf.unlock();
 
-    //return result;
-    return new CL_Surface(pixbuf, CL_Surface::flag_keep_pixelbuffer);
-    */
-      return CL_Sprite();
+    CL_SpriteDescription sdes;
+    sdes.add_frame(pixbuf);
+    return CL_Sprite(*CA_APP->graphicContext,sdes);
 }
 
 /** Clears a canvas to transparent.

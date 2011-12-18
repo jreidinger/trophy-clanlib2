@@ -20,7 +20,7 @@
             <integer name="motorPrice" value="500" />
             <integer name="tiresPrice" value="200" />
             <integer name="armorPrice" value="300" />
-            <sprite name="surface"><image-file file="cars/vw/surface.tga" /> </sprite>
+            <texture name="surface" file="cars/vw/surface.tga" />
             <image name="surface3d"><image-file file="cars/vw/surface3d.tga" /> </image>
         </section>
         <section name="jeep">
@@ -38,7 +38,7 @@
             <integer name="motorPrice" value="750" />
             <integer name="tiresPrice" value="300" />
             <integer name="armorPrice" value="500" />
-            <sprite name="surface"><image-file file="cars/jeep/surface.tga" /> </sprite>
+            <texture name="surface" file="cars/jeep/surface.tga" />
             <image name="surface3d"><image-file file="cars/jeep/surface3d.tga" /> </image>
         </section>
         <section name="z3">
@@ -56,7 +56,7 @@
             <integer name="motorPrice" value="1000" />
             <integer name="tiresPrice" value="500" />
             <integer name="armorPrice" value="750" />
-            <sprite name="surface"><image-file file="cars/z3/surface.tga" /> </sprite>
+            <texture name="surface" file="cars/z3/surface.tga" />
             <image name="surface3d"><image-file file="cars/z3/surface3d.tga" /> </image>
         </section>
         <section name="flash2">
@@ -74,7 +74,7 @@
             <integer name="motorPrice" value="1500" />
             <integer name="tiresPrice" value="1000" />
             <integer name="armorPrice" value="1500" />
-            <sprite name="surface"><image-file file="cars/flash2/surface.tga" /> </sprite>
+            <texture name="surface" file="cars/flash2/surface.tga" />
             <image name="surface3d"><image-file file="cars/flash2/surface3d.tga" /> </image>
         </section>
     </section>

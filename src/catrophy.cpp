@@ -311,7 +311,7 @@ CATrophy::deinitCarTypes()
 
     for( int i=0; i<CA_NUMCARTYPES; ++i ) 
     {
-        carType[i].surface = CL_Sprite();
+        carType[i].surface = CL_Texture();
         carType[i].surface3d = CL_Image();
     }
 
