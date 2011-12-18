@@ -27,7 +27,7 @@ CAMenuLabel::display( bool highlight ) {
     if( highlight ) {
         font = CA_RES->font_normal_22_white;
         //CA_RES->menu_cursorani->draw (menu->getLeft()-40, top+5, (int)frame);
-        CA_RES->menu_cursorani.draw ( *CA_APP->graphicContext,menu->getLeft()-40, top+5);
+        CA_RES->menu_cursorani.draw ( *CA_APP->graphicContext,menu->getLeft()-40, top-25);
         //CA_RES->advanceAnimation( &frame, CA_RES->menu_cursorani->get_frame_surface(CA_RES->menu_cursorani->get_current_frame()), 10.0 );
         CA_RES->menu_cursorani.update();
     } else {
