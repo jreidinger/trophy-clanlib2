@@ -23,12 +23,11 @@ CAImageManipulation::~CAImageManipulation() {}
     \param saturation Changing of saturation: -100...100
     \param value Changing of value (Color intensity): -100...100
 */
-CL_Sprite
-CAImageManipulation::changeHSV( CL_Texture surface,
-                                int hue, int saturation, int value ) 
+CL_PixelBuffer
+CAImageManipulation::changeHSV( CL_PixelBuffer pixBufOriginal,
+                                int hue, int saturation, int value )
 {
-    CL_PixelBuffer pixBufOriginal = surface.get_pixeldata();
-    CL_PixelBuffer pixbuf(surface.get_width(), surface.get_height(), pixBufOriginal.get_format());
+    CL_PixelBuffer pixbuf(pixBufOriginal.get_width(), pixBufOriginal.get_height(), pixBufOriginal.get_format());
     pixBufOriginal.convert(pixbuf);
 
     CL_TextureFormat pf = pixbuf.get_format();
@@ -37,9 +36,7 @@ CAImageManipulation::changeHSV( CL_Texture surface,
             pf != CL_TextureFormat::cl_rgba4 )
     {
         std::cout << "Unknow pixel format !" << pf << std::endl;
-        CL_SpriteDescription sdes;
-        sdes.add_frame(pixBufOriginal);
-        return CL_Sprite(*CA_APP->graphicContext,sdes);
+        return pixBufOriginal.copy();
     }
 
     // Calc size in bytes:
@@ -115,9 +112,7 @@ CAImageManipulation::changeHSV( CL_Texture surface,
     }
     pixbuf.unlock();
 
-    CL_SpriteDescription sdes;
-    sdes.add_frame(pixbuf);
-    return CL_Sprite(*CA_APP->graphicContext,sdes);
+    return pixbuf;
 }
 
 /** Clears a canvas to transparent.

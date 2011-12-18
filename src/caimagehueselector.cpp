@@ -28,7 +28,7 @@ CAImageHueSelector::CAImageHueSelector( Direction direction )
 */
 CAImageHueSelector::CAImageHueSelector( const std::string upperText,
                                         const std::string lowerText,
-                                        CL_Image image,
+                                        CL_Texture image,
                                         bool autoResize,
                                         Direction direction )
         : CAImageView( upperText,
@@ -38,7 +38,8 @@ CAImageHueSelector::CAImageHueSelector( const std::string upperText,
     if( CA_APP->debug ) std::cout << "CAImageHueSelector() begin 2" << std::endl;
 
     this->direction = direction;
-    hueImage = image; //TODO CAImageManipulation::changeHSV( image, 0, 0, 0 );
+    CL_PixelBuffer result = CAImageManipulation::changeHSV( image.get_pixeldata(), 0, 0, 0 );
+    hueImage = CL_Image(*CA_APP->graphicContext,result,CL_Rect(0,0,result.get_width(),result.get_height()));
     hue = 0;
     setImageSize( image.get_width(), image.get_height() );
 
@@ -81,7 +82,8 @@ CAImageHueSelector::changeImageHue( bool forward ) {
         if( hue > 360 ) hue -= 360;
         if( hue < 0   ) hue += 360;
 
-        hueImage = image.image; //TODO CAImageManipulation::changeHSV( image.image, hue, 0, 0 );
+        CL_PixelBuffer result = CAImageManipulation::changeHSV( image.image.get_pixeldata(), hue, 0, 0 );
+        hueImage = CL_Image(*CA_APP->graphicContext,result,CL_Rect(0,0,result.get_width(),result.get_height()));
     }
 }
 

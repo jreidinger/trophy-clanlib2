@@ -47,7 +47,7 @@ private:
     //! Offset for shown tracks. 1 -> left shown track is no 1 (not 0)
     int offset;
     //! The three race preview images
-    CL_Image  image[3];
+    CL_Texture  image[3];
     //! Images of races
     CAImageView* racePreview[3];
     //! Left border position.

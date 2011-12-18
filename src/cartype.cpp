@@ -16,7 +16,7 @@ CarOption::CarOption(CL_ResourceManager resources, CACarUpgrades* carUp, int max
 }
 
 
-CL_Image CarOption::getImage() const
+CL_Texture CarOption::getImage() const
 {
     int imageNum = m_current;
     if (m_current == m_maxOpt)
@@ -89,7 +89,7 @@ void CarMotor::upgrade()
 }
 
 
-CL_Image CarMotor::getImage(const int imageNum) const
+CL_Texture CarMotor::getImage(const int imageNum) const
 {
     return m_carUp->getMotor(imageNum);
 }
@@ -108,7 +108,7 @@ void CarTires::upgrade()
 }
 
 
-CL_Image CarTires::getImage(const int imageNum) const
+CL_Texture CarTires::getImage(const int imageNum) const
 {
     return m_carUp->getTires(imageNum);
 }
@@ -127,7 +127,7 @@ void CarArmor::upgrade()
 }
 
 
-CL_Image CarArmor::getImage(const int imageNum) const
+CL_Texture CarArmor::getImage(const int imageNum) const
 {
     return m_carUp->getArmor(imageNum);
 }
@@ -152,7 +152,7 @@ CarType::CarType(const std::string& mainPath, CL_ResourceManager resources, CACa
     if(debug) std::cout << "  surface3d" << std::endl;
 
     path = mainPath + "surface3d";
-    surface3d = CL_Image( *CA_APP->graphicContext, path, &resources );
+    surface3d = CL_Texture( *CA_APP->graphicContext, path, &resources );
 
     path = mainPath + "length";
     length = resources.get_integer_resource( path, 0 );

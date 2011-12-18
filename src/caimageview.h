@@ -18,7 +18,7 @@ struct CAImageData {
     //! Lower text
     std::string lowerText;
     //! Pointer to image surface
-    CL_Image image;
+    CL_Texture image;
 };
 
 
@@ -35,12 +35,12 @@ public:
     CAImageView();
     CAImageView( const std::string& upperText,
                  const std::string& lowerText,
-                 CL_Image image,
+                 CL_Texture image,
                  bool autoResize=true );
     ~CAImageView();
 
     virtual void setImageSize( int w, int h );
-    virtual void setImage(CL_Image image);
+    virtual void setImage(CL_Texture image);
     virtual void setUpperText(const std::string& upperText) {image.upperText = upperText;}
     virtual void setLowerText(const std::string& lowerText) {image.lowerText = lowerText;}
     virtual void setAutoresize(const bool autoresize) {m_autoresize = autoresize;}

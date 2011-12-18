@@ -21,7 +21,7 @@
             <integer name="tiresPrice" value="200" />
             <integer name="armorPrice" value="300" />
             <texture name="surface" file="cars/vw/surface.tga" />
-            <image name="surface3d"><image-file file="cars/vw/surface3d.tga" /> </image>
+            <texture name="surface3d" file="cars/vw/surface3d.tga" />
         </section>
         <section name="jeep">
             <integer name="length" value="60" />
@@ -39,7 +39,7 @@
             <integer name="tiresPrice" value="300" />
             <integer name="armorPrice" value="500" />
             <texture name="surface" file="cars/jeep/surface.tga" />
-            <image name="surface3d"><image-file file="cars/jeep/surface3d.tga" /> </image>
+            <texture name="surface3d" file="cars/jeep/surface3d.tga" />
         </section>
         <section name="z3">
             <integer name="length" value="61" />
@@ -57,7 +57,7 @@
             <integer name="tiresPrice" value="500" />
             <integer name="armorPrice" value="750" />
             <texture name="surface" file="cars/z3/surface.tga" />
-            <image name="surface3d"><image-file file="cars/z3/surface3d.tga" /> </image>
+            <texture name="surface3d" file="cars/z3/surface3d.tga" />
         </section>
         <section name="flash2">
             <integer name="length" value="60" />
@@ -75,31 +75,31 @@
             <integer name="tiresPrice" value="1000" />
             <integer name="armorPrice" value="1500" />
             <texture name="surface" file="cars/flash2/surface.tga" />
-            <image name="surface3d"><image-file file="cars/flash2/surface3d.tga" /> </image>
+            <texture name="surface3d" file="cars/flash2/surface3d.tga" />
         </section>
     </section>
     <section name="upgrades">
         <string name="directories" value="motors~tires" />
         <section name="motors">
-            <image name="motor1"><image-file file="upgrades/motors/motor_1.tga" /> </image>
-            <image name="motor2"><image-file file="upgrades/motors/motor_2.tga" /> </image>
-            <image name="motor3"><image-file file="upgrades/motors/motor_3.tga" /> </image>
-            <image name="motor4"><image-file file="upgrades/motors/motor_4.tga" /> </image>
-            <image name="motor5"><image-file file="upgrades/motors/motor_5.tga" /> </image>
+            <texture name="motor1" file="upgrades/motors/motor_1.tga" />
+            <texture name="motor2" file="upgrades/motors/motor_2.tga" />
+            <texture name="motor3" file="upgrades/motors/motor_3.tga" />
+            <texture name="motor4" file="upgrades/motors/motor_4.tga" />
+            <texture name="motor5" file="upgrades/motors/motor_5.tga" />
         </section>
         <section name="tires">
-            <image name="tires1"><image-file file="upgrades/tires/tires_1.tga" /> </image>
-            <image name="tires2"><image-file file="upgrades/tires/tires_2.tga" /> </image>
-            <image name="tires3"><image-file file="upgrades/tires/tires_3.tga" /> </image>
-            <image name="tires4"><image-file file="upgrades/tires/tires_4.tga" /> </image>
-            <image name="tires5"><image-file file="upgrades/tires/tires_5.tga" /> </image>
+            <texture name="tires1" file="upgrades/tires/tires_1.tga" />
+            <texture name="tires2" file="upgrades/tires/tires_2.tga" />
+            <texture name="tires3" file="upgrades/tires/tires_3.tga" />
+            <texture name="tires4" file="upgrades/tires/tires_4.tga" />
+            <texture name="tires5" file="upgrades/tires/tires_5.tga" />
         </section>
         <section name="armors">
-            <image name="armor1"><image-file file="upgrades/armors/armor_1.tga" /> </image>
-            <image name="armor2"><image-file file="upgrades/armors/armor_2.tga" /> </image>
-            <image name="armor3"><image-file file="upgrades/armors/armor_3.tga" /> </image>
-            <image name="armor4"><image-file file="upgrades/armors/armor_4.tga" /> </image>
-            <image name="armor5"><image-file file="upgrades/armors/armor_5.tga" /> </image>
+            <texture name="armor1" file="upgrades/armors/armor_1.tga" />
+            <texture name="armor2" file="upgrades/armors/armor_2.tga" />
+            <texture name="armor3" file="upgrades/armors/armor_3.tga" />
+            <texture name="armor4" file="upgrades/armors/armor_4.tga" />
+            <texture name="armor5" file="upgrades/armors/armor_5.tga" />
         </section>
     </section>
     <section name="bullets">
@@ -122,7 +122,7 @@
     </section>
     <section name="misc">
         <image name="cross"><image-file file="misc/cross.tga" /> </image>
-        <image name="flag"><image-file file="misc/flag.tga" /> </image>
+        <texture name="flag" file="misc/flag.tga" />
         <image name="picture"><image-file file="misc/picture.tga" /> </image>
         <image name="info"><image-file file="misc/info.tga" /> </image>
         <image name="caution"><image-file file="misc/caution.tga" /> </image>

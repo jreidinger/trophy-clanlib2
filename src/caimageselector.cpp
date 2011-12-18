@@ -55,7 +55,7 @@ CAImageSelector::setImageSize( int w, int h ) {
 void
 CAImageSelector::addImage( const std::string upperText,
                            const std::string lowerText,
-                           CL_Image image,
+                           CL_Texture image,
                            bool autoResize ) {
     this->image[numImages].upperText = upperText;
     this->image[numImages].lowerText = lowerText;
@@ -117,17 +117,23 @@ CAImageSelector::display( bool active ) {
     if( image2>=numImages ) image2=0;
     float rest = currentImage-image1;
     int center;
+    CL_SpriteDescription im1_desc = CL_SpriteDescription();
+    CL_SpriteDescription im2_desc = CL_SpriteDescription();
+    im1_desc.add_frame(image[image1].image);
+    im2_desc.add_frame(image[image2].image);
+    CL_Sprite im1(*CA_APP->graphicContext,im1_desc);
+    CL_Sprite im2(*CA_APP->graphicContext,im2_desc);
 
     if( direction==Horizontal ) {
         center = (left+right)/2;
         int image1Pos = (int)(center - rest*width - image[image1].image.get_width()/2);
-        image[image1].image.draw ( *CA_APP->graphicContext,image1Pos, top+barHeight);
-        image[image2].image.draw ( *CA_APP->graphicContext,image1Pos + width, top+barHeight);
+        im1.draw ( *CA_APP->graphicContext,image1Pos, top+barHeight);
+        im2.draw ( *CA_APP->graphicContext,image1Pos + width, top+barHeight);
     } else {
         center = (top+bottom)/2;
         int image1Pos = (int)(center - rest*height - image[image1].image.get_height()/2);
-        image[image1].image.draw ( *CA_APP->graphicContext,(left+right-image[image1].image.get_width())/2, image1Pos);
-        image[image2].image.draw ( *CA_APP->graphicContext,(left+right-image[image1].image.get_width())/2, image1Pos + height);
+        im1.draw ( *CA_APP->graphicContext,(left+right-image[image1].image.get_width())/2, image1Pos);
+        im2.draw ( *CA_APP->graphicContext,(left+right-image[image1].image.get_width())/2, image1Pos + height);
     }
 
     displayArrows( active );

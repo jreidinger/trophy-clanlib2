@@ -37,7 +37,7 @@ CASignUpScreen::CASignUpScreen(std::vector<Player*> player, std::vector<int> tra
 
     for( int i=0; i<3; ++i )
     {
-        image[i] = CL_Image();
+        image[i] = CL_Texture();
         racePreview[i] = 0;
     }
 
@@ -105,7 +105,7 @@ CASignUpScreen::reset()
             racePreview[i] = 0;
         }
         if( !image[i].is_null() ) {
-            image[i] = CL_Image();
+            image[i] = CL_Texture();
         }
         // CAImageData doesn't delete image[i] !!
     }
@@ -129,18 +129,15 @@ CASignUpScreen::setOffset( int offset )
         {
             try
             {
-                image[i] = CL_Image ( *CA_APP->graphicContext, trackPath + m_trackList[i] + "/thumb.tga" );
-                
+                image[i] = CL_Texture ( *CA_APP->graphicContext, trackPath + m_trackList[i] + "/thumb.tga" );
             }
             catch(CL_Exception err)
             {
                 trackPath = "../resources/tracks/";
-                image[i] = CL_Image ( *CA_APP->graphicContext, trackPath + m_trackList[i] + "/thumb.tga" );
+                image[i] = CL_Texture ( *CA_APP->graphicContext, trackPath + m_trackList[i] + "/thumb.tga" );
             }
             std::ostringstream oss;
             oss << "$" << (i==0 ? CA_PRIZE : (i==1 ? CA_PRIZE_MEDIUM : CA_PRIZE_HARD));
-            
-            //racePreview[i] = new CAImageView( CA_APP->trackList[i+offset], oss.str(), image[i], false );
             racePreview[i] = new CAImageView( m_trackList[i], oss.str(), image[i], false );
 
             racePreview[i]->setImageSize( 150, 92 );
@@ -148,7 +145,7 @@ CASignUpScreen::setOffset( int offset )
         } 
         else 
         {
-            image[i] = CL_Image();
+            image[i] = CL_Texture();
             racePreview[i] = 0;
         }
     }

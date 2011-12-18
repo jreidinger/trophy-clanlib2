@@ -9,7 +9,7 @@ CAImageView::CAImageView()
     if( CA_APP->debug ) std::cout << "CAImageView() begin" << std::endl;
 
     barHeight = CA_RES->font_normal_14_white.get_font_metrics().get_height() + 6;
-    image.image = CL_Image();
+    image.image = CL_Texture();
 
     if( CA_APP->debug ) std::cout << "CAImageView() end" << std::endl;
 }
@@ -23,7 +23,7 @@ CAImageView::CAImageView()
 */
 CAImageView::CAImageView( const std::string& upperText,
                           const std::string& lowerText,
-                          CL_Image image,
+                          CL_Texture image,
                           bool autoResize )
         : CAWidget( CAWidget::Left ),
         m_autoresize(autoResize)
@@ -61,7 +61,7 @@ CAImageView::setImageSize( int w, int h ) {
 }
 
 void
-CAImageView::setImage( CL_Image image) {
+CAImageView::setImage( CL_Texture image) {
     
     this->image.image = image;
     if( m_autoresize )
@@ -86,7 +86,8 @@ CAImageView::display( bool active ) {
         // center the image
        const int leftPos = left + (width  - image.image.get_width()) /2;
        const int topPos  = top  + (height - image.image.get_height())/2;
-       image.image.draw( *CA_APP->graphicContext,leftPos, topPos);
+       CL_Image img(*CA_APP->graphicContext,image.image,CL_Rect(0,0,image.image.get_width(),image.image.get_height()));
+       img.draw( *CA_APP->graphicContext,leftPos, topPos);
     }
 
     displayTextButtons( active );

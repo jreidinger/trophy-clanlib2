@@ -12,19 +12,19 @@ CACarUpgrades::CACarUpgrades()
     {
         std::ostringstream oss;
         oss << upgradesPath << "/motors/motor" << i+1;
-        motors.push_back ( CL_Image(*CA_APP->graphicContext, oss.str(), &CA_RES->resources ));
+        motors.push_back ( CL_Texture(*CA_APP->graphicContext, oss.str(), &CA_RES->resources ));
     }
     for (int i = 0; i < 5; i++)
     {
         std::ostringstream oss;
         oss << upgradesPath << "/tires/tires" << i+1;
-        tires.push_back ( CL_Image( *CA_APP->graphicContext, oss.str(), &CA_RES->resources ));
+        tires.push_back ( CL_Texture( *CA_APP->graphicContext, oss.str(), &CA_RES->resources ));
     }
     for (int i = 0; i < 5; i++)
     {
         std::ostringstream oss;
         oss << upgradesPath << "/armors/armor" << i+1;
-        armors.push_back ( CL_Image( *CA_APP->graphicContext, oss.str(), &CA_RES->resources ));
+        armors.push_back ( CL_Texture( *CA_APP->graphicContext, oss.str(), &CA_RES->resources ));
     }
 }
 

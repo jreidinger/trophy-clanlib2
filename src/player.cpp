@@ -156,21 +156,14 @@ Player::setCarNumber( const int carNumber,const bool render ) {
 void
 Player::renderSprites( HSVColor col )
 {
-    /*
-       CL_Surface* tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface,
-       color.h, color.s, color.v );
-       for( int i=0; i<CA_FPR; ++i ) {
-       if( sprite[i] ) delete sprite[i];
-       sprite[i] = CAImageManipulation::rotate( tmpSf, (float)i/CA_FPR*360.0, true );
-       }
-       delete tmpSf;
-       */
-
     // Due to a ClanLib bug introduced with ClanLib 0.5 I have to use
     // green as the transparency channel - which results in this
     // massive overhead of calculations / waste of memory - sorry.
     //FIXME investigate it with new clanlib
-    CL_Sprite tmpSf = CAImageManipulation::changeHSV( m_Pcar.surface, color.h, color.s, color.v );
+    CL_PixelBuffer result = CAImageManipulation::changeHSV( m_Pcar.surface.get_pixeldata(), color.h, color.s, color.v );
+    CL_SpriteDescription desc;
+    desc.add_frame(result);
+    CL_Sprite tmpSf(*CA_APP->graphicContext,desc);
     for( int i=0; i<CA_FPR; ++i )
     {
         sprite[i].clone(tmpSf);

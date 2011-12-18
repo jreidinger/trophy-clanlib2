@@ -22,7 +22,7 @@ public:
     CAImageManipulation();
     ~CAImageManipulation();
 
-    static CL_Sprite changeHSV( CL_Texture sprite, int hue, int saturation, int value );
+    static CL_PixelBuffer changeHSV( CL_PixelBuffer sprite, int hue, int saturation, int value );
 
     static void rgbToHsv( int r, int g, int b,
                           int *h, int *s, int *v );

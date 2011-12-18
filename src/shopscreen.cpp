@@ -31,7 +31,7 @@ ShopScreen::ShopScreen(Player* player, CL_Image background, CL_Image button, CL_
 {
     m_carImage = new CAImageSelector();
     m_carImage->move(left + 16, top + 32);
-    
+
     for (int carNum=0; carNum<CA_NUMCARTYPES; carNum++)
     {
         std::ostringstream ossPrice;
@@ -40,7 +40,7 @@ ShopScreen::ShopScreen(Player* player, CL_Image background, CL_Image button, CL_
         m_carImage->addImage(CA_APP->carType[carNum].name,
                              ossPrice.str(),
                              CA_APP->carType[carNum].surface3d,
-                             true);    
+                             true);
     }
     if (m_player->getCarNumber() != CA_NUMCARTYPES-1)
     {
@@ -54,7 +54,7 @@ ShopScreen::ShopScreen(Player* player, CL_Image background, CL_Image button, CL_
     m_imageView[0] = new CAImageView();
     m_imageView[1] = new CAImageView();
     m_imageView[2] = new CAImageView();
-    
+
     m_player->getCar()->getMotor()->updateImageView(m_imageView[0], m_carImage->getWidth());
     m_player->getCar()->getTires()->updateImageView(m_imageView[1], m_carImage->getWidth());
     m_player->getCar()->getArmor()->updateImageView(m_imageView[2], m_carImage->getWidth());

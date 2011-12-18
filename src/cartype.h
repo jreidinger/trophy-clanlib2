@@ -18,7 +18,7 @@ class CarOption
 {
     public:
         CarOption(CL_ResourceManager resources, CACarUpgrades* carRes, int maxOpt, const std::string& pathPrice, const std::string& name);
-        CL_Image getImage() const;
+        CL_Texture getImage() const;
         int getCurrent() const { return m_current;}
         void setCurrent(const int current) {m_current = current;} // Must only be use by loadGame
         int getMax() const { return m_maxOpt;}
@@ -33,7 +33,7 @@ class CarOption
         const CACarUpgrades* m_carUp;
     private:
         virtual void upgrade() = 0;
-        virtual CL_Image getImage(const int ImageNum) const = 0;
+        virtual CL_Texture getImage(const int ImageNum) const = 0;
 
         // ! current option value
         int m_current;
@@ -54,7 +54,7 @@ class CarMotor : public CarOption
         inline float getMaxSpeed() const { return m_maxSpeed;}
     private:
         void upgrade();
-        CL_Image getImage(const int imageNum) const;
+        CL_Texture getImage(const int imageNum) const;
         //! Acceleration in pixels per square second
         float m_acceleration;
         //! Maximum speed in pixels per second
@@ -70,7 +70,7 @@ class CarTires : public CarOption
         inline float getSlidingFactor() const { return m_slidingFactor; }
     private:
         void upgrade();
-        CL_Image getImage(const int imageNum) const;
+        CL_Texture getImage(const int imageNum) const;
         //! Sliding factor (1=no, 0.8=much, ...)
         float m_slidingFactor;
 };
@@ -83,7 +83,7 @@ class CarArmor: public CarOption
          inline float getArmor() const  { return m_armor;}
     private:
         void upgrade();
-        CL_Image getImage(const int imageNum) const;
+        CL_Texture getImage(const int imageNum) const;
         // ! Armor value
         float m_armor;
 };
@@ -109,7 +109,7 @@ class CarType
         //! Pointer to surface resource (r,g,b,m,y,c)
         CL_Texture surface;
         //! Pointer to surface resource 3d (r,g,b,m,y,c)
-        CL_Image surface3d;
+        CL_Texture surface3d;
 
         //! Current car length in pixel
         int length;

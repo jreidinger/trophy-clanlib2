@@ -139,7 +139,7 @@ CAResources::load() {
     // Load generic sprites:
     //
     misc_cross = CL_Image(gc, "misc/cross", &resources );
-    misc_flag = CL_Image(gc, "misc/flag", &resources );
+    misc_flag = CL_Texture(gc, "misc/flag", &resources );
     misc_light = CL_Sprite(gc, "misc/light", &resources );
     misc_hitpoint = CL_Sprite(gc, "misc/hitpoint", &resources );
     misc_gunfire = CL_Sprite(gc, "misc/gunfire", &resources );

@@ -56,7 +56,7 @@ public:
     CL_Font_Sprite font_lcd_13_green;
 
     CL_Image misc_cross;
-    CL_Image misc_flag;
+    CL_Texture misc_flag;
     CL_Sprite misc_light;
     CL_Sprite misc_hitpoint;
     CL_Sprite misc_gunfire;

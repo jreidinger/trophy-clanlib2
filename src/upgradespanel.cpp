@@ -24,7 +24,8 @@ void UpgradesPanel::display(const bool active)
 {
     std::ostringstream ossMoney;
     ossMoney << "$" << m_player->getMoney();
-    CAImageView carView(m_player->getName(), ossMoney.str(),  m_player->getCar()->surface3d);
+    CL_Texture carimage(m_player->getCar()->surface3d);
+    CAImageView carView(m_player->getName(), ossMoney.str(),  carimage);
     carView.move(left, top);
     carView.display();
 

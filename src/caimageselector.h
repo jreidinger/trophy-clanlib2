@@ -21,7 +21,7 @@ public:
 
     void addImage( const std::string upperText,
                    const std::string lowerText,
-                   CL_Image image,
+                   CL_Texture texture,
                    bool autoResize=true );
 
     void setCurrentImage( int index ) {
